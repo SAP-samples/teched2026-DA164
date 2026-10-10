@@ -1,0 +1,867 @@
+# Exercise 5 – Build, Deploy, and Connect Your AI Product Advisor Agent
+
+This exercise is split into three parts. Each part builds on the last, and together they take your application from a local prototype to a live, user-facing AI tool inside Joule Studio.
+
+| Part | What you do | End result |
+|---|---|---|
+| **A** | Write the AI advisor logic | An agent that answers service charge questions in plain language |
+| **B** *(optional)* | Deploy your own app to Cloud Foundry | A live, personally deployed URL for your agent |
+| **C** | Create a Joule Skill | Maya uses your agent directly from the Joule chat interface |
+
+> **Note on Part B**: The session team has pre-deployed a shared CAP app that Part C uses. You can complete Part C and test Joule without doing Part B. Come back to Part B if you have time — it's a useful skill, but not a blocker.
+
+> **Story context:**
+> You have built hybrid search in Exercise 4. The search returns a list of matching service charges. But Maya doesn't want to send a customer a raw list — she needs a clear, confident written recommendation. In Part A you will build the AI layer that turns those results into a plain-English answer. In Part B you will make it live. In Part C you will put it in Maya's hands.
+
+---
+
+---
+
+# Part A – Write the AI Agent
+
+## What is an AI Agent?
+
+An AI agent is a program that follows a loop:
+
+```
+Perceive  →  Retrieve  →  Reason  →  Respond
+```
+
+Your `askAdvisor` action follows exactly this loop:
+
+1. **Perceive** — it receives a customer question
+2. **Retrieve** — it searches HANA Cloud for the most relevant service charges using hybrid search
+3. **Reason** — it sends those service charges plus the question to the AI, which writes a grounded answer
+4. **Respond** — the answer is returned to the caller
+
+The AI never invents service charges. It can only use what HANA returns. If HANA returns nothing relevant, the AI says so. That is what makes this a *grounded* agent — not a chatbot that guesses.
+
+---
+
+## What you will do in Part A
+
+1. Import the AI Core helper into the service
+2. Write the `askAdvisor` handler
+3. Test the agent with real questions
+4. Confirm it refuses to answer out-of-scope questions
+
+---
+
+## Step A1 – Import the AI Core Helper
+
+1. Open [srv/product-service.js](../../srv/product-service.js).
+
+2. Check that the following `require` line is at the very top of the file, below any other imports:
+
+```js
+const { getEmbedding, chatCompletion } = require('./ai-core-client')
+```
+
+If it is already there from a previous step, skip ahead. If not, add it now.
+
+3. Also make sure `db` is declared inside `init()`. You should already have this from Exercise 4:
+
+```js
+async init() {
+  const s4 = await cds.connect.to('API_PRODUCT_SRV')
+  const db = await cds.connect.to('db')
+  ...
+}
+```
+
+> 📸 **Screenshot here**: The top of `product-service.js` showing the `require` imports and the `db` connection line.
+
+![product-service.js showing require imports and db connection line inside init()](images/prodservdb.png)
+
+---
+
+## Step A2 – Write the askAdvisor Handler
+
+1. Still in [srv/product-service.js](../../srv/product-service.js), add the `askAdvisor` handler inside the `init()` method, after the `hybridSearch` handler.
+
+```js
+this.on('askAdvisor', async (req) => {
+  const { question } = req.data
+
+  // Step 1 – Perceive: turn the question into a search vector
+  const queryVector = await getEmbedding(question)
+  const vectorJson  = JSON.stringify(queryVector)
+  const likePattern = `%${question}%`
+
+  // Step 2 – Retrieve: search HANA for the most relevant service charges
+  const products = await db.run(
+    `SELECT TOP 3
+       PRODUCT, PRODUCTTYPE, DESCRIPTION, BASEUNIT,
+       ROUND(
+         0.6 * COSINE_SIMILARITY(EMBEDDING, TO_REAL_VECTOR(?))
+         + 0.4 * CASE WHEN LOWER(DESCRIPTION) LIKE LOWER(?) THEN 1.0 ELSE 0.0 END
+       , 4) AS HYBRID_SCORE
+     FROM PRODUCTS_PRODUCTEXTENSION
+     WHERE EMBEDDING IS NOT NULL
+     ORDER BY HYBRID_SCORE DESC`,
+    [vectorJson, likePattern]
+  )
+
+  // Step 3 – Reason: put the service charges into a context block for the AI
+  const context = products.length > 0
+    ? products.map((p, i) =>
+        `Product ${i + 1}: ${p.PRODUCT} (Type: ${p.PRODUCTTYPE}, Unit: ${p.BASEUNIT})\n` +
+        `Description: ${p.DESCRIPTION}`
+      ).join('\n\n')
+    : 'No matching service charges found in the catalog.'
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a helpful service charge advisor for a logistics company.
+Answer the customer's question using ONLY the service charge catalog entries below.
+If the answer is not in the service charge catalog, politely say you don't have that information.
+Always include the charge code when you make a recommendation.
+Never invent or guess service charge names, codes, or specifications.
+
+Service charge catalog:
+${context}`
+    },
+    {
+      role: 'user',
+      content: question
+    }
+  ]
+
+  // Step 4 – Respond: return the AI's answer
+  const answer = await chatCompletion(messages)
+  return { answer }
+})
+```
+
+2. Save the file (**Ctrl+S** / **Cmd+S**).
+
+> 📸 **Screenshot here**: The `product-service.js` file showing the complete `askAdvisor` handler with all four steps visible and commented.
+
+![product-service.js showing the complete askAdvisor handler](images/askadvisor.png)
+
+> **What do the three `?` placeholders do?**
+> The first `?` is the vector (for semantic similarity). The second `?` is the raw text (for fuzzy keyword search). The third `?` is the vector again (for the `OR` condition). HANA fills these in at runtime — this is how you pass parameters safely without building query strings by hand.
+
+---
+
+## Step A3 – Restart and Test the Agent
+
+1. In the terminal, make sure the app is running in production mode:
+
+```bash
+cds watch --profile hybrid
+```
+
+> 📸 **Screenshot here**: Terminal showing `cds watch` running with `connect to db > hana` in the log.
+
+2. Open a **second terminal tab** and send the first test question:
+
+```bash
+curl -X POST http://localhost:4004/odata/v4/product/askAdvisor \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What are the demurrage charges for a container held at port?"}'
+```
+
+You should get back a plain-English answer that includes a specific charge code, like:
+
+```json
+{ "answer": "The demurrage charges for a container held at port are covered under Product 236 (Demurrage/Detention Charges)." }
+```
+
+> 📸 **Screenshot here**: Terminal showing the curl response with a complete, grounded answer containing a charge code.
+
+![BAS test.http showing askAdvisor response with a grounded charge recommendation](images/askresp.png)
+
+3. Try a second question to test a different type of query:
+
+```bash
+curl -X POST http://localhost:4004/odata/v4/product/askAdvisor \
+  -H "Content-Type: application/json" \
+  -d '{"question": "Which port handling charges apply to air freight shipments?"}'
+```
+
+> 📸 **Screenshot here**: Terminal showing the advisor listing applicable air freight service charges.
+
+![Terminal showing askAdvisor response for a second test question](images/curlnewa3.png)
+
+---
+
+## Step A4 – Test What the Agent Will Not Answer
+
+Ask something completely outside the service charge catalog:
+
+```bash
+curl -X POST http://localhost:4004/odata/v4/product/askAdvisor \
+  -H "Content-Type: application/json" \
+  -d '{"question": "Which port handling charges apply to air freight shipments?"}'
+```
+
+The advisor should politely decline — something like:
+> *"I'm sorry, but I don't have that information."*
+
+> 📸 **Screenshot here**: Terminal showing the advisor politely declining the out-of-scope question without inventing an answer.
+
+![Terminal showing advisor declining out-of-scope air freight question](images/a4.png)
+
+> **Why does this matter?**
+> The AI is grounded in your HANA data. It does not search the internet. It does not guess. If the question has no match in HANA, the system message instructs the AI to say so. This is the difference between a reliable business tool and a chatbot that makes things up.
+
+---
+
+## Part A Summary
+
+You now have a working AI service charge advisor agent. It:
+- Uses HANA Cloud's hybrid search to find the 3 most relevant service charges for any question
+- Sends those service charges as context to the LLM via SAP AI Core
+- Returns a grounded, catalog-accurate answer in plain language
+- Refuses to answer questions outside the service charge catalog
+
+**Next**: Make this agent available on a public URL so Joule Studio can call it.
+
+---
+
+---
+
+# Part B – Deploy Your Agent to Cloud Foundry
+
+## Why Deploy?
+
+Right now your agent runs on `localhost:4004`. Only you can reach it from this BAS workspace. Joule Studio is a cloud service — it cannot call `localhost`. To connect your agent to Joule, it needs to be deployed to Cloud Foundry with a public HTTPS URL.
+
+Deploying also means the agent is always available — not just when you have `cds watch` running in a terminal.
+
+---
+
+## What you will do in Part B
+
+1. Create a `.cfignore` file so only the right files are uploaded
+2. Create a `manifest.yml` deployment descriptor
+3. Build and push the app to Cloud Foundry
+4. Verify the live endpoint with a curl command
+
+---
+
+## Step B1 – Create a .cfignore File
+
+The `.cfignore` file tells `cf push` which files to skip. You want to skip `node_modules/` (CF installs them fresh) but keep everything else, including `.aicore/config.json`.
+
+1. In BAS, create a new file called `.cfignore` at the **project root** (same level as `package.json`).
+
+2. Add this content:
+
+```
+node_modules/
+.git/
+```
+
+3. Save the file.
+
+> 📸 **Screenshot here**: The `.cfignore` file open in BAS at the project root showing the two exclusions.
+
+![.cfignore file open in BAS showing node_modules/ and .git/ exclusions](images/cfignore.png)
+
+---
+
+## Step B2 – Verify and Update the Package.json Start Script
+
+Before creating the manifest, make sure your `package.json` has the correct `start` script. Cloud Foundry will run `npm start` to launch your application.
+
+1. Open [package.json](../../package.json).
+
+2. Find the `"scripts"` section. Make sure `"start"` is set to `"cds serve"`:
+
+```json
+"scripts": {
+  "start": "cds serve",
+  "watch": "cds watch"
+}
+```
+
+If the template generated a different start command, replace it with `"cds serve"`.
+
+3. Also check that `"cds"` → `"requires"` does **not** contain an `"xsuaa"` entry. The Full Stack Cloud Application template sometimes adds this. If you see a block like the one below, **remove the entire `"xsuaa"` block** from `cds.requires`:
+
+```json
+"xsuaa": {
+  "kind": "xsuaa"
+}
+```
+
+4. Add an `"auth"` entry to `"cds"` → `"requires"` to tell CAP not to require JWT tokens:
+
+```json
+"requires": {
+  "auth": {
+    "kind": "dummy"
+  },
+  "API_PRODUCT_SRV": { ... },
+  "db": { ... }
+}
+```
+
+> **Why is this needed?** When `NODE_ENV=production`, CAP automatically switches to `jwt` authentication, which requires an XSUAA service binding. Since this workshop does not use XSUAA, adding `"auth": { "kind": "dummy" }` explicitly overrides that default and lets all requests through — which is what we want for a workshop app.
+
+5. Save `package.json`.
+
+> 📸 **Screenshot here**: The `package.json` `scripts` and `cds.requires` sections showing no `xsuaa` entry.
+
+![package.json showing start script as cds serve and cds.requires with no xsuaa](images/npmscripts.png)
+
+---
+
+## Step B3 – Create the Deployment Manifest
+
+The `manifest.yml` file tells Cloud Foundry how to run your app — the app name, memory, the HANA service to bind, and the start command.
+
+1. Create a new file called `manifest.yml` at the **project root**.
+
+2. Paste this content and **replace both `<USER-NUMBER>`** placeholders with your 3-digit seat number from the session handout (e.g. `001`, `012`, `040`):
+
+```yaml
+---
+applications:
+  - name: da164-product-advisor-<USER-NUMBER>
+    path: .
+    memory: 512M
+    disk_quota: 1G
+    buildpacks:
+      - nodejs_buildpack
+    env:
+      NODE_ENV: production
+      NPM_CONFIG_PRODUCTION: "false"
+    command: npm start
+    services:
+      - da164-hdi-<USER-NUMBER>
+```
+
+3. Save the file.
+
+> 📸 **Screenshot here**: The `manifest.yml` file open in BAS with both `<USER-NUMBER>` placeholders replaced with your seat number.
+
+![manifest.yml open in BAS with seat number filled in for app name and HDI service](images/manifest.png)
+
+> **What is `da164-hdi-<USER-NUMBER>`?**
+> This is your personal HANA Cloud HDI container, pre-created by the session team. Cloud Foundry binds it to your app at startup so the app knows how to connect to HANA. Each participant has their own isolated container — your service charge data and embeddings are yours alone.
+
+> **What do these env variables do?**
+> `NODE_ENV: production` tells CAP to use the `[production]` profile — connecting to HANA Cloud instead of SQLite. `NPM_CONFIG_PRODUCTION: "false"` ensures all packages (including CLI tools like `@sap/cds-dk`) are installed even in production mode, so the `cds` command is available at runtime.
+
+---
+
+## Step B4 – Push to Cloud Foundry
+
+1. Make sure you are logged in to Cloud Foundry. If your session has expired since Exercise 2, log in again using SSO:
+
+```bash
+cf login -a https://api.cf.eu10-005.hana.ondemand.com --sso
+```
+
+The terminal displays a URL to get a one-time passcode. Open it in your browser, copy the passcode, and paste it back into the terminal. Then select org `da164` and space `dev`.
+
+![Terminal showing the cf login --sso command with the passcode URL](../ex2/images/cflogin.png)
+
+![Browser showing the temporary passcode](../ex2/images/temppasscode.png)
+
+![Terminal after pasting the passcode and selecting org/space — login succeeded](../ex2/images/pastepasscode.png)
+
+![Terminal showing org and space selection](../ex2/images/chooseorg.png)
+
+> If you are still logged in from Exercise 2, skip this step and go straight to step 2.
+
+2. Push the app:
+
+```bash
+cf push
+```
+
+CF reads your `manifest.yml`, uploads the project, installs npm packages, and starts the app. This takes **2–3 minutes**. You will see a progress log in the terminal.
+
+> 📸 **Screenshot here**: Terminal showing the `cf push` progress — staging, uploading, and starting the app.
+
+![Terminal showing cf push staging and starting progress](images/begincfpush.png)
+
+3. When it finishes, look for the **route** in the output:
+
+```
+name:              da164-product-advisor-<your-user-id>
+requested state:   started
+routes:            da164-product-advisor-<your-user-id>.cfapps.<landscape>.hana.ondemand.com
+```
+
+Copy this URL. You will need it in the next two steps.
+
+> 📸 **Screenshot here**: The final `cf push` output showing `requested state: started` and the full app route URL.
+
+---
+
+## Step B5 – Verify the Live Endpoint
+
+Test that your deployed agent is reachable and responding:
+
+```bash
+curl -X POST https://<YOUR-APP-ROUTE>/odata/v4/product/askAdvisor \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What are the demurrage charges for delayed container pickup?"}'
+```
+
+Replace `<YOUR-APP-ROUTE>` with the URL from the previous step.
+
+You should get back an AI-generated answer — the same type of response you saw in Part A, but now from a live cloud URL.
+
+> 📸 **Screenshot here**: Terminal showing the curl command with the live HTTPS URL and the AI answer in the response.
+
+> **Troubleshooting — 400 Bad Request:**
+> This almost always means XSUAA authentication is active on your deployed app. Check two things:
+> 1. Open `package.json` and confirm there is no `"xsuaa"` block inside `cds.requires`.
+> 2. Run `cf env da164-product-advisor-<your-user-id>` and look at `VCAP_SERVICES`. If you see an `xsuaa` service binding listed, remove it: `cf unbind-service da164-product-advisor-<your-user-id> <xsuaa-instance-name>` and then `cf restage da164-product-advisor-<your-user-id>`.
+
+> **Troubleshooting — 500 error or no response:**
+> Run `cf logs da164-product-advisor-<your-user-id> --recent` to see what went wrong. The most common cause is the `.aicore/config.json` file missing or containing placeholder values.
+
+---
+
+## Part B Summary
+
+Your agent is now:
+- Running on Cloud Foundry with a public HTTPS URL
+- Connected to HANA Cloud for service charge data and embeddings
+
+> **Note**: The `CAP_PRODUCT_ADVISOR` BTP Destination pointing to a shared, pre-seeded CAP app has been pre-configured for you by the session team. You will use this destination in Part C to connect your Joule Skill. Your personal deployed app is great for your own testing — the shared instance is what Joule Studio will call.
+
+**Next**: Create a Joule Skill so Maya can use your agent directly from the Joule chat interface.
+
+---
+
+---
+
+# Part C – Create a Joule Skill to Use Your Agent
+
+## What is a Joule Skill?
+
+A **Joule Skill** is a custom capability you add to Joule Studio. When a user says something that matches the skill's purpose, Joule runs the skill — which can call a backend system, process the result, and reply to the user in a structured format.
+
+In this exercise you will create a Joule Skill that:
+1. Takes a service charge question from the user
+2. Calls your CAP `askAdvisor` action via the `CAP_PRODUCT_ADVISOR` destination
+3. Returns the AI-generated answer as a Joule chat message
+
+This is the final step that puts the entire system in Maya's hands. She opens Joule, types a customer question about freight charges, and the answer comes back instantly — powered by HANA Cloud's vector engine, SAP AI Core, and your CAP service running on BTP.
+
+---
+
+## What you will do in Part C
+
+1. Open the SAP Build Lobby
+2. Create a new Joule Skill project
+3. Create the skill and add the advisor action
+4. Configure the input and the destination
+5. Add a Send Message component to display the answer
+6. Save, release, and deploy the skill
+7. Test Maya asking a service charge question in Joule
+
+---
+
+## Step C1 – Open the SAP Build Lobby
+
+1. Go to the **SAP Build URL** from your session handout and log in.
+
+> 📸 **Screenshot here**: The SAP Build Lobby home page after logging in, showing the list of projects and the "Create" button.
+
+![SAP Build Lobby home page](images/buildlobby.png)
+
+---
+
+## Step C2 – Create a New Joule Skill Project
+
+1. Click the **Create** button in the top area of the lobby.
+
+> 📸 **Screenshot here**: The "Create" button highlighted in the SAP Build Lobby toolbar.
+
+2. A dialog opens. You will see different project type tiles. Click the **Joule Skill** tile.
+
+> 📸 **Screenshot here**: The project type selection dialog with the "Joule Skill" tile highlighted.
+
+![Project type selection with Joule Skill tile](images/createjouleskill.png)
+
+3. Fill in the project details:
+
+| Field | Value |
+|---|---|
+| **Name** | `DA164 Service Charge Advisor` |
+| **Description** | `Answers customer service charge questions using AI and SAP HANA Cloud data` |
+
+> 📸 **Screenshot here**: The project creation form with the name and description filled in.
+
+![Project creation form with name and description](images/jouleskillinfo.png)
+
+4. Click **Create**. SAP Build creates the project and opens it.
+
+> 📸 **Screenshot here**: The newly created Joule Skill project open, showing the project editor.
+
+![Newly created Joule Skill project open](images/newagenttab.png)
+
+---
+
+## Step C3 – Create the Skill Inside the Project
+
+After the project is created, you need to create the skill itself inside the project.
+
+1. Click **Create** again (inside the project).
+
+> 📸 **Screenshot here**: The project editor with the "Create" button highlighted inside it.
+
+2. Select **Joule Skill** from the options.
+
+> 📸 **Screenshot here**: The skill type picker with "Joule Skill" highlighted.
+
+![Skill type picker with Joule Skill option](images/jouleskillcreate.png)
+
+3. Give your skill a name and a description that tells Joule when to use it:
+
+| Field | Value |
+|---|---|
+| **Name** | `askServiceChargeAdvisor` |
+| **Description** | `Use this skill when the user asks about freight charges, container fees, or service charge recommendations` |
+
+> The description is important — Joule reads it to decide whether this skill matches the user's intent. Make it as descriptive as possible.
+
+> 📸 **Screenshot here**: The skill creation form with the name and description filled in.
+
+![Skill creation form with name and description](images/agentdesc.png)
+
+4. Click **Create**.
+
+> 📸 **Screenshot here**: The skill editor open, showing an empty flow canvas.
+
+![Empty skill flow canvas](images/emptycanva.png)
+
+---
+
+## Step C4 – Add the askAdvisor Action
+
+Now you will add a step that calls your CAP `askAdvisor` action. This involves two parts: creating the action project, then adding it to the skill.
+
+### Part 1 – Create the Action Project
+
+1. On the skill flow canvas, click **+** to add a new step.
+
+2. From the step type list, choose **Call Action**.
+
+> 📸 **Screenshot here**: The step type list with Call Action highlighted.
+
+![Step type list with Call Action highlighted](images/choosecallaction.png)
+
+3. A panel opens showing available actions. No actions exist yet — click **Start by creating a Blank Call Action**.
+
+> 📸 **Screenshot here**: The Call Action panel showing Browse All Actions with no results.
+
+![Call Action panel showing no available actions](images/browseallaction.png)
+
+4. The **Choose an API Source** dialog opens. Select **SAP Cloud Application Programming Model**.
+
+5. Select the **CAP_PRODUCT_ADVISOR** destination. In the **Resource Path** field enter `/odata/v4/product` and click the refresh icon.
+
+> 📸 **Screenshot here**: The destination selected with resource path filled in and the API methods loaded.
+
+![CAP_PRODUCT_ADVISOR destination selected with API methods loaded](images/CAPaction.png)
+
+6. Expand **Service Operations** and click **POST — Invoke action askAdvisor**.
+
+> 📸 **Screenshot here**: Service Operations expanded with askAdvisor highlighted.
+
+![Service Operations showing askAdvisor highlighted](images/selectinvoke.png)
+
+7. Give the action project a name:
+
+| Field | Value |
+|---|---|
+| **Project Name** | `DA164 CAP Product Advisor` |
+| **Description** | `Calls the askAdvisor action on the CAP service charge advisor` |
+
+Click **Add**.
+
+> 📸 **Screenshot here**: The action project name form filled in.
+
+![Action project name form filled in](images/createdaction.png)
+
+---
+
+### Part 2 – Release the Action Project
+
+The action project must be released before it can be used in the skill.
+
+1. Go back to the **SAP Build Lobby**. Find the **DA164 CAP Product Advisor** project and open it.
+
+2. Click **Release**.
+
+> 📸 **Screenshot here**: The action project open with the Release button visible.
+
+![Action project open showing Release button](images/release.png)
+
+3. Confirm the release in the dialog that appears.
+
+> 📸 **Screenshot here**: The release confirmation dialog.
+
+![Release confirmation dialog](images/wantoublish.png)
+
+4. The project status changes to **Published**.
+
+> 📸 **Screenshot here**: The action project showing Published status.
+
+![Action project showing Published status](images/published.png)
+
+---
+
+### Part 3 – Add the Action to the Skill
+
+1. Go back to your Joule Skill. Click **+** on the canvas again and choose **Call Action**.
+
+2. The **Browse All Actions** panel now shows your action. Select **askAdvisor**.
+
+> 📸 **Screenshot here**: Browse All Actions showing the DA164 CAP Product Advisor askAdvisor action.
+
+![Browse All Actions showing askAdvisor available](images/askadvisoraction.png)
+
+3. The action step is added to the canvas.
+
+> 📸 **Screenshot here**: The skill canvas with the Invoke action askAdvisor step added.
+
+![Skill canvas with askAdvisor action step added](images/actionadded.png)
+
+---
+
+## Step C5 – Configure the Input Parameter
+
+After the action is added to the canvas, you need to:
+1. Create a destination variable for the action
+2. Define a `question` input on the skill trigger
+3. Map that input to the action's `question` field
+
+### Part 1 – Create a Destination Variable
+
+1. Open the **Variables** panel in the skill editor (tab or icon on the left of the canvas).
+
+2. Create a new variable:
+
+| Field | Value |
+|---|---|
+| **Name** | `destCAP` |
+| **Type** | Destination |
+| **Identifier** | `CAP_PRODUCT_ADVISOR` |
+
+> 📸 **Screenshot here**: The Variables panel showing the destination variable created.
+
+![Variables panel showing destCAP destination variable](images/createdestvariable.png)
+
+After saving, the variable appears in the variables list.
+
+![Destination variable destCAP added to the variables list](images/addeddest.png)
+
+3. Go back to the **Invoke action askAdvisor** step on the canvas. In the **Destination Variable** field, select **destCAP**.
+
+> 📸 **Screenshot here**: The action step with the destination variable selected.
+
+![Action step with destCAP selected as destination variable](images/chooseinvoke.png)
+
+---
+
+### Part 2 – Define the Skill Input on the Trigger
+
+1. Click the **Trigger** node ("When a scenario is called") on the canvas to open its configuration.
+
+2. The **Configure Skill Inputs** dialog opens. Click **Add Input**.
+
+3. Fill in the row:
+
+| Field | Value |
+|---|---|
+| **Name** | `question` |
+| **Identifier** | `question` |
+| **Description** | `Question for the service charge advisor` |
+| **Type** | String |
+| **Required** | ✅ checked |
+
+> 📸 **Screenshot here**: The Configure Skill Inputs dialog with the question input filled in.
+
+![Configure Skill Inputs dialog with question input defined](images/configinput.png)
+
+4. Click **Apply**.
+
+---
+
+### Part 3 – Map the Input to the Action
+
+1. Click on the **Invoke action askAdvisor** step on the canvas. Open the **Inputs** tab in the right panel.
+
+2. Click the **binding icon** (`>>`) next to the `question` field. The **Skill Content** picker opens.
+
+3. Under **Skill Inputs**, select **question**.
+
+> 📸 **Screenshot here**: The Skill Content picker showing the question input selected and the binding visible in the Inputs panel.
+
+![Skill Content picker showing question input bound to the action](images/invokeinput.png)
+
+---
+
+## Step C6 – Add a Send Response Step
+
+After the action runs successfully, you need to send the AI answer back to the user in Joule.
+
+1. On the flow canvas, click the **`+`** button on the **Success 2XX** branch below the **Invoke action askAdvisor** step.
+
+2. A panel opens with response options. Choose **Send Response**.
+
+> 📸 **Screenshot here**: The Send Response options showing Send Message, Send Status Update, and Send Confirmation Request.
+
+![Send Response options panel](images/sendresponse2xx.png)
+
+3. Select **Send Message**.
+
+> 📸 **Screenshot here**: The Send Message step added to the canvas with the "Open Message Editor" button visible.
+
+![Send Message step added to the skill canvas](images/sendmessage.png)
+
+4. Click **Open Message Editor**. The **Message Configuration** dialog opens.
+
+5. Change **Message Type** from "Illustrated Message" to **Text**.
+
+6. Click the **`<>`** binding icon on the **Text** field to open the Data Mapping panel.
+
+7. Navigate to **context → joule_action_... → result → answer** and select **answer**.
+
+The Text field fills with the expression `${context.joule_action_...result.answer}`. The Preview on the right shows `${answer}`.
+
+> 📸 **Screenshot here**: The Message Configuration showing the Text field bound to the answer output, and the Preview showing `${answer}`.
+
+![Message Configuration with Text type and answer output bound](images/messageconfigresponse.png)
+
+8. Click **Save**.
+
+---
+
+## Step C7 – Save, Release, and Deploy
+
+1. Click **Save** (top right) to save the skill. The asterisk `*` next to the skill name disappears.
+
+2. Click **Release** → confirm to create version **1.0.0**.
+
+> 📸 **Screenshot here**: The green banner confirming "DA164 Service Charge Advisor 1.0.0 released."
+
+![Green release confirmation banner showing version 1.0.0 released](images/released.png)
+
+3. The version page opens. Click **Deploy**.
+
+4. The **Choose an Environment** panel opens. Select **shared** and click **Deploy**.
+
+> 📸 **Screenshot here**: The "Choose an Environment" panel with "shared" selected and the Deploy button highlighted.
+
+![Choose an Environment panel with shared environment selected](images/deploy.png)
+
+5. A **Define Variables** dialog appears. The destination variable `CAP_PRODUCT_ADVISOR` is shown — confirm it is set to `CAP_PRODUCT_ADVISOR` and click **Deploy**.
+
+> 📸 **Screenshot here**: The Define Variables dialog showing the CAP_PRODUCT_ADVISOR destination binding.
+
+![Define Variables dialog showing CAP_PRODUCT_ADVISOR destination](images/choosevarfordeploy.png)
+
+6. A **Deploying...** spinner appears while the skill is being activated.
+
+> 📸 **Screenshot here**: The Deploying spinner with three dots.
+
+![Deploying spinner](images/deploying.png)
+
+7. The status changes to **Deployed** and **Active**.
+
+> 📸 **Screenshot here**: The project overview showing version 1.0.1 with "Deployed" and "Active" badges.
+
+![Project overview showing version Deployed and Active](images/deployed.png)
+
+---
+
+## Step C8 – Test Maya's New Tool in Joule
+
+The Joule chat is available directly inside SAP Build — click the **Joule icon** (sparkle icon) in the left sidebar to open the chat panel.
+
+1. Type the first test question exactly as Maya would:
+
+```
+What charges apply for a dangerous goods shipment in a 40ft container?
+```
+
+> 📸 **Screenshot here**: The Joule chat panel showing Maya's question and the AI response listing specific service charges.
+
+![Joule chat showing dangerous goods question with grounded service charge answer](images/joule1.png)
+
+3. Try a second question:
+
+```
+Which charges apply to air freight shipments?
+```
+
+> 📸 **Screenshot here**: Joule showing the second question and response listing relevant service charges.
+
+![Joule chat showing air freight question with structured charge list](images/joule2.png)
+
+4. Try an out-of-scope question to confirm the advisor stays grounded:
+
+```
+What is the current fuel surcharge rate for transpacific routes?
+```
+
+The advisor correctly responds that live rate data is not available — it does not invent a number. Joule may handle this at the base model level before the skill is invoked, but in both cases no fabricated rate appears.
+
+> 📸 **Screenshot here**: Joule responding that live fuel surcharge rates cannot be retrieved automatically.
+
+![Joule responding to out-of-scope transpacific rate question without fabricating data](images/joule3.png)
+
+---
+
+## Part C Summary
+
+You have just completed the full loop:
+
+```
+Maya types a question in Joule
+        │
+        ▼
+Joule Skill (SAP Build)
+        │  POST /odata/v4/product/askAdvisor
+        ▼
+CAP ProductService on Cloud Foundry
+        │  hybrid search (keyword + semantic)
+        ▼
+SAP HANA Cloud — REAL_VECTOR(1536) column
+        │  top 3 products returned
+        ▼
+SAP AI Core (LLM)
+        │  grounded answer generated
+        ▼
+Answer appears in Maya's Joule chat
+```
+
+---
+
+---
+
+## Exercise 5 – Complete Summary
+
+| Part | What you built | Key technology |
+|---|---|---|
+| A | AI agent that answers service charge questions in plain language | SAP AI Core, RAG pattern, HANA hybrid search |
+| B | Deployed the agent to Cloud Foundry with a live HTTPS URL | CF CLI, `cf push`, BTP Destination |
+| C | Joule Skill that puts the agent in Maya's Joule chat interface | Joule Studio, SAP Build, HTTP Action |
+
+You have now built and deployed a complete, production-pattern AI agent:
+- It reads real service charge data from S/4HANA (Exercise 1)
+- It stores and extends that data in HANA Cloud (Exercise 2)
+- It understands service charge descriptions through AI embeddings (Exercise 3)
+- It finds the right service charges using hybrid search (Exercise 4)
+- It reasons over those service charges and gives grounded answers (Exercise 5A)
+- It runs on BTP as a live cloud service (Exercise 5B)
+- It is available to end users inside Joule Studio (Exercise 5C)
+
+Maya's 2–3 day problem is now a 3-second interaction.
+
+**Congratulations — you have completed DA164!**
+
+*Back to [Session Overview](../../README.md)*

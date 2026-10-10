@@ -1,26 +1,183 @@
-# Level 1 Heading
+# Getting Started – Create Your Project
 
-In this exercise, you will...
+Welcome to **DA164 – Build AI Agents and Applications Natively on SAP HANA Cloud**.
 
-## Level 2 Heading
+In this exercise you will create a fresh CAP project and verify it starts. You will add credentials and external service models in the exercises where they are first needed — nothing else is required right now.
 
-After completing these steps you will have....
+> **The story so far:**
+> Maya is a Sales Engineer at Precision Parts AG. Every day she gets dozens of customer questions like *"do you have a corrosion-resistant fastener for marine use?"* — and it takes her 2–3 days to answer each one because S/4HANA's search only works with exact product codes. By the end of this session you will have built the app that gives her an AI-powered answer in seconds. This exercise creates the project foundation.
 
-1.	Click here.
-<br>![](/exercises/ex0/images/00_00_0010.png)
+---
 
-2.	Insert this code.
-``` abap
- DATA(params) = request->get_form_fields(  ).
- READ TABLE params REFERENCE INTO DATA(param) WITH KEY name = 'cmd'.
-  IF sy-subrc <> 0.
-    response->set_status( i_code = 400
-                     i_reason = 'Bad request').
-    RETURN.
-  ENDIF.
+## Before you begin
+
+Open **SAP Build Code** and log in before starting. Your login details are on your seat card — replace `XXX` with your assigned 3-digit seat number.
+
+| | Value |
+|---|---|
+| **SAP Build Code URL** | [https://da164.eu10.build.cloud.sap/lobby](https://da164.eu10.build.cloud.sap/lobby) |
+| **Username** | `da164-0XXX@education.cloud.sap` |
+| **Password** | `Acce$$teched26` |
+
+> Your seat number is printed on the card at your desk (e.g. seat **007** → username `da164-0007@education.cloud.sap`). Ask your facilitator if you did not receive a card.
+
+> Everything else (API key, AI Core credentials, S/4HANA model file) will be introduced at the exercise where it is first used.
+
+---
+
+## Step 1 – Set Up Your Dev Space
+
+Before creating a project you need a BAS dev space with the SAP HANA extension enabled. This gives you the HANA tools, `@sap/cds-hana`, and the Database Explorer integration pre-installed.
+
+1. From the SAP Build Code lobby, open the **Dev Space Manager**.
+
+![Dev Space Manager showing existing dev spaces](images/devspacemanager.png)
+
+2. If your dev space is running, stop it first — you can only edit a dev space when it is stopped.
+
+![Stop the running dev space](images/stopdevspace.png)
+
+3. Click **Edit** on your dev space.
+
+![Edit button on the dev space](images/edit.png)
+
+4. In the **Additional SAP Extensions** section, check **SAP HANA Tools**, then save.
+
+![SAP HANA Tools extension checked](images/addext.png)
+
+5. Start the dev space. Wait for the status to change to **RUNNING**, then click on it to open BAS.
+
+![Dev space starting up](images/startdev.png)
+
+---
+
+## Step 2 – Create Your Project in SAP Build Code
+
+SAP Build Code is a cloud-based development environment built on SAP Business Application Studio. It has a project wizard that sets up the full CAP project structure for you automatically.
+
+1. Go to the **SAP Build Code URL** from your handout and log in with your BTP credentials.
+
+![SAP Build Code lobby after login](images/buildlobby.png)
+
+2. Click the **Create** button in the top area of the lobby.
+
+![Create button in the SAP Build Code lobby](images/create.png)
+
+3. A dialog opens asking what you want to create. Select **Application**.
+
+![Select Application as the project type](images/app.png)
+
+4. On the next screen, choose **Full Stack Cloud Application** as the template.
+
+![Full Stack Cloud Application template selected](images/fullstack.png)
+
+5. Choose **Node.js** as the runtime.
+
+![Node.js runtime selected](images/nodejs.png)
+
+6. Enter your project name using your 3-digit seat number:
+
+   - **Project Name**: `da164-product-advisor-001` *(replace `001` with your seat number)*
+
+![Project name entry screen](images/createproj.png)
+
+7. The wizard shows a **Review** screen summarising your choices. Confirm the details and click **Create**.
+
+![Review screen before creating the project](images/review.png)
+
+> If the wizard offered optional features such as **SAP HANA Cloud** or **MTA deployment**, leave them unselected. You will add these via `cds add hana` and `cds add mta` from the terminal at the point in the exercises where they are needed.
+
+8. SAP Build Code creates the project. When it finishes, click on your project to open it in BAS.
+
+![Click the project to open it in BAS](images/clickproj.png)
+
+9. BAS opens with your new project in the file explorer.
+
+![Project file explorer open in BAS](images/projexplorer.png)
+
+> **What just happened?** SAP Build Code ran `cds init` and created the full CAP project structure: `db/` for data models, `srv/` for services.
+
+> **About extra files the template creates:** You may see `xs-security.json`, `mta.yaml`, and an `app/` folder. These are for MTA deployment — not used in this workshop. Ignore them.
+>
+> **Important — three things to fix in `package.json`:**
+> 1. If you see `"type": "module"` at the top level, **delete that line**. CAP uses CommonJS (`require`) and this setting breaks all service handlers.
+> 2. Look inside `"cds"` → `"requires"`. If you see an `"xsuaa"` block, **delete it**. This workshop does not use XSUAA authentication and leaving it in causes **400 Bad Request** errors on your deployed app.
+> 3. Add `"outbox": false` inside the `"cds"` section to suppress a harmless but distracting warning about messaging tables this workshop does not use:
+> ```json
+> "cds": {
+>   "outbox": false,
+>   "requires": { ... }
+> }
+> ```
+
+---
+
+## Step 3 – Install the Additional Dependencies
+
+1. Open a terminal: **Menu → Terminal → New Terminal**.
+
+![New terminal open in BAS](images/terminal.png)
+
+2. Install the production web server:
+
+```bash
+npm add express
 ```
+
+> **Why `express`?** CAP uses Express as its HTTP server in production. You need to add it explicitly so CF includes it at startup.
+
+> 📸 **Screenshot here**: Terminal after the install completes, showing `added X packages`.
+
+---
+
+## Step 4 – Create the Project Structure
+
+1. Create the folders and files you will need later:
+
+```bash
+mkdir -p scripts
+touch .env
+```
+
+![scripts folder and .env created in the project](images/terminalscripts.png)
+
+---
+
+## Step 5 – Verify the Project Starts
+
+1. Run:
+
+```bash
+cds watch
+```
+
+2. You should see:
+
+```
+cds - server listening on { url: 'http://localhost:4004' }
+```
+
+Or, if the template left an empty schema file:
+
+```
+[cds] - no models found in db/,srv/,app/
+[cds] - launched at http://localhost:4004
+```
+
+Either is fine — no red errors is what matters.
+
+3. Press **Ctrl+C** to stop the server.
+
+![cds watch running with localhost URL and no errors](images/cdswatch.png)
+
+> **If you see an XSUAA or passport error:** stop the server, remove the `"xsuaa"` block from `cds.requires` in `package.json`, then run `cds watch` again.
+
+---
 
 ## Summary
 
-Now that you have ... 
-Continue to - [Exercise 1 - Exercise 1 Description](../ex1/README.md)
+Your CAP project is created, dependencies are installed, and the app starts cleanly. You are ready to build.
+
+**Next**: Connect to live S/4HANA product data via a BTP Destination.
+
+Continue to [Exercise 1 – Clean Core & Side-by-Side Extensibility](../ex1/README.md)

@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Facilitator-only (contains passwords — never commit)
+FACILITATOR_SETUP.md
+
+# Local credentials (copy to .aicore/ in your project — never commit)
+da164.json
+
+# Research / scratch notes
+newapproach.txt
+hana_tooling_mcp.txt
+hana-agents-mcp-server/
+
+# Node.js
+node_modules/
+.env
+
+# BAS / AI Core credentials in participant projects
+.aicore/
