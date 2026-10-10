@@ -80,7 +80,7 @@ The terminal displays a URL to get a one-time passcode.
 
 ![Terminal showing org and space selection](images/chooseorg.png)
 
-5. Create your personal HDI container — **replace `001` with your 3-digit seat number from the handout**:
+5. Create your personal HDI container — **replace `001` with your 3-digit seat number** (from your login username, e.g. `da164-0042` → `042`):
 
 ```bash
 cf create-service hana hdi-shared da164-hdi-001

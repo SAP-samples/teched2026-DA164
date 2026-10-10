@@ -48,7 +48,7 @@ It also adds a base entry for `API_PRODUCT_SRV` to your `package.json`.
 
 ![BAS Explorer showing the generated API_PRODUCT_SRV.cds and API_PRODUCT_SRV.edmx files in srv/external](images/extfiles.png)
 
-> Your API Hub key is on your session handout. You will paste it directly into `package.json` in Step 3.
+> The API Hub key is provided in Step 3 below and in [`resources/workshop-info.md`](../../resources/workshop-info.md).
 
 ---
 

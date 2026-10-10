@@ -19,7 +19,7 @@ Open **SAP Build Code** and log in before starting. Your login details are on yo
 | **Username** | `da164-0XXX@education.cloud.sap` |
 | **Password** | `Acce$$teched26` |
 
-> Your seat number is printed on the card at your desk (e.g. seat **007** → username `da164-0007@education.cloud.sap`). Ask your facilitator if you did not receive a card.
+> Your seat number is the 3-digit number at the end of your username (e.g. `da164-0007` → seat **007**). All session credentials are in [`resources/workshop-info.md`](../../resources/workshop-info.md).
 
 > Everything else (API key, AI Core credentials, S/4HANA model file) will be introduced at the exercise where it is first used.
 
@@ -55,7 +55,7 @@ Before creating a project you need a BAS dev space with the SAP HANA extension e
 
 SAP Build Code is a cloud-based development environment built on SAP Business Application Studio. It has a project wizard that sets up the full CAP project structure for you automatically.
 
-1. Go to the **SAP Build Code URL** from your handout and log in with your BTP credentials.
+1. Log in with your BTP credentials — the URL and login details are in the table above.
 
 ![SAP Build Code lobby after login](images/buildlobby.png)
 

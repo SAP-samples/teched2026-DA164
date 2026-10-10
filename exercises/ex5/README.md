@@ -316,7 +316,7 @@ The `manifest.yml` file tells Cloud Foundry how to run your app — the app name
 
 1. Create a new file called `manifest.yml` at the **project root**.
 
-2. Paste this content and **replace both `<USER-NUMBER>`** placeholders with your 3-digit seat number from the session handout (e.g. `001`, `012`, `040`):
+2. Paste this content and **replace both `<USER-NUMBER>`** placeholders with your 3-digit seat number (from your login username, e.g. `da164-0042` → `042`):
 
 ```yaml
 ---
@@ -464,7 +464,7 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 
 ## Step C1 – Open the SAP Build Lobby
 
-1. Go to the **SAP Build URL** from your session handout and log in.
+1. Go to [https://da164.eu10.build.cloud.sap/lobby](https://da164.eu10.build.cloud.sap/lobby) and log in with your BTP credentials.
 
 > 📸 **Screenshot here**: The SAP Build Lobby home page after logging in, showing the list of projects and the "Create" button.
 
