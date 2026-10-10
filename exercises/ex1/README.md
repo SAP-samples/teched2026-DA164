@@ -22,9 +22,11 @@ In this exercise you will connect your app to the SAP S/4HANA Cloud Product API 
 
 ## Step 1 – Import the S/4HANA API Model
 
-CAP needs a local copy of the S/4HANA Product API definition to know the shape of the data. The `API_PRODUCT_SRV.edmx` file is included in the session materials — you will upload it to your BAS workspace and import it into your project.
+CAP needs a local copy of the S/4HANA Product API definition to know the shape of the data. The `API_PRODUCT_SRV.edmx` file is included in this repository — you will download it, upload it to your BAS workspace, and import it into your project.
 
-1. Download the `API_PRODUCT_SRV.edmx` file from the session materials link provided by your facilitator.
+1. Download [`API_PRODUCT_SRV.edmx`](../../resources/API_PRODUCT_SRV.edmx) from the `resources/` folder in this repository.
+
+   > On GitHub: click the link above → click **Download raw file** (the download icon in the top-right of the file view).
 
 2. In BAS, open the **Explorer** side panel, right-click your workspace home folder (the root, above your project), and choose **Upload Files**. Select the `.edmx` file you just downloaded.
 
