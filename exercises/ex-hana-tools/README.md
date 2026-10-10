@@ -50,7 +50,7 @@ cd ~/projects/teched2026-DA164
 mkdir -p .vscode
 ```
 
-3. Open `.vscode/mcp.json` and paste the following — replacing every `<placeholder>` with your HANA Cloud values from [`resources/workshop-info.md`](../../resources/workshop-info.md):
+3. Open `.vscode/mcp.json` and paste the following — replacing every `<placeholder>` with your HANA Cloud credentials (shared by the facilitator at the start of this exercise):
 
 ```json
 {
@@ -74,7 +74,7 @@ mkdir -p .vscode
 4. Save the file.
 
 > **Where do these values come from?**
-> Find your HANA Cloud credentials in [`resources/workshop-info.md`](../../resources/workshop-info.md) under **HANA Cloud**. These are the same host and user you will use throughout the workshop.
+> Your HANA Cloud credentials will be shared by the facilitator at the start of this exercise. These are the same host and user you will use throughout the workshop.
 >
 > **Security note:** `.vscode/mcp.json` is gitignored by BAS for workspace-scoped files. Never commit credentials to git.
 

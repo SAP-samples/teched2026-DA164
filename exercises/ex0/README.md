@@ -19,7 +19,7 @@ Open **SAP Build Code** and log in before starting. Your login details are on yo
 | **Username** | `da164-0XXX@education.cloud.sap` |
 | **Password** | `Acce$$teched26` |
 
-> Your seat number is the 3-digit number at the end of your username (e.g. `da164-0007` → seat **007**). All session credentials are in [`resources/workshop-info.md`](../../resources/workshop-info.md).
+> Your seat number is the 3-digit number at the end of your username (e.g. `da164-0007` → seat **007**).
 
 > Everything else (API key, AI Core credentials, S/4HANA model file) will be introduced at the exercise where it is first used.
 

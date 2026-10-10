@@ -191,11 +191,11 @@ module.exports = { getEmbedding, chatCompletion }
 mkdir -p .aicore
 ```
 
-4. Open the file [resources/aicore-config.json](../../resources/aicore-config.json) in this repository. Copy its contents and create `.aicore/config.json` in your project with the same content.
+4. The AI Core credentials file (`config.json`) will be shared by the facilitator at the start of this exercise. Create `.aicore/config.json` in your project and paste the contents in.
 
 ![.aicore/config.json open in BAS with the credentials structure](images/aicorecreds.png)
 
-> **Important**: `.aicore/` should be added to your `.gitignore` so these credentials are not committed. The copy in this repository is the workshop-provided credentials — do not share them outside the session.
+> **Important**: Add `.aicore/` to your `.gitignore` so these credentials are never committed. Do not share them outside the session.
 
 ---
 

@@ -6,6 +6,11 @@ FACILITATOR_SETUP.md
 
 # Local credentials (copy to .aicore/ in your project — never commit)
 da164.json
+resources/
+
+# SAP OSS boilerplate (kept locally, not in workshop repo)
+CONTRIBUTING.md
+LICENSES/
 
 # Research / scratch notes
 newapproach.txt
