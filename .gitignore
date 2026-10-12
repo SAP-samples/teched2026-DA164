@@ -12,6 +12,7 @@ resources/
 newapproach.txt
 hana_tooling_mcp.txt
 hana-agents-mcp-server/
+exercises/ex6/
 
 # Node.js
 node_modules/
