@@ -234,7 +234,9 @@ Deploying also means the agent is always available — not just when you have `c
 
 ## Step B1 – Create a .cfignore File
 
-The `.cfignore` file tells `cf push` which files to skip. You want to skip `node_modules/` (CF installs them fresh) but keep everything else, including `.aicore/config.json`.
+The `.cfignore` file tells `cf push` which files to skip. You want to skip `node_modules/` (CF installs them fresh) but keep everything else.
+
+> **Important**: `.aicore/config.json` must reach the CF container — your app reads it at runtime to call SAP AI Core. Add `.aicore/` to `.gitignore` (so credentials are never committed to git), but do **not** add it to `.cfignore`.
 
 1. In BAS, create a new file called `.cfignore` at the **project root** (same level as `package.json`).
 
