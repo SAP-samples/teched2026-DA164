@@ -35,8 +35,6 @@ Using both together gives better results than either one alone.
 
 1. Open the **HANA Database Explorer** (same as Exercise 3) and open the **SQL Console**.
 
-> 📸 **Screenshot here**: HANA Database Explorer open with the SQL Console tab active.
-
 ![HANA Database Explorer open with SQL Console tab active](images/sql1.png)
 
 2. Run this keyword search:
@@ -51,8 +49,6 @@ ORDER BY PRODUCT;
 ```
 
 Click the **Run** button (green triangle).
-
-> 📸 **Screenshot here**: SQL Console showing the keyword search results for "charge" with product names and descriptions.
 
 ![SQL Console showing keyword search results for charge with product rows](images/sql2.png)
 
@@ -80,8 +76,6 @@ ORDER BY SIMILARITY DESC;
 
 The first row will always be the base product itself (similarity = 1.0). The rows below it are the most similar products in the catalog.
 
-> 📸 **Screenshot here**: SQL Console showing the semantic search results with SIMILARITY scores.
-
 ![SQL Console showing semantic search results with SIMILARITY scores](images/sqlnew3.png)
 
 ---
@@ -108,8 +102,6 @@ WHERE a.PRODUCT = (SELECT TOP 1 PRODUCT FROM PRODUCTS_PRODUCTEXTENSION WHERE EMB
   AND b.EMBEDDING IS NOT NULL
 ORDER BY HYBRID_SCORE DESC;
 ```
-
-> 📸 **Screenshot here**: SQL Console showing results with SEMANTIC_SCORE, KEYWORD_SCORE, and HYBRID_SCORE columns.
 
 ![SQL Console showing hybrid query results with SEMANTIC_SCORE, KEYWORD_SCORE and HYBRID_SCORE](images/sqlnew4.png)
 
@@ -213,21 +205,13 @@ Content-Type: application/json
 
 3. Click **Send Request** above the first block (`freight and handling charges`). The response opens in a split pane on the right showing 5 ranked service charges.
 
-> 📸 **Screenshot here**: BAS showing `test.http` with the response pane open, listing service charge rows with `Product`, `Description`, and `AISummary`.
-
 ![BAS test.http showing hybridSearch response with service charge rows](images/http1.png)
 
 4. Click **Send Request** for each of the remaining three queries and see how the ranked results change:
 
-> 📸 **Screenshot here**: Response for `"port documentation fees"`.
-
 ![BAS test.http showing hybridSearch results for port documentation fees](images/http2.png)
 
-> 📸 **Screenshot here**: Response for `"dangerous goods handling"`.
-
 ![BAS test.http showing hybridSearch results for dangerous goods handling](images/http3.png)
-
-> 📸 **Screenshot here**: Response for `"container unloading"`.
 
 ![BAS test.http showing hybridSearch results for container unloading](images/http4.png)
 

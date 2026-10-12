@@ -69,8 +69,6 @@ async init() {
 }
 ```
 
-> 📸 **Screenshot here**: The top of `product-service.js` showing the `require` imports and the `db` connection line.
-
 ![product-service.js showing require imports and db connection line inside init()](images/prodservdb.png)
 
 ---
@@ -136,8 +134,6 @@ ${context}`
 
 2. Save the file (**Ctrl+S** / **Cmd+S**).
 
-> 📸 **Screenshot here**: The `product-service.js` file showing the complete `askAdvisor` handler with all four steps visible and commented.
-
 ![product-service.js showing the complete askAdvisor handler](images/askadvisor.png)
 
 > **What do the three `?` placeholders do?**
@@ -169,8 +165,6 @@ You should get back a plain-English answer that includes a specific charge code,
 { "answer": "The demurrage charges for a container held at port are covered under Product 236 (Demurrage/Detention Charges)." }
 ```
 
-> 📸 **Screenshot here**: Terminal showing the curl response with a complete, grounded answer containing a charge code.
-
 ![BAS test.http showing askAdvisor response with a grounded charge recommendation](images/askresp.png)
 
 3. Try a second question to test a different type of query:
@@ -180,8 +174,6 @@ curl -X POST http://localhost:4004/odata/v4/product/askAdvisor \
   -H "Content-Type: application/json" \
   -d '{"question": "Which port handling charges apply to air freight shipments?"}'
 ```
-
-> 📸 **Screenshot here**: Terminal showing the advisor listing applicable air freight service charges.
 
 ![Terminal showing askAdvisor response for a second test question](images/curlnewa3.png)
 
@@ -199,8 +191,6 @@ curl -X POST http://localhost:4004/odata/v4/product/askAdvisor \
 
 The advisor should politely decline — something like:
 > *"I'm sorry, but I don't have that information."*
-
-> 📸 **Screenshot here**: Terminal showing the advisor politely declining the out-of-scope question without inventing an answer.
 
 ![Terminal showing advisor declining out-of-scope air freight question](images/a4.png)
 
@@ -257,8 +247,6 @@ node_modules/
 
 3. Save the file.
 
-> 📸 **Screenshot here**: The `.cfignore` file open in BAS at the project root showing the two exclusions.
-
 ![.cfignore file open in BAS showing node_modules/ and .git/ exclusions](images/cfignore.png)
 
 ---
@@ -304,8 +292,6 @@ If the template generated a different start command, replace it with `"cds serve
 
 5. Save `package.json`.
 
-> 📸 **Screenshot here**: The `package.json` `scripts` and `cds.requires` sections showing no `xsuaa` entry.
-
 ![package.json showing start script as cds serve and cds.requires with no xsuaa](images/npmscripts.png)
 
 ---
@@ -336,8 +322,6 @@ applications:
 ```
 
 3. Save the file.
-
-> 📸 **Screenshot here**: The `manifest.yml` file open in BAS with both `<USER-NUMBER>` placeholders replaced with your seat number.
 
 ![manifest.yml open in BAS with seat number filled in for app name and HDI service](images/manifest.png)
 
@@ -376,8 +360,6 @@ cf push
 ```
 
 CF reads your `manifest.yml`, uploads the project, installs npm packages, and starts the app. This takes **2–3 minutes**. You will see a progress log in the terminal.
-
-> 📸 **Screenshot here**: Terminal showing the `cf push` progress — staging, uploading, and starting the app.
 
 ![Terminal showing cf push staging and starting progress](images/begincfpush.png)
 
@@ -466,8 +448,6 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 
 1. Go to [https://da164.eu10.build.cloud.sap/lobby](https://da164.eu10.build.cloud.sap/lobby) and log in with your BTP credentials.
 
-> 📸 **Screenshot here**: The SAP Build Lobby home page after logging in, showing the list of projects and the "Create" button.
-
 ![SAP Build Lobby home page](images/buildlobby.png)
 
 ---
@@ -480,8 +460,6 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 
 2. A dialog opens. You will see different project type tiles. Click the **Joule Skill** tile.
 
-> 📸 **Screenshot here**: The project type selection dialog with the "Joule Skill" tile highlighted.
-
 ![Project type selection with Joule Skill tile](images/createjouleskill.png)
 
 3. Fill in the project details:
@@ -491,13 +469,9 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 | **Name** | `DA164 Service Charge Advisor` |
 | **Description** | `Answers customer service charge questions using AI and SAP HANA Cloud data` |
 
-> 📸 **Screenshot here**: The project creation form with the name and description filled in.
-
 ![Project creation form with name and description](images/jouleskillinfo.png)
 
 4. Click **Create**. SAP Build creates the project and opens it.
-
-> 📸 **Screenshot here**: The newly created Joule Skill project open, showing the project editor.
 
 ![Newly created Joule Skill project open](images/newagenttab.png)
 
@@ -513,8 +487,6 @@ After the project is created, you need to create the skill itself inside the pro
 
 2. Select **Joule Skill** from the options.
 
-> 📸 **Screenshot here**: The skill type picker with "Joule Skill" highlighted.
-
 ![Skill type picker with Joule Skill option](images/jouleskillcreate.png)
 
 3. Give your skill a name and a description that tells Joule when to use it:
@@ -526,13 +498,9 @@ After the project is created, you need to create the skill itself inside the pro
 
 > The description is important — Joule reads it to decide whether this skill matches the user's intent. Make it as descriptive as possible.
 
-> 📸 **Screenshot here**: The skill creation form with the name and description filled in.
-
 ![Skill creation form with name and description](images/agentdesc.png)
 
 4. Click **Create**.
-
-> 📸 **Screenshot here**: The skill editor open, showing an empty flow canvas.
 
 ![Empty skill flow canvas](images/emptycanva.png)
 
@@ -548,13 +516,9 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 2. From the step type list, choose **Call Action**.
 
-> 📸 **Screenshot here**: The step type list with Call Action highlighted.
-
 ![Step type list with Call Action highlighted](images/choosecallaction.png)
 
 3. A panel opens showing available actions. No actions exist yet — click **Start by creating a Blank Call Action**.
-
-> 📸 **Screenshot here**: The Call Action panel showing Browse All Actions with no results.
 
 ![Call Action panel showing no available actions](images/browseallaction.png)
 
@@ -562,13 +526,9 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 5. Select the **CAP_PRODUCT_ADVISOR** destination. In the **Resource Path** field enter `/odata/v4/product` and click the refresh icon.
 
-> 📸 **Screenshot here**: The destination selected with resource path filled in and the API methods loaded.
-
 ![CAP_PRODUCT_ADVISOR destination selected with API methods loaded](images/CAPaction.png)
 
 6. Expand **Service Operations** and click **POST — Invoke action askAdvisor**.
-
-> 📸 **Screenshot here**: Service Operations expanded with askAdvisor highlighted.
 
 ![Service Operations showing askAdvisor highlighted](images/selectinvoke.png)
 
@@ -580,8 +540,6 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 | **Description** | `Calls the askAdvisor action on the CAP service charge advisor` |
 
 Click **Add**.
-
-> 📸 **Screenshot here**: The action project name form filled in.
 
 ![Action project name form filled in](images/createdaction.png)
 
@@ -595,19 +553,13 @@ The action project must be released before it can be used in the skill.
 
 2. Click **Release**.
 
-> 📸 **Screenshot here**: The action project open with the Release button visible.
-
 ![Action project open showing Release button](images/release.png)
 
 3. Confirm the release in the dialog that appears.
 
-> 📸 **Screenshot here**: The release confirmation dialog.
-
 ![Release confirmation dialog](images/wantoublish.png)
 
 4. The project status changes to **Published**.
-
-> 📸 **Screenshot here**: The action project showing Published status.
 
 ![Action project showing Published status](images/published.png)
 
@@ -619,13 +571,9 @@ The action project must be released before it can be used in the skill.
 
 2. The **Browse All Actions** panel now shows your action. Select **askAdvisor**.
 
-> 📸 **Screenshot here**: Browse All Actions showing the DA164 CAP Product Advisor askAdvisor action.
-
 ![Browse All Actions showing askAdvisor available](images/askadvisoraction.png)
 
 3. The action step is added to the canvas.
-
-> 📸 **Screenshot here**: The skill canvas with the Invoke action askAdvisor step added.
 
 ![Skill canvas with askAdvisor action step added](images/actionadded.png)
 
@@ -650,8 +598,6 @@ After the action is added to the canvas, you need to:
 | **Type** | Destination |
 | **Identifier** | `CAP_PRODUCT_ADVISOR` |
 
-> 📸 **Screenshot here**: The Variables panel showing the destination variable created.
-
 ![Variables panel showing destCAP destination variable](images/createdestvariable.png)
 
 After saving, the variable appears in the variables list.
@@ -659,8 +605,6 @@ After saving, the variable appears in the variables list.
 ![Destination variable destCAP added to the variables list](images/addeddest.png)
 
 3. Go back to the **Invoke action askAdvisor** step on the canvas. In the **Destination Variable** field, select **destCAP**.
-
-> 📸 **Screenshot here**: The action step with the destination variable selected.
 
 ![Action step with destCAP selected as destination variable](images/chooseinvoke.png)
 
@@ -682,8 +626,6 @@ After saving, the variable appears in the variables list.
 | **Type** | String |
 | **Required** | ✅ checked |
 
-> 📸 **Screenshot here**: The Configure Skill Inputs dialog with the question input filled in.
-
 ![Configure Skill Inputs dialog with question input defined](images/configinput.png)
 
 4. Click **Apply**.
@@ -698,8 +640,6 @@ After saving, the variable appears in the variables list.
 
 3. Under **Skill Inputs**, select **question**.
 
-> 📸 **Screenshot here**: The Skill Content picker showing the question input selected and the binding visible in the Inputs panel.
-
 ![Skill Content picker showing question input bound to the action](images/invokeinput.png)
 
 ---
@@ -712,13 +652,9 @@ After the action runs successfully, you need to send the AI answer back to the u
 
 2. A panel opens with response options. Choose **Send Response**.
 
-> 📸 **Screenshot here**: The Send Response options showing Send Message, Send Status Update, and Send Confirmation Request.
-
 ![Send Response options panel](images/sendresponse2xx.png)
 
 3. Select **Send Message**.
-
-> 📸 **Screenshot here**: The Send Message step added to the canvas with the "Open Message Editor" button visible.
 
 ![Send Message step added to the skill canvas](images/sendmessage.png)
 
@@ -732,8 +668,6 @@ After the action runs successfully, you need to send the AI answer back to the u
 
 The Text field fills with the expression `${context.joule_action_...result.answer}`. The Preview on the right shows `${answer}`.
 
-> 📸 **Screenshot here**: The Message Configuration showing the Text field bound to the answer output, and the Preview showing `${answer}`.
-
 ![Message Configuration with Text type and answer output bound](images/messageconfigresponse.png)
 
 8. Click **Save**.
@@ -746,33 +680,23 @@ The Text field fills with the expression `${context.joule_action_...result.answe
 
 2. Click **Release** → confirm to create version **1.0.0**.
 
-> 📸 **Screenshot here**: The green banner confirming "DA164 Service Charge Advisor 1.0.0 released."
-
 ![Green release confirmation banner showing version 1.0.0 released](images/released.png)
 
 3. The version page opens. Click **Deploy**.
 
 4. The **Choose an Environment** panel opens. Select **shared** and click **Deploy**.
 
-> 📸 **Screenshot here**: The "Choose an Environment" panel with "shared" selected and the Deploy button highlighted.
-
 ![Choose an Environment panel with shared environment selected](images/deploy.png)
 
 5. A **Define Variables** dialog appears. The destination variable `CAP_PRODUCT_ADVISOR` is shown — confirm it is set to `CAP_PRODUCT_ADVISOR` and click **Deploy**.
-
-> 📸 **Screenshot here**: The Define Variables dialog showing the CAP_PRODUCT_ADVISOR destination binding.
 
 ![Define Variables dialog showing CAP_PRODUCT_ADVISOR destination](images/choosevarfordeploy.png)
 
 6. A **Deploying...** spinner appears while the skill is being activated.
 
-> 📸 **Screenshot here**: The Deploying spinner with three dots.
-
 ![Deploying spinner](images/deploying.png)
 
 7. The status changes to **Deployed** and **Active**.
-
-> 📸 **Screenshot here**: The project overview showing version 1.0.1 with "Deployed" and "Active" badges.
 
 ![Project overview showing version Deployed and Active](images/deployed.png)
 
@@ -788,8 +712,6 @@ The Joule chat is available directly inside SAP Build — click the **Joule icon
 What charges apply for a dangerous goods shipment in a 40ft container?
 ```
 
-> 📸 **Screenshot here**: The Joule chat panel showing Maya's question and the AI response listing specific service charges.
-
 ![Joule chat showing dangerous goods question with grounded service charge answer](images/joule1.png)
 
 3. Try a second question:
@@ -797,8 +719,6 @@ What charges apply for a dangerous goods shipment in a 40ft container?
 ```
 Which charges apply to air freight shipments?
 ```
-
-> 📸 **Screenshot here**: Joule showing the second question and response listing relevant service charges.
 
 ![Joule chat showing air freight question with structured charge list](images/joule2.png)
 
@@ -809,8 +729,6 @@ What is the current fuel surcharge rate for transpacific routes?
 ```
 
 The advisor correctly responds that live rate data is not available — it does not invent a number. Joule may handle this at the base model level before the skill is invoked, but in both cases no fabricated rate appears.
-
-> 📸 **Screenshot here**: Joule responding that live fuel surcharge rates cannot be retrieved automatically.
 
 ![Joule responding to out-of-scope transpacific rate question without fabricating data](images/joule3.png)
 
