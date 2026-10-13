@@ -126,7 +126,9 @@ npm add express
 
 > **Why `express`?** CAP uses Express as its HTTP server in production. You need to add it explicitly so CF includes it at startup.
 
-> 📸 **Screenshot here**: Terminal after the install completes, showing `added X packages`.
+> **Note:** You may see `npm audit` warnings about vulnerabilities — these are from indirect dev dependencies and do not affect the workshop. Ignore them.
+
+![Terminal showing npm add express completing with package counts](images/npmexpress.png)
 
 ---
 

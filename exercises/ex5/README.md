@@ -149,7 +149,7 @@ ${context}`
 cds watch --profile hybrid
 ```
 
-> 📸 **Screenshot here**: Terminal showing `cds watch` running with `connect to db > hana` in the log.
+![Terminal showing cds watch running with connect to db > hana in the log](images/cdswatch.png)
 
 2. Open a **second terminal tab** and send the first test question:
 
@@ -375,7 +375,7 @@ routes:            da164-product-advisor-<your-user-id>.cfapps.<landscape>.hana.
 
 Copy this URL. You will need it in the next two steps.
 
-> 📸 **Screenshot here**: The final `cf push` output showing `requested state: started` and the full app route URL.
+![Terminal showing cf push output with requested state started and the full app route URL](images/cfpushstarted.png)
 
 ---
 
@@ -393,7 +393,7 @@ Replace `<YOUR-APP-ROUTE>` with the URL from the previous step.
 
 You should get back an AI-generated answer — the same type of response you saw in Part A, but now from a live cloud URL.
 
-> 📸 **Screenshot here**: Terminal showing the curl command with the live HTTPS URL and the AI answer in the response.
+![Terminal showing curl command with live HTTPS URL and the AI answer in the response](images/curlcommand6.png)
 
 > **Troubleshooting — 400 Bad Request:**
 > This almost always means XSUAA authentication is active on your deployed app. Check two things:
@@ -458,11 +458,9 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 
 1. Click the **Create** button in the top area of the lobby.
 
-> 📸 **Screenshot here**: The "Create" button highlighted in the SAP Build Lobby toolbar.
+2. A dialog opens asking what you want to build. Click the **Joule Agent and Skill** tile.
 
-2. A dialog opens. You will see different project type tiles. Click the **Joule Skill** tile.
-
-![Project type selection with Joule Skill tile](images/createjouleskill.png)
+![Create Project dialog with Joule Agent and Skill tile selected](images/createjouleskill1.png)
 
 3. Fill in the project details:
 
@@ -483,13 +481,9 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 
 After the project is created, you need to create the skill itself inside the project.
 
-1. Click **Create** again (inside the project).
+1. Click the **Create** dropdown button inside the project and select **Joule Skill**.
 
-> 📸 **Screenshot here**: The project editor with the "Create" button highlighted inside it.
-
-2. Select **Joule Skill** from the options.
-
-![Skill type picker with Joule Skill option](images/jouleskillcreate.png)
+![Create dropdown inside the project showing Joule Skill option](images/createjouleskillinside.png)
 
 3. Give your skill a name and a description that tells Joule when to use it:
 
@@ -782,6 +776,4 @@ You have now built and deployed a complete, production-pattern AI agent:
 
 Maya's 2–3 day problem is now a 3-second interaction.
 
-**Congratulations — you have completed DA164!**
-
-*Back to [Session Overview](../../README.md)*
+*Back to [Session Overview](../../README.md) | Continue to [Exercise 6 – Expose Your CAP App as an MCP Server](../ex6/README.md)*

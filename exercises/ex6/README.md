@@ -1,9 +1,6 @@
-# Exercise 8 – Expose Your CAP App as an MCP Server *(Optional)*
+# Exercise 6 – Expose Your CAP App as an MCP Server
 
-In Exercise 6 you connected HANA Cloud's **built-in** AI agents to Joule Studio. In this exercise you will expose **your own CAP app** — the hybrid search and service charge advisor you built in Exercises 4 and 5 — as an MCP server using `@cap-js/mcp`. Any MCP-compatible AI assistant can then call your actions directly from a chat interface.
-
-> **What is different from Exercise 6?**
-> Exercise 6 exposes HANA's native agents (discovery + data retrieval) to Joule Studio. This exercise exposes *your custom business logic* — the hybrid search query and RAG advisor you wrote — to an AI assistant using CAP's built-in MCP support. One package, one annotation.
+In this exercise you will expose **your own CAP app** — the hybrid search and service charge advisor you built in Exercises 4 and 5 — as an MCP server using `@cap-js/mcp`. Any MCP-compatible AI assistant can then call your actions directly from a chat interface.
 
 > **Story context:**
 > The advisor works. Maya loves it. Now her development team wants to use it while they code — asking the service charge advisor questions from inside their AI coding assistant without switching tabs. In this exercise you will add one package and one annotation to your CAP app, and the entire advisor becomes available as a set of AI tools in OpenCode. No new server, no tool definitions, no glue code. This is what it looks like when your SAP application is AI-native by default.
@@ -22,10 +19,10 @@ In Exercise 6 you connected HANA Cloud's **built-in** AI agents to Joule Studio.
 
 ## Step 1 – Install the Plugin
 
-1. In the BAS terminal, navigate back to your CAP project:
+1. In the BAS terminal, navigate to your CAP project:
 
 ```bash
-cd ~/projects/teched2026-DA164
+cd ~/projects/da164-product-advisor-<your-number>
 ```
 
 2. Install the plugin:
@@ -36,7 +33,9 @@ npm add @cap-js/mcp
 
 `@cap-js/mcp` is a CAP plugin — it activates automatically on startup with no extra wiring.
 
-> 📸 **Screenshot here**: Terminal showing `added 1 package ... @cap-js/mcp` after the install completes.
+> **Note:** You may see npm audit warnings — ignore them.
+
+![Terminal showing npm add @cap-js/mcp completing with added 81 packages](images/capmcp.png)
 
 ---
 
@@ -56,21 +55,12 @@ service ProductService {
 3. Add this block **after** the closing `}` of the service to give the AI assistant instructions:
 
 ```cds
-annotate ProductService with @mcp.instructions: '
-You are a service charge advisor for a logistics company.
-The service charge data originates from SAP S/4HANA Cloud.
-
-- Use "describe" first to learn what data and actions are available.
-- Use "query" for structured lookups, e.g. SELECT * FROM Products WHERE ProductType = \'SERV\'.
-- Use "hybridSearch" to find service charges using natural language — it combines keyword and semantic search.
-- Use "askAdvisor" for open-ended customer questions that need a full answer.
-- Always include the charge code in your answers.
-- Only recommend service charges that the tools return — never invent charges.';
+annotate ProductService with @mcp.instructions: 'You are a service charge advisor for a logistics company. The service charge data originates from SAP S/4HANA Cloud. Use "describe" first to learn what data and actions are available. Use "query" for structured lookups, e.g. SELECT * FROM Products WHERE ProductType = ''SERV''. Use "hybridSearch" to find service charges using natural language - it combines keyword and semantic search. Use "askAdvisor" for open-ended customer questions that need a full answer. Always include the charge code in your answers. Only recommend service charges that the tools return - never invent charges.';
 ```
 
 4. Save the file.
 
-> 📸 **Screenshot here**: The `product-service.cds` file with `@mcp` visible above the service and the `annotate` block below it.
+![product-service.cds open in BAS showing @mcp above service ProductService](images/mcpadd.png)
 
 ---
 
@@ -89,6 +79,8 @@ The service charge data originates from SAP S/4HANA Cloud.
 ```
 
 2. Save the file.
+
+![package.json showing the mcp block with per_action_tool and format settings](images/cdsreqmcp.png)
 
 > With `per_action_tool: true` each of your actions becomes a separately named tool. OpenCode will see four tools:
 
@@ -115,19 +107,20 @@ cf push
 routes: da164-product-<your-user>.cfapps.<landscape>.hana.ondemand.com
 ```
 
-> 📸 **Screenshot here**: Terminal showing the `cf push` output with the app route highlighted.
+![cf push terminal output showing app route highlighted in a blue box](images/cfpushroute.png)
 
 3. Verify the MCP endpoint is live:
 
 ```bash
-curl -X POST https://<your-app-route>/product/mcp \
+curl -X POST https://<your-app-route>/mcp/product \
   -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
   -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
 ```
 
 You should get back a JSON response listing the four tools.
 
-> 📸 **Screenshot here**: Terminal showing the `/product/mcp` response listing `describe`, `query`, `hybridSearch`, and `askAdvisor` as tools.
+![curl response listing all four tools: describe, query, hybridSearch, and askAdvisor](images/curlcommandcheckmcp.png)
 
 ---
 
@@ -137,8 +130,6 @@ OpenCode reads MCP configuration from `opencode.json` in your project folder.
 
 1. In BAS, right-click the project root and choose **New File**. Name it `opencode.json`.
 
-> 📸 **Screenshot here**: The BAS file explorer showing `opencode.json` created at the project root.
-
 2. Paste this content, replacing `<YOUR-APP-ROUTE>` with the URL from Step 4:
 
 ```json
@@ -147,7 +138,7 @@ OpenCode reads MCP configuration from `opencode.json` in your project folder.
   "mcp": {
     "product-advisor": {
       "type": "remote",
-      "url": "https://<YOUR-APP-ROUTE>/product/mcp",
+      "url": "https://<YOUR-APP-ROUTE>/mcp/product",
       "enabled": true
     }
   }
@@ -156,21 +147,31 @@ OpenCode reads MCP configuration from `opencode.json` in your project folder.
 
 3. Save the file.
 
-> 📸 **Screenshot here**: The `opencode.json` file open in BAS with the correct URL filled in.
+![opencode.json open in BAS with the MCP URL highlighted in a blue box](images/opencodeconfig.png)
 
 ---
 
 ## Step 6 – Open OpenCode and Verify Tools
 
-1. Open OpenCode from your BAS workspace.
+1. In the BAS terminal, start OpenCode:
 
-> 📸 **Screenshot here**: The OpenCode chat interface open, showing the empty input area.
+```bash
+npx opencode-ai@latest
+```
 
-2. Look for the tools list. You should see all four tools registered from your CAP app:
+When prompted "Ok to proceed? (y)" — type `y` and press Enter. OpenCode installs and launches as a fullscreen terminal interface. It reads `opencode.json` from your project root automatically.
 
-> 📸 **Screenshot here**: OpenCode showing `describe`, `query`, `hybridSearch`, and `askAdvisor` listed as available tools.
+![Terminal showing npx opencode-ai@latest installing and prompting to proceed](images/opencode1.png)
 
-If tools do not appear, check that the URL in `opencode.json` matches your app route exactly.
+2. Type `/mcps` in the chat input and press Enter to open the MCPs panel. You should see **product-advisor connected ✓ Enabled**.
+
+![OpenCode MCPs panel showing product-advisor connected and enabled](images/mcp.png)
+
+> The individual tools (`describe`, `query`, `hybridSearch`, `askAdvisor`) do not appear in a panel — OpenCode registers them automatically from the MCP server. In the next step you will use them directly from the chat.
+
+If `product-advisor` does not appear, check that the URL in `opencode.json` matches your app route exactly and that the MCP server type is `"remote"`.
+
+To exit OpenCode press **Ctrl+C** or type `/exit`.
 
 ---
 
@@ -186,7 +187,9 @@ What service charge data do you have? Describe the available information.
 ```
 > OpenCode calls `describe` → learns your schema → explains what's available.
 
-> 📸 **Screenshot here**: OpenCode response showing the Products entity fields and the four available actions.
+![OpenCode calling describe, query, getProducts, and hybridSearch tools to gather an overview](images/query1part1.png)
+
+![OpenCode response listing 34 charge types grouped by category: base rates, fees, surcharges, commissions](images/query1part2.png)
 
 ---
 
@@ -196,7 +199,7 @@ Find service charges applicable to hazardous goods shipments.
 ```
 > OpenCode calls `hybridSearch` → HANA runs keyword + vector search → ranked results appear.
 
-> 📸 **Screenshot here**: OpenCode showing the hybridSearch call and the returned service charge list with scores.
+![OpenCode calling hybridSearch and query, returning Product 282 Dangerous Goods Fee as the result](images/opencodehybridsearch.png)
 
 ---
 
@@ -206,7 +209,7 @@ List all surcharge types and their applicable conditions.
 ```
 > OpenCode calls `query` with a CQL SELECT filtered by ProductType.
 
-> 📸 **Screenshot here**: OpenCode showing the query tool call and the filtered list of surcharge entries.
+![OpenCode calling query twice with surcharge filters, returning Piracy Surcharges (259) as the explicitly typed surcharge](images/opencodequery.png)
 
 ---
 
@@ -216,7 +219,7 @@ A customer wants to know what charges apply for a delayed container pickup at th
 ```
 > OpenCode calls `askAdvisor` → HANA retrieves context → LLM generates a grounded answer.
 
-> 📸 **Screenshot here**: OpenCode showing the askAdvisor response with a specific charge code and description.
+![OpenCode calling askAdvisor and recommending Demurrage/Detention Charges (charge code 236) with related charges 261, 231, 248, 252](images/opencodeaskadvisor.png)
 
 ---
 
@@ -236,4 +239,4 @@ You added **one package** and **one annotation** — and your CAP app became a f
 
 ---
 
-*Back to [Exercise 7 – HANA Cloud Native AI Agents in Joule Studio](../ex6/README.md) | [Session overview](../../README.md)*
+*Back to [Exercise 5 – Deploy to Cloud Foundry and Connect to Joule](../ex5/README.md) | [Session overview](../../README.md)*

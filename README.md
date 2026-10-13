@@ -136,17 +136,17 @@ Work through the exercises in order. Each builds directly on the previous one �
   - Call an LLM via SAP Generative AI Hub with retrieved context
   - Ask free-form questions answered from real S/4HANA product data — and expose the advisor as a Joule Skill
 
+- [Exercise 6 – Expose Your CAP App as an MCP Server](exercises/ex6/README.md) *(~20 min)*
+  - Install `@cap-js/mcp` and annotate `ProductService` with `@mcp`
+  - Connect OpenCode to your deployed CAP app via MCP
+  - Use natural language to run hybrid search and query the advisor — one package, one annotation
+
 ## Optional Exercises
 
-- [Optional – AI-Assisted HANA Development with GitHub Copilot *(requires GitHub account)*](exercises/ex-hana-tools/README.md) *(~20 min)*
-  - Configure `@sap/hana-tooling-mcp-server` in BAS so GitHub Copilot has live HANA access
+- [Optional – AI-Assisted HANA Development with GitHub Copilot *(Conceptual Preview)*](exercises/ex-hana-tools/README.md) *(~20 min)*
+  - Configure `@sap/hana-tooling-mcp-server` so GitHub Copilot has live HANA access
   - Explore your schema and S/4HANA remote source from a chat window
   - Validate SQL and learn HDI artifact types before you write a single line of DDL
-
-- [Optional – Expose Your CAP App as an MCP Server](exercises/ex7/README.md) *(~20 min)*
-  - Install `@cap-js/mcp` and annotate `ProductService` with `@mcp`
-  - Connect an AI assistant to your deployed CAP app
-  - Use natural language to run hybrid search and query the advisor — one package, one annotation
 
 ## Contributing
 Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) to understand the contribution guidelines.

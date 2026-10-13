@@ -12,7 +12,9 @@ resources/
 newapproach.txt
 hana_tooling_mcp.txt
 hana-agents-mcp-server/
-exercises/ex6/
+
+# Sensitive screenshots (contain HANA credentials)
+exercises/ex-hana-tools/images/
 
 # Node.js
 node_modules/
