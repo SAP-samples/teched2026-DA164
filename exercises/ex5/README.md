@@ -469,9 +469,9 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 | **Name** | `DA164 Service Charge Advisor` |
 | **Description** | `Answers customer service charge questions using AI and SAP HANA Cloud data` |
 
-![Project creation form with name and description](images/jouleskillinfo.png)
+![Project creation form showing Name and Description fields filled in](images/agentdesc.png)
 
-4. Click **Create**. SAP Build creates the project and opens it.
+4. Click **Review**, then **Create**. SAP Build creates the project and opens it.
 
 ![Newly created Joule Skill project open](images/newagenttab.png)
 
@@ -494,7 +494,7 @@ After the project is created, you need to create the skill itself inside the pro
 
 > The description is important — Joule reads it to decide whether this skill matches the user's intent. Make it as descriptive as possible.
 
-![Skill creation form with name and description](images/agentdesc.png)
+![Skill creation form showing Name, Identifier, and Description fields](images/jouleskillinfo.png)
 
 4. Click **Create**.
 
