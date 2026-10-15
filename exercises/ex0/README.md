@@ -112,6 +112,30 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 
 ---
 
+> ### ⚠️ If project creation failed in the Build Code lobby
+>
+> If you saw a **"Project creation failed"** error in Step 2, create the project directly from inside your BAS dev space instead:
+>
+> 1. In the BAS menu bar, click **Help → Get Started**.
+>
+> ![Help menu open with Get Started highlighted](images/gettingstartedhelp.png)
+>
+> 2. On the Get Started page, click **New Project from Template**.
+>
+> ![Get Started page showing New Project from Template button highlighted](images/newproject.png)
+>
+> 3. Select the **CAP Project** template. On the details screen, enter your project name (`da164-product-advisor-XXX`), choose **Node.js** as the runtime, leave all deployment and capability checkboxes **unchecked**, and click **Finish**.
+>
+> ![CAP Project template wizard showing project name, Node.js runtime, and Finish button highlighted](images/finishproj.png)
+>
+> 4. BAS opens the project automatically. You will see the same project structure as above.
+>
+> ![BAS explorer showing the newly created CAP project structure](images/projectstructure.png)
+>
+> Continue from **Step 3** below.
+
+---
+
 ## Step 3 – Install the Additional Dependencies
 
 1. Open a terminal: **Menu → Terminal → New Terminal**.
