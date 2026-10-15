@@ -411,7 +411,7 @@ Your agent is now:
 - Running on Cloud Foundry with a public HTTPS URL
 - Connected to HANA Cloud for service charge data and embeddings
 
-> **Note**: The `CAP_PRODUCT_ADVISOR` BTP Destination pointing to a shared, pre-seeded CAP app has been pre-configured for you by the session team. You will use this destination in Part C to connect your Joule Skill. Your personal deployed app is great for your own testing — the shared instance is what Joule Studio will call.
+> **Note — `CAP_PRODUCT_ADVISOR` is pre-configured for you**: The session team has already set up a BTP Destination called `CAP_PRODUCT_ADVISOR` pointing to a shared, pre-deployed CAP app. The CAP service is live and its OData model has been activated, so when you select the destination in Step C4 and click the refresh icon, the service operations (`askAdvisor`, `hybridSearch`, `getProducts`, `syncProducts`) will load automatically — you are not activating anything yourself, you are simply connecting to a service that is already running. Your personal deployed app (from Part B) is great for your own testing; the shared instance is what Joule Studio will call.
 
 **Next**: Create a Joule Skill so Maya can use your agent directly from the Joule chat interface.
 
@@ -523,6 +523,8 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 5. Select the **CAP_PRODUCT_ADVISOR** destination. In the **Resource Path** field enter `/odata/v4/product` and click the refresh icon.
 
 ![CAP_PRODUCT_ADVISOR destination selected with API methods loaded](images/CAPaction.png)
+
+> The service operations appear because the shared CAP app behind this destination is already deployed and active. You do not need to activate anything — just select and proceed.
 
 6. Expand **Service Operations** and click **POST — Invoke action askAdvisor**.
 
