@@ -37,11 +37,11 @@ Before creating a project you need a BAS dev space with the SAP HANA extension e
 
 2. Click **Create Dev Space**.
 
-![Create Dev Space button in the Dev Space Manager](images/createdevspace.png)
+![Create Dev Space button in the Dev Space Manager](images/createnewbasspace.png)
 
 3. Give it a name (e.g. `DA164`), select **Full Stack Cloud Application** as the kind, check **SAP HANA Tools** under Additional SAP Extensions, then click **Create Dev Space**.
 
-![Create Dev Space form with name, kind Full Stack Cloud Application, and SAP HANA Tools checked](images/createdevspacenew.png)
+![Create Dev Space form with name, kind Full Stack Cloud Application, and SAP HANA Tools checked](images/createnewfullstackspace.png)
 
 4. Wait for the status to change to **RUNNING**, then click on it to open BAS.
 
@@ -111,7 +111,7 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 
 9. BAS opens. If it lands on a **Project Overview** or **Storyboard** page, click the **Explorer** icon (the overlapping-pages icon at the top of the left sidebar) to switch to the familiar file tree view.
 
-![BAS Explorer icon in the left Activity Bar](images/explorericon.png)
+![BAS Explorer icon in the left Activity Bar](images/projectexplorer.png)
 
 ![Project file explorer open in BAS](images/projexplorer.png)
 
