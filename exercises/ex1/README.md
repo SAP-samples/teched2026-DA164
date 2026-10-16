@@ -80,12 +80,42 @@ The screenshots below show what this looks like in the BTP Cockpit — for refer
 
 ## Step 3 – Configure CAP to Use the Destination
 
-1. Back in BAS, open [package.json](../../package.json).
+1. Back in BAS, open `package.json` in your project root.
 
-2. The `cds init` command created a `"cds"` section. Add the following inside `"requires"` (create the `"requires"` object if it isn't there yet):
+2. Find the `"cds"` section — it was created automatically when SAP Build Code set up your project. You do not need to run any command.
+
+   Inside `"cds"`, you will see (or need to add) a `"requires"` object. **Add the `API_PRODUCT_SRV` block below into it**:
+
+```json
+"API_PRODUCT_SRV": {
+  "kind": "odata",
+  "model": "srv/external/API_PRODUCT_SRV",
+  "[production]": {
+    "credentials": {
+      "destination": "S4HANA_SANDBOX",
+      "path": ""
+    }
+  },
+  "[development]": {
+    "credentials": {
+      "url": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCT_SRV",
+      "headers": { "APIKey": "<YOUR_API_HUB_KEY>" }
+    }
+  }
+}
+```
+
+   Replace `<YOUR_API_HUB_KEY>` with:
+
+```
+UnBbpWyxaAAfmu4QAku2qSicZce4IWA6
+```
+
+   After the edit, your `"cds"` section should look like this:
 
 ```json
 "cds": {
+  "outbox": false,
   "requires": {
     "API_PRODUCT_SRV": {
       "kind": "odata",
@@ -99,7 +129,7 @@ The screenshots below show what this looks like in the BTP Cockpit — for refer
       "[development]": {
         "credentials": {
           "url": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCT_SRV",
-          "headers": { "APIKey": "<YOUR_API_HUB_KEY>" }
+          "headers": { "APIKey": "UnBbpWyxaAAfmu4QAku2qSicZce4IWA6" }
         }
       }
     }
@@ -107,11 +137,7 @@ The screenshots below show what this looks like in the BTP Cockpit — for refer
 }
 ```
 
-Replace `<YOUR_API_HUB_KEY>` with the key below:
-
-```
-UnBbpWyxaAAfmu4QAku2qSicZce4IWA6
-```
+   > **What does this do?** In `[development]` mode (`cds watch`) CAP calls the S/4HANA sandbox directly using the API key. In `[production]` mode (deployed to CF) it uses the `S4HANA_SANDBOX` BTP Destination instead — no credentials in code.
 
 3. Save the file.
 
