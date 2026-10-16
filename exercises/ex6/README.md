@@ -47,7 +47,6 @@ npm add @cap-js/mcp
 
 ```cds
 @mcp
-@protocol: 'odata'
 service ProductService {
   ...
 }
