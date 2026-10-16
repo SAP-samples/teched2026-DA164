@@ -115,13 +115,20 @@ cds bind --to da164-hdi-001
    After the command completes, scroll down in the Explorer sidebar to the **SAP HANA PROJECTS** panel. Expand your project — you should see `da164-hdi-001` listed under **Database Connections**.
 
    > **If the container is not listed**, bind it manually:
-   > 1. Hover over the **Database Connections** row — a **+** icon appears on the right. Click it.
-   > 2. Select **Bind to an HDI Container Service**.
-   > 3. Choose `da164-hdi-001` from the list.
+   > 1. Hover over the **Database Connections** row — a binding icon appears on the right. Click it.
+   > 2. A dialog appears. Select **Bind to an HDI container**.
    >
-   > <!-- TODO: add hanabind.png showing the + icon on Database Connections and the service selection dialog -->
+   > ![Select a binding option dialog with Bind to an HDI container highlighted](images/bindtohdi.png)
    >
-   > The container now appears with a cube icon. You will use this in Exercise 3 to open the Database Explorer directly from BAS.
+   > 3. A service list appears. Select `da164-hdi-001` (your seat number).
+   >
+   > ![Select a service instance dialog showing the HDI container options](images/selectyourhdi.png)
+   >
+   > The container now appears under **Database Connections** with a cube icon.
+   >
+   > ![SAP HANA PROJECTS panel showing the HDI container listed under Database Connections](images/bindmanually.png)
+   >
+   > You will use this cube icon in Exercise 3 to open the Database Explorer directly from BAS.
 
 7. Deploy the table schema to your HANA container:
 
