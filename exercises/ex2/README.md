@@ -37,8 +37,6 @@ entity ProductExtension {
 }
 ```
 
-2. Save the file.
-
 ![The db/schema.cds file open in BAS with the ProductExtension entity definition](images/schema.png)
 
 > **What are these fields?**
@@ -70,7 +68,7 @@ The terminal displays a URL to get a one-time passcode.
 
 ![Terminal showing the cf login --sso command with the passcode URL](images/cflogin.png)
 
-3. Open the passcode URL in your browser. Copy the temporary passcode shown on the page.
+3. Open the passcode URL in your browser. Log in with your workshop credentials (`da164-XXX@education.cloud.sap`) if prompted. Copy the temporary passcode shown on the page.
 
 ![Browser showing the temporary passcode](images/temppasscode.png)
 
@@ -166,11 +164,17 @@ service ProductService {
 }
 ```
 
-3. Save the file.
-
 ![The updated product-service.cds file with all four actions visible](images/prodservice.png)
 
 > You are adding four actions. You already built `getProducts` in Exercise 1. You will build `syncProducts` now, and `hybridSearch` and `askAdvisor` in the next exercises.
+
+4. Now that the service definition has changed, deploy again to write the updated views to HANA:
+
+```bash
+cds deploy --to hana
+```
+
+![Terminal showing the cds deploy output after the service update](images/deploysuccessful.png)
 
 ---
 

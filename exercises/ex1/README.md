@@ -139,8 +139,6 @@ UnBbpWyxaAAfmu4QAku2qSicZce4IWA6
 
    > **What does this do?** In `[development]` mode (`cds watch`) CAP calls the S/4HANA sandbox directly using the API key. In `[production]` mode (deployed to CF) it uses the `S4HANA_SANDBOX` BTP Destination instead — no credentials in code.
 
-3. Save the file.
-
 ![package.json open in BAS showing the API_PRODUCT_SRV configuration block with the API key filled in](images/packagejson.png)
 
 ---
@@ -164,8 +162,6 @@ service ProductService {
     returns array of ProductResult;
 }
 ```
-
-2. Save the file.
 
 ![product-service.cds open in BAS showing the ProductResult type definition and getProducts action](images/prodservice.cds.png)
 
@@ -202,7 +198,7 @@ export default class ProductService extends cds.ApplicationService {
 }
 ```
 
-2. Save the file.
+> **How does CAP find this handler?** CAP automatically links `product-service.js` to `product-service.cds` because they share the same filename. No registration or annotation is needed — the names must match. If you ever rename one, rename the other too, or CAP will not call your handler.
 
 ![product-service.js open in BAS showing the ES module syntax with import and export default](images/prodservicejs.png)
 

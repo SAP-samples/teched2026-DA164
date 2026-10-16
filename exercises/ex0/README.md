@@ -33,6 +33,24 @@ Before creating a project you need a BAS dev space with the SAP HANA extension e
 
 ![Dev Space Manager showing existing dev spaces](images/devspacemanager.png)
 
+**If you have no dev space yet** (fresh account — this is the common case):
+
+2. Click **Create Dev Space**.
+
+![Create Dev Space button in the Dev Space Manager](images/createdevspace.png)
+
+3. Give it a name (e.g. `DA164`), select **Full Stack Cloud Application** as the kind, check **SAP HANA Tools** under Additional SAP Extensions, then click **Create Dev Space**.
+
+![Create Dev Space form with name, kind Full Stack Cloud Application, and SAP HANA Tools checked](images/createdevspacenew.png)
+
+4. Wait for the status to change to **RUNNING**, then click on it to open BAS.
+
+![Dev space running and ready to open](images/startdev.png)
+
+---
+
+**If you already have a dev space** (it may be missing the HANA extension):
+
 2. If your dev space is running, stop it first — you can only edit a dev space when it is stopped.
 
 ![Stop the running dev space](images/stopdevspace.png)
@@ -55,7 +73,7 @@ Before creating a project you need a BAS dev space with the SAP HANA extension e
 
 SAP Build Code is a cloud-based development environment built on SAP Business Application Studio. It has a project wizard that sets up the full CAP project structure for you automatically.
 
-1. Log in with your BTP credentials — the URL and login details are in the table above.
+1. SAP Build Code should still be open from when you first logged in — switch back to that tab. If your session has expired, log in again using the credentials in the table above.
 
 ![SAP Build Code lobby after login](images/buildlobby.png)
 
@@ -91,7 +109,9 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 
 ![Click the project to open it in BAS](images/clickproj.png)
 
-9. BAS opens with your new project in the file explorer.
+9. BAS opens. If it lands on a **Project Overview** or **Storyboard** page, click the **Explorer** icon (the overlapping-pages icon at the top of the left sidebar) to switch to the familiar file tree view.
+
+![BAS Explorer icon in the left Activity Bar](images/explorericon.png)
 
 ![Project file explorer open in BAS](images/projexplorer.png)
 
@@ -142,17 +162,17 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 
 ![New terminal open in BAS](images/terminal.png)
 
-2. Install the production web server:
+2. Install all project dependencies:
 
 ```bash
-npm add express
+npm install
 ```
 
-> **Why `express`?** CAP uses Express as its HTTP server in production. You need to add it explicitly so CF includes it at startup.
+> **Why `npm install`?** This installs all packages listed in `package.json`, including Express (the HTTP server CAP uses in production). CAP manages the Express version automatically — you don't need to add it explicitly.
 
 > **Note:** You may see `npm audit` warnings about vulnerabilities — these are from indirect dev dependencies and do not affect the workshop. Ignore them.
 
-![Terminal showing npm add express completing with package counts](images/npmexpress.png)
+![Terminal showing npm install completing with package counts](images/npmexpress.png)
 
 ---
 
@@ -177,20 +197,20 @@ touch .env
 cds watch
 ```
 
-2. You should see:
+2. You should see output similar to one of these (the exact message depends on your CAP version):
 
 ```
 cds - server listening on { url: 'http://localhost:4004' }
 ```
 
-Or, if the template left an empty schema file:
+or:
 
 ```
 [cds] - no models found in db/,srv/,app/
-[cds] - launched at http://localhost:4004
+[cds] - waiting for some models ...
 ```
 
-Either is fine — no red errors is what matters.
+No red errors is what matters. The URL may not appear if there are no models yet — that is normal at this stage.
 
 3. Press **Ctrl+C** to stop the server.
 
