@@ -28,14 +28,14 @@ CAP needs a local copy of the S/4HANA Product API definition to know the shape o
 
    > On GitHub: click the link above → click **Download raw file** (the download icon in the top-right of the file view).
 
-2. In BAS, open the **Explorer** side panel, right-click your workspace home folder (the root, above your project), and choose **Upload Files**. Select the `.edmx` file you just downloaded.
+2. In BAS, open the **Explorer** side panel, right-click your **project folder** (`da164-product-advisor-XXX`), and choose **Upload Files**. Select the `.edmx` file you just downloaded.
 
 ![Right-click the project folder and choose Upload to import the EDMX file](images/upload.png)
 
 3. In the terminal, import it into your project:
 
 ```bash
-cds import ~/API_PRODUCT_SRV.edmx --as cds
+cds import API_PRODUCT_SRV.edmx --as cds
 ```
 
 This generates two files automatically:
