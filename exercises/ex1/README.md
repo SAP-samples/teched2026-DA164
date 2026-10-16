@@ -38,6 +38,8 @@ CAP needs a local copy of the S/4HANA Product API definition to know the shape o
 cds import API_PRODUCT_SRV.edmx --as cds
 ```
 
+> If BAS shows a dialog asking to update `package.json`, click **OK**.
+
 This generates two files automatically:
 - `srv/external/API_PRODUCT_SRV.cds` — the CDS model CAP uses to call S/4HANA
 - `srv/external/API_PRODUCT_SRV.json` — the metadata used at runtime
@@ -84,7 +86,7 @@ The screenshots below show what this looks like in the BTP Cockpit — for refer
 
 2. Find the `"cds"` section — it was created automatically when SAP Build Code set up your project. You do not need to run any command.
 
-   Inside `"cds"`, you will see (or need to add) a `"requires"` object. **Add the `API_PRODUCT_SRV` block below into it**:
+   Inside `"cds"`, find the `"requires"` key (or add it if it is not there). **Add the `API_PRODUCT_SRV` block inside `"requires"`** — paste it alongside any existing entries, do not replace the whole `"cds"` section:
 
 ```json
 "API_PRODUCT_SRV": {

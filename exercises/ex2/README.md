@@ -22,6 +22,8 @@ In this exercise you will create a table in SAP HANA Cloud to store service char
 
 ## Step 1 – Define the Extension Table
 
+> **Before you start**: If `cds watch` is still running from Exercise 1, press **Ctrl+C** in that terminal to stop it now. Running two CDS watch instances at the same time causes a port conflict.
+
 1. Create the file `db/schema.cds` with the following content:
 
 ```cds
@@ -68,7 +70,7 @@ The terminal displays a URL to get a one-time passcode.
 
 ![Terminal showing the cf login --sso command with the passcode URL](images/cflogin.png)
 
-3. Open the passcode URL in your browser. Log in with your workshop credentials (`da164-XXX@education.cloud.sap`) if prompted. Copy the temporary passcode shown on the page.
+3. Open the passcode URL in your browser. Log in with your workshop credentials (`da164-XXX@education.cloud.sap`) if prompted. If the page shows multiple identity providers, select **tdct3ched1**. Copy the temporary passcode shown on the page.
 
 ![Browser showing the temporary passcode](images/temppasscode.png)
 
@@ -183,9 +185,9 @@ cds deploy --to hana
 1. Open [srv/product-service.js](../../srv/product-service.js) and **replace the entire file** with:
 
 ```js
-const cds = require('@sap/cds')
+import cds from '@sap/cds'
 
-module.exports = class ProductService extends cds.ApplicationService {
+export default class ProductService extends cds.ApplicationService {
 
   async init() {
     const s4 = await cds.connect.to('API_PRODUCT_SRV')
