@@ -13,7 +13,7 @@ In this exercise you will connect your app to the SAP S/4HANA Cloud Product API 
 ## What you will do
 
 1. Import the S/4HANA API model into your project
-2. Verify the pre-configured BTP Destination for S/4HANA
+2. Understand the pre-configured BTP Destination for S/4HANA
 3. Tell CAP to use that destination when calling the Product API
 4. Write code that fetches real product data
 5. Test that it works
@@ -52,11 +52,11 @@ It also adds a base entry for `API_PRODUCT_SRV` to your `package.json`.
 
 ---
 
-## Step 2 – Verify the S/4HANA Destination
+## Step 2 – The S/4HANA Destination (Pre-configured)
 
-The `S4HANA_SANDBOX` destination has been pre-configured for you. You do not need to create it — but it is worth understanding what it contains, because your CAP app will use it in the next step.
+The `S4HANA_SANDBOX` destination has been created for you by the session owner — **you do not have access to the BTP Cockpit and do not need to do anything here**. This step just explains what was set up so you understand what your CAP app will be connecting to.
 
-Here is what was set up:
+In a real project, a BTP admin would go to **BTP Cockpit → Connectivity → Destinations** and create an entry like this:
 
 | Field | Value |
 |---|---|
@@ -69,6 +69,8 @@ Here is what was set up:
 
 > **Why a destination?**
 > Instead of hardcoding the S/4HANA URL and API key into your app, you register them once as a named BTP Destination. Your CAP app then refers to this name — `S4HANA_SANDBOX` — and BTP handles the connection details at runtime. If the URL or credentials ever change, only the destination needs updating.
+
+The screenshots below show what this looks like in the BTP Cockpit — for reference only.
 
 ![BTP Cockpit showing S4HANA_SANDBOX destination with HTTP type and the sandbox URL](images/destcheck.png)
 
