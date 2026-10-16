@@ -168,7 +168,7 @@ service ProductService {
 
 > You are adding four actions. You already built `getProducts` in Exercise 1. You will build `syncProducts` now, and `hybridSearch` and `askAdvisor` in the next exercises.
 
-4. Now that the service definition has changed, deploy again to write the updated views to HANA:
+3. Now that the service definition has changed, deploy again to write the updated views to HANA:
 
 ```bash
 cds deploy --to hana
@@ -230,8 +230,6 @@ module.exports = class ProductService extends cds.ApplicationService {
   }
 }
 ```
-
-2. Save the file.
 
 ![The product-service.js file showing both getProducts and syncProducts handlers](images/prodservicejs.png)
 
