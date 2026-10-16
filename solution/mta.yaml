@@ -1,5 +1,5 @@
 _schema-version: 3.3.0
-ID: da164-product-advisor-solution
+ID: da164-product-advisor-000
 version: 1.0.0
 description: "A simple CAP project."
 parameters:
@@ -11,7 +11,7 @@ build-parameters:
         - npm ci
         - npx cds build --production
 modules:
-  - name: da164-product-advisor-solution-srv
+  - name: da164-product-advisor-000-srv
     type: nodejs
     path: gen/srv
     parameters:
@@ -24,18 +24,18 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      - name: da164-product-advisor-solution-db
+      - name: da164-product-advisor-000-db
 
-  - name: da164-product-advisor-solution-db-deployer
+  - name: da164-product-advisor-000-db-deployer
     type: hdb
     path: gen/db
     parameters:
       buildpack: nodejs_buildpack
     requires:
-      - name: da164-product-advisor-solution-db
+      - name: da164-product-advisor-000-db
 
 resources:
-  - name: da164-product-advisor-solution-db
+  - name: da164-product-advisor-000-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
