@@ -2,6 +2,7 @@ using { API_PRODUCT_SRV } from './external/API_PRODUCT_SRV';
 using { products }         from '../db/schema';
 
 @mcp
+@protocol: 'odata'
 service ProductService {
   entity Products as projection on products.ProductExtension
     excluding { Embedding };
