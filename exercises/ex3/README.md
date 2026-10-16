@@ -188,17 +188,15 @@ async function chatCompletion(messages) {
 module.exports = { getEmbedding, chatCompletion }
 ```
 
-2. Save the file.
-
 ![srv/ai-core-client.js open in BAS showing the full file](images/aicorejs.png)
 
-3. Create the credentials file. In the terminal:
+2. Create the credentials file. In the terminal:
 
 ```bash
 mkdir -p .aicore
 ```
 
-4. Copy the AI Core credentials file into your project. The file is in this repository at [`resources/aicore-config.json`](../../resources/aicore-config.json).
+3. Copy the AI Core credentials file into your project. The file is in this repository at [`resources/aicore-config.json`](../../resources/aicore-config.json).
 
    In the terminal:
 
@@ -250,11 +248,9 @@ async function main() {
 main().catch(console.error)
 ```
 
-2. Save the file.
-
 ![scripts/embed-products.js open in BAS showing the completed script](images/embed.png)
 
-3. In the terminal, run the script:
+2. In the terminal, run the script:
 
 ```bash
 cds bind --exec -- node scripts/embed-products.js

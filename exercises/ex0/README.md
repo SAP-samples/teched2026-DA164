@@ -105,9 +105,33 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 
 > If the wizard offered optional features such as **SAP HANA Cloud** or **MTA deployment**, leave them unselected. You will add these via `cds add hana` and `cds add mta` from the terminal at the point in the exercises where they are needed.
 
+> ### ⚠️ If project creation failed in the Build Code lobby
+>
+> If you saw a **"Project creation failed"** error, create the project directly from inside your BAS dev space instead:
+>
+> 1. In the BAS menu bar, click **Help → Get Started**.
+>
+> ![Help menu open with Get Started highlighted](images/gettingstartedhelp.png)
+>
+> 2. On the Get Started page, click **New Project from Template**.
+>
+> ![Get Started page showing New Project from Template button highlighted](images/newproject.png)
+>
+> 3. Select the **CAP Project** template. On the details screen, enter your project name (`da164-product-advisor-XXX`), choose **Node.js** as the runtime, leave all deployment and capability checkboxes **unchecked**, and click **Finish**.
+>
+> ![CAP Project template wizard showing project name, Node.js runtime, and Finish button highlighted](images/finishproj.png)
+>
+> 4. BAS opens the project automatically. You will see the same project structure as above.
+>
+> ![BAS explorer showing the newly created CAP project structure](images/projectstructure.png)
+>
+> Continue from **Step 3** below.
+
 8. SAP Build Code creates the project. When it finishes, click on your project to open it in BAS.
 
 ![Click the project to open it in BAS](images/clickproj.png)
+
+> If BAS does not open the project automatically, look for it in the **Explorer** panel. Click the overlapping-pages icon (Explorer) in the left sidebar — your project folder (`da164-product-advisor-XXX`) should appear in the file tree.
 
 9. BAS opens. If it lands on a **Project Overview** or **Storyboard** page, click the **Explorer** icon (the overlapping-pages icon at the top of the left sidebar) to switch to the familiar file tree view.
 
@@ -132,30 +156,6 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 
 ---
 
-> ### ⚠️ If project creation failed in the Build Code lobby
->
-> If you saw a **"Project creation failed"** error in Step 2, create the project directly from inside your BAS dev space instead:
->
-> 1. In the BAS menu bar, click **Help → Get Started**.
->
-> ![Help menu open with Get Started highlighted](images/gettingstartedhelp.png)
->
-> 2. On the Get Started page, click **New Project from Template**.
->
-> ![Get Started page showing New Project from Template button highlighted](images/newproject.png)
->
-> 3. Select the **CAP Project** template. On the details screen, enter your project name (`da164-product-advisor-XXX`), choose **Node.js** as the runtime, leave all deployment and capability checkboxes **unchecked**, and click **Finish**.
->
-> ![CAP Project template wizard showing project name, Node.js runtime, and Finish button highlighted](images/finishproj.png)
->
-> 4. BAS opens the project automatically. You will see the same project structure as above.
->
-> ![BAS explorer showing the newly created CAP project structure](images/projectstructure.png)
->
-> Continue from **Step 3** below.
-
----
-
 ## Step 3 – Install the Additional Dependencies
 
 1. Open a terminal: **Menu → Terminal → New Terminal**.
@@ -168,11 +168,11 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 npm install
 ```
 
-> **Why `npm install`?** This installs all packages listed in `package.json`, including Express (the HTTP server CAP uses in production). CAP manages the Express version automatically — you don't need to add it explicitly.
+> **Why `npm install`?** CAP builds on top of Express — the Node.js HTTP framework. CAP manages the Express version itself as a peer dependency, so you never need to list Express in your own `package.json`. Running `npm install` installs CAP and Express together in one step.
 
 > **Note:** You may see `npm audit` warnings about vulnerabilities — these are from indirect dev dependencies and do not affect the workshop. Ignore them.
 
-![Terminal showing npm install completing with package counts](images/npmexpress.png)
+![Terminal showing npm install output with package count and timing](images/npminstall.png)
 
 ---
 

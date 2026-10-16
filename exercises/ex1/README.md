@@ -32,6 +32,10 @@ CAP needs a local copy of the S/4HANA Product API definition to know the shape o
 
 ![Right-click the project folder and choose Upload to import the EDMX file](images/upload.png)
 
+> If your browser shows a clipboard permission dialog asking whether BAS can see text and images copied to the clipboard — click **Allow**.
+>
+> ![Browser clipboard permission dialog — click Allow](images/allowpaste.png)
+
 3. In the terminal, import it into your project:
 
 ```bash
@@ -49,6 +53,8 @@ It also adds a base entry for `API_PRODUCT_SRV` to your `package.json`.
 ![Terminal showing cds import output confirming files were created in srv/external](images/cdsimport.png)
 
 ![BAS Explorer showing the generated API_PRODUCT_SRV.cds and API_PRODUCT_SRV.edmx files in srv/external](images/extfiles.png)
+
+> **Note:** Depending on your BAS version, the generated files may appear nested directly under `srv/external/` or shown under a collapsible folder node in Explorer. Both layouts are correct — `API_PRODUCT_SRV.cds` and `API_PRODUCT_SRV.json` are in `srv/external/` either way.
 
 > The API Hub key is provided inline in Step 3 below.
 
@@ -86,7 +92,7 @@ The screenshots below show what this looks like in the BTP Cockpit — for refer
 
 2. Find the `"cds"` section — it was created automatically when SAP Build Code set up your project. You do not need to run any command.
 
-   Inside `"cds"`, find the `"requires"` key (or add it if it is not there). **Add the `API_PRODUCT_SRV` block inside `"requires"`** — paste it alongside any existing entries, do not replace the whole `"cds"` section:
+   Inside `"cds"`, find the `"requires"` key (or add it if it is not there). **Add only the `API_PRODUCT_SRV` block inside `"requires"`** — paste it as a new entry alongside whatever is already there. Do **not** delete existing entries, and do **not** replace the entire `"cds"` section:
 
 ```json
 "API_PRODUCT_SRV": {
@@ -143,6 +149,8 @@ UnBbpWyxaAAfmu4QAku2qSicZce4IWA6
 
 ![package.json open in BAS showing the API_PRODUCT_SRV configuration block with the API key filled in](images/packagejson.png)
 
+<!-- TODO: retake packagejson.png to show the full cds section with API_PRODUCT_SRV added alongside existing entries (outbox: false, etc.) -->
+
 ---
 
 ## Step 4 – Create the Service Definition
@@ -168,6 +176,8 @@ service ProductService {
 ![product-service.cds open in BAS showing the ProductResult type definition and getProducts action](images/prodservice.cds.png)
 
 > You are defining a CAP service with one action. In Exercise 2 you will expand this file with more entities and actions as the app grows.
+
+> **Why `product-service`?** In Step 5 you will create `srv/product-service.js`. CAP automatically links that handler to this service definition by matching filename — no registration or annotation needed. Keep both filenames identical, or CAP will not find the handler.
 
 ---
 
@@ -214,9 +224,13 @@ export default class ProductService extends cds.ApplicationService {
 cds watch
 ```
 
-2. Open a second terminal tab. Go to **Terminal → New Terminal** in the menu bar:
+2. Open a second terminal tab. Click the **`+`** icon in the terminal panel to add a new session:
 
-![Open a new terminal via Terminal menu > New Terminal](images/newterminal.png)
+![The + icon in the terminal panel — click to open a new terminal tab](images/newterminalopen.png)
+
+   Two terminal sessions now appear in the panel. Click the second tab to switch to it:
+
+![Two terminal sessions in the panel — click the second to switch to the new one](images/toggleterminal.png)
 
 Then run:
 

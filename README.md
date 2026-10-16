@@ -131,11 +131,6 @@ Work through the exercises in order. Each builds directly on the previous one �
   - Expose hybrid search as a CAP action
   - Compare keyword search vs semantic search vs hybrid
 
-- [Exercise 5 – Build, Deploy, and Connect Your AI Product Advisor Agent](exercises/ex5/README.md) *(~30 min)*
-  - Implement Retrieval-Augmented Generation over your HANA product data
-  - Call an LLM via SAP Generative AI Hub with retrieved context
-  - Ask free-form questions answered from real S/4HANA product data — and expose the advisor as a Joule Skill
-
 - [Exercise 6 – Expose Your CAP App as an MCP Server](exercises/ex6/README.md) *(~20 min)*
   - Install `@cap-js/mcp` and annotate `ProductService` with `@mcp`
   - Connect OpenCode to your deployed CAP app via MCP

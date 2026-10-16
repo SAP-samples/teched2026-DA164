@@ -60,25 +60,29 @@ npm install
 
 ![Terminal output after cds add hana showing the package was added](images/addhana.png)
 
-2. Log in to Cloud Foundry using SSO. Run:
+2. Log in to Cloud Foundry using the BAS Cloud Foundry panel. In the BAS menu bar, go to **View → Cloud Foundry**.
 
-```bash
-cf login -a https://api.cf.eu10-005.hana.ondemand.com --sso
-```
+![BAS View menu open with Cloud Foundry option highlighted](images/checkcficon.png)
 
-The terminal displays a URL to get a one-time passcode.
+   The Cloud Foundry panel opens on the left. It shows **Login required** — click the **→** login button.
 
-![Terminal showing the cf login --sso command with the passcode URL](images/cflogin.png)
+![Cloud Foundry panel showing Login required with the login button highlighted](images/cfwizard.png)
 
-3. Open the passcode URL in your browser. Log in with your workshop credentials (`da164-XXX@education.cloud.sap`) if prompted. If the page shows multiple identity providers, select **tdct3ched1**. Copy the temporary passcode shown on the page.
+   A dialog appears at the top of BAS. Enter the CF API endpoint when prompted:
+
+   ```
+   https://api.cf.eu10-005.hana.ondemand.com
+   ```
+
+   When asked for the authentication method, select **SSO Passcode**. A URL is shown — open it in your browser.
+
+3. In the browser, log in with your workshop credentials (`da164-XXX@education.cloud.sap`) if prompted. If the page shows multiple identity providers, select **tdct3ched1**. Copy the temporary passcode shown on the page.
 
 ![Browser showing the temporary passcode](images/temppasscode.png)
 
-4. Paste the passcode into the terminal prompt and press Enter. Then select your org (`da164`) and space (`dev`) when prompted.
+4. Paste the passcode into the BAS prompt and press Enter. Select org `da164` and space `dev` when prompted.
 
-![Terminal after pasting the passcode and selecting org/space — login succeeded](images/pastepasscode.png)
-
-![Terminal showing org and space selection](images/chooseorg.png)
+![Org and space selection in the BAS wizard](images/chooseorg.png)
 
 5. Create your personal HDI container — **replace `001` with your 3-digit seat number** (from your login username, e.g. `da164-0042` → `042`):
 

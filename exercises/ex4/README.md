@@ -161,8 +161,6 @@ this.on('hybridSearch', async (req) => {
 })
 ```
 
-5. Save the file.
-
 > **How the scoring works**: Each result gets a `HYBRID_SCORE` between 0 and 1. The semantic part (`COSINE_SIMILARITY`) measures meaning overlap. The keyword part is 1.0 if the query words appear in the description, 0.0 if not. Combining them 60/40 means semantically close products rank even higher when they also match your words.
 
 ---
@@ -226,4 +224,4 @@ You now have:
 
 **Next**: Use this search as the foundation for an AI advisor that answers product questions in full sentences.
 
-Continue to [Exercise 5 – Build, Deploy, and Connect Your AI Product Advisor Agent](../ex5/README.md)
+Continue to [Exercise 6 – Expose Your CAP App as an MCP Server](../ex6/README.md)

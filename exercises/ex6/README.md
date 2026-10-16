@@ -58,8 +58,6 @@ service ProductService {
 annotate ProductService with @mcp.instructions: 'You are a service charge advisor for a logistics company. The service charge data originates from SAP S/4HANA Cloud. Use "describe" first to learn what data and actions are available. Use "query" for structured lookups, e.g. SELECT * FROM Products WHERE ProductType = ''SERV''. Use "hybridSearch" to find service charges using natural language - it combines keyword and semantic search. Use "askAdvisor" for open-ended customer questions that need a full answer. Always include the charge code in your answers. Only recommend service charges that the tools return - never invent charges.';
 ```
 
-4. Save the file.
-
 ![product-service.cds open in BAS showing @mcp above service ProductService](images/mcpadd.png)
 
 ---
@@ -77,8 +75,6 @@ annotate ProductService with @mcp.instructions: 'You are a service charge adviso
   "requires": { ... }
 }
 ```
-
-2. Save the file.
 
 ![package.json showing the mcp block with per_action_tool and format settings](images/cdsreqmcp.png)
 
@@ -144,8 +140,6 @@ OpenCode reads MCP configuration from `opencode.json` in your project folder.
   }
 }
 ```
-
-3. Save the file.
 
 ![opencode.json open in BAS with the MCP URL highlighted in a blue box](images/opencodeconfig.png)
 
@@ -239,4 +233,4 @@ You added **one package** and **one annotation** — and your CAP app became a f
 
 ---
 
-*Back to [Exercise 5 – Deploy to Cloud Foundry and Connect to Joule](../ex5/README.md) | [Session overview](../../README.md)*
+*Back to [Exercise 4 – Hybrid Search: Full-Text + Semantic](../ex4/README.md) | [Session overview](../../README.md)*
