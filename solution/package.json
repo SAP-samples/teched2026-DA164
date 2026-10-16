@@ -1,0 +1,46 @@
+{
+  "name": "da164-product-advisor-solution",
+  "version": "1.0.0",
+  "description": "DA164 Workshop Solution — CAP app with HANA Cloud vector search and SAP AI Core",
+  "scripts": {
+    "start": "cds-serve"
+  },
+  "dependencies": {
+    "@cap-js/hana": "^2",
+    "@cap-js/mcp": "^1",
+    "@sap/cds": "^9",
+    "@sap-cloud-sdk/connectivity": "^4",
+    "@sap-cloud-sdk/http-client": "^4",
+    "@sap-cloud-sdk/resilience": "^4",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2",
+    "@sap/cds-dk": "^9"
+  },
+  "cds": {
+    "outbox": false,
+    "mcp": {
+      "per_action_tool": true,
+      "format": "cql"
+    },
+    "requires": {
+      "API_PRODUCT_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_PRODUCT_SRV",
+        "[production]": {
+          "credentials": {
+            "destination": "S4HANA_SANDBOX",
+            "path": ""
+          }
+        },
+        "[development]": {
+          "credentials": {
+            "url": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCT_SRV",
+            "headers": { "APIKey": "UnBbpWyxaAAfmu4QAku2qSicZce4IWA6" }
+          }
+        }
+      }
+    }
+  }
+}
