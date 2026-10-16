@@ -208,7 +208,7 @@ export default class ProductService extends cds.ApplicationService {
 
 ## Step 6 – Test It
 
-1. In the terminal, restart the app:
+1. Check your terminal — if `cds watch` is already running from an earlier step, press **Ctrl+C** to stop it. Then run:
 
 ```bash
 cds watch

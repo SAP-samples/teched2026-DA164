@@ -143,7 +143,7 @@ ${context}`
 
 ## Step A3 – Restart and Test the Agent
 
-1. In the terminal, make sure the app is running in production mode:
+1. Check your terminal — if `cds watch --profile hybrid` is already running, press **Ctrl+C** to stop it. Then run:
 
 ```bash
 cds watch --profile hybrid

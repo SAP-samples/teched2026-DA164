@@ -169,7 +169,7 @@ this.on('hybridSearch', async (req) => {
 
 ## Step 5 – Test the API
 
-1. Restart the app if it is not already running:
+1. Check your terminal — if `cds watch --profile hybrid` is already running, press **Ctrl+C** to stop it. Then run:
 
 ```bash
 cds watch --profile hybrid
