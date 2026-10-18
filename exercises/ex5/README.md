@@ -341,6 +341,8 @@ applications:
 
 ## Step B4 – Push to Cloud Foundry
 
+> **Why `cf push` and not MTA?** A full MTA deployment (`mbt build` + `cf deploy`) would also run an HDI schema deployer. We skip that here because the schema was already deployed to your HDI container in Exercise 2 — `cf push` only deploys the Node.js application layer and binds it to the container that is already set up.
+
 1. Make sure you are logged in to Cloud Foundry. If your session has expired since Exercise 2, log in again using SSO:
 
 ```bash
