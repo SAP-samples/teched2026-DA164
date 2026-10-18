@@ -236,7 +236,7 @@ Deploying also means the agent is always available — not just when you have `c
 
 The `.cfignore` file tells `cf push` which files to skip. You want to skip `node_modules/` (CF installs them fresh) but keep everything else.
 
-> **Important**: `.aicore/config.json` must reach the CF container — your app reads it at runtime to call SAP AI Core. Add `.aicore/` to `.gitignore` (so credentials are never committed to git), but do **not** add it to `.cfignore`.
+> **Note**: With the SDK-based AI Core client, credentials are provided by the `ai-extended` Cloud Foundry service bound in `manifest.yml` — not by any local file. There is nothing extra to include or exclude for AI Core.
 
 1. In BAS, create a new file called `.cfignore` at the **project root** (same level as `package.json`).
 
@@ -321,6 +321,7 @@ applications:
     command: npm start
     services:
       - da164-hdi-<USER-NUMBER>
+      - ai-extended
 ```
 
 3. Save the file.
@@ -329,6 +330,9 @@ applications:
 
 > **What is `da164-hdi-<USER-NUMBER>`?**
 > This is your personal HANA Cloud HDI container, pre-created by the session team. Cloud Foundry binds it to your app at startup so the app knows how to connect to HANA. Each participant has their own isolated container — your service charge data and embeddings are yours alone.
+
+> **What is `ai-extended`?**
+> This is the shared SAP AI Core service instance. CF binds it to your app and injects the credentials as `VCAP_SERVICES`. The `@sap-ai-sdk/orchestration` SDK reads from `VCAP_SERVICES` automatically — no credential files needed.
 
 > **What do these env variables do?**
 > `NODE_ENV: production` tells CAP to use the `[production]` profile — connecting to HANA Cloud instead of SQLite. `NPM_CONFIG_PRODUCTION: "false"` ensures all packages (including CLI tools like `@sap/cds-dk`) are installed even in production mode, so the `cds` command is available at runtime.
@@ -401,7 +405,7 @@ You should get back an AI-generated answer — the same type of response you saw
 > 2. Run `cf env da164-product-advisor-<your-user-id>` and look at `VCAP_SERVICES`. If you see an `xsuaa` service binding listed, remove it: `cf unbind-service da164-product-advisor-<your-user-id> <xsuaa-instance-name>` and then `cf restage da164-product-advisor-<your-user-id>`.
 
 > **Troubleshooting — 500 error or no response:**
-> Run `cf logs da164-product-advisor-<your-user-id> --recent` to see what went wrong. The most common cause is the `.aicore/config.json` file missing or containing placeholder values.
+> Run `cf logs da164-product-advisor-<your-user-id> --recent` to see what went wrong. The most common cause is the `ai-extended` service not being listed in `manifest.yml` — without it, the app has no AI Core credentials.
 
 ---
 
