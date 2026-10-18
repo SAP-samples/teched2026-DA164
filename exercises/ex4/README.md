@@ -115,40 +115,30 @@ Now you will add this search as a proper API action so any client can use it wit
 
 1. Open [srv/product-service.js](../../srv/product-service.js).
 
-2. At the **top of the file**, after the existing `require` line, add the AI Core import:
-
-```js
-const { getEmbedding } = require('./ai-core-client')
-```
-
-> **Important**: this line goes at the top of the file, not inside any function. Do not add it again inside the handler below.
-
-3. Inside `init()`, after the line `const s4 = await cds.connect.to('API_PRODUCT_SRV')`, add:
+2. Inside `init()`, after the line `const s4 = await cds.connect.to('API_PRODUCT_SRV')`, add:
 
 ```js
 const db = await cds.connect.to('db')
 ```
 
-4. After the closing `})` of the `syncProducts` handler, add the `hybridSearch` handler:
+3. After the closing `})` of the `syncProducts` handler, add the `hybridSearch` handler:
 
 ```js
 this.on('hybridSearch', async (req) => {
   const { query, top = 5 } = req.data
-  const queryVector = await getEmbedding(query)
-  const vectorJson  = JSON.stringify(queryVector)
   const likePattern = `%${query}%`
 
   const results = await db.run(
     `SELECT TOP ${top}
        PRODUCT, PRODUCTTYPE, DESCRIPTION, BASEUNIT, AISUMMARY,
        ROUND(
-         0.6 * COSINE_SIMILARITY(EMBEDDING, TO_REAL_VECTOR(?))
+         0.6 * COSINE_SIMILARITY(EMBEDDING, VECTOR_EMBEDDING(?, 'QUERY', 'SAP_GXY.20250407'))
          + 0.4 * CASE WHEN LOWER(DESCRIPTION) LIKE LOWER(?) THEN 1.0 ELSE 0.0 END
        , 4) AS HYBRID_SCORE
      FROM PRODUCTS_PRODUCTEXTENSION
      WHERE EMBEDDING IS NOT NULL
      ORDER BY HYBRID_SCORE DESC`,
-    [vectorJson, likePattern]
+    [query, likePattern]
   )
 
   return results.map(r => ({
@@ -161,7 +151,7 @@ this.on('hybridSearch', async (req) => {
 })
 ```
 
-> **How the scoring works**: Each result gets a `HYBRID_SCORE` between 0 and 1. The semantic part (`COSINE_SIMILARITY`) measures meaning overlap. The keyword part is 1.0 if the query words appear in the description, 0.0 if not. Combining them 60/40 means semantically close products rank even higher when they also match your words.
+> **How the scoring works**: Each result gets a `HYBRID_SCORE` between 0 and 1. `VECTOR_EMBEDDING(?, 'QUERY', 'SAP_GXY.20250407')` converts your search string into a 768-dimensional vector using HANA's built-in AI model — no external service call needed. `COSINE_SIMILARITY` then measures meaning overlap against the stored product embeddings. The keyword part is 1.0 if the query words appear in the description, 0.0 if not. Combining them 60/40 means semantically close products rank even higher when they also match your words.
 
 ---
 

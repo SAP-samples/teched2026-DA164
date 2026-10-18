@@ -1,7 +1,9 @@
 import cds from '@sap/cds'
 import aiCoreClient from './ai-core-client.js'
 
-const { getEmbedding, chatCompletion } = aiCoreClient
+const { chatCompletion } = aiCoreClient
+
+const EMBED_MODEL = 'SAP_GXY.20250407'
 
 export default class ProductService extends cds.ApplicationService {
 
@@ -47,21 +49,19 @@ export default class ProductService extends cds.ApplicationService {
 
     this.on('hybridSearch', async (req) => {
       const { query, top = 5 } = req.data
-      const queryVector = await getEmbedding(query)
-      const vectorJson  = JSON.stringify(queryVector)
       const likePattern = `%${query}%`
 
       const results = await db.run(
         `SELECT TOP ${top}
            PRODUCT, PRODUCTTYPE, DESCRIPTION, BASEUNIT, AISUMMARY,
            ROUND(
-             0.6 * COSINE_SIMILARITY(EMBEDDING, TO_REAL_VECTOR(?))
+             0.6 * COSINE_SIMILARITY(EMBEDDING, VECTOR_EMBEDDING(?, 'QUERY', '${EMBED_MODEL}'))
              + 0.4 * CASE WHEN LOWER(DESCRIPTION) LIKE LOWER(?) THEN 1.0 ELSE 0.0 END
            , 4) AS HYBRID_SCORE
          FROM PRODUCTS_PRODUCTEXTENSION
          WHERE EMBEDDING IS NOT NULL
          ORDER BY HYBRID_SCORE DESC`,
-        [vectorJson, likePattern]
+        [query, likePattern]
       )
 
       return results.map(r => ({
@@ -75,8 +75,6 @@ export default class ProductService extends cds.ApplicationService {
 
     this.on('askAdvisor', async (req) => {
       const { question } = req.data
-      const queryVector = await getEmbedding(question)
-      const vectorJson  = JSON.stringify(queryVector)
       const likePattern = `%${question}%`
 
       const context = await db.run(
@@ -85,10 +83,10 @@ export default class ProductService extends cds.ApplicationService {
          FROM PRODUCTS_PRODUCTEXTENSION
          WHERE EMBEDDING IS NOT NULL
          ORDER BY ROUND(
-           0.6 * COSINE_SIMILARITY(EMBEDDING, TO_REAL_VECTOR(?))
+           0.6 * COSINE_SIMILARITY(EMBEDDING, VECTOR_EMBEDDING(?, 'QUERY', '${EMBED_MODEL}'))
            + 0.4 * CASE WHEN LOWER(DESCRIPTION) LIKE LOWER(?) THEN 1.0 ELSE 0.0 END
          , 4) DESC`,
-        [vectorJson, likePattern]
+        [question, likePattern]
       )
 
       const contextText = context.map(r =>

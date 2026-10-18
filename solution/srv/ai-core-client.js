@@ -26,24 +26,6 @@ async function getToken() {
   return _token
 }
 
-async function getEmbedding(text) {
-  const token = await getToken()
-  const res = await fetch(
-    `${cfg().serviceurls.AI_API_URL}/v2/inference/deployments/${cfg().embedDeploymentId}/v1/embeddings`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type':      'application/json',
-        'AI-Resource-Group': cfg().resourceGroup ?? 'default',
-        Authorization:       `Bearer ${token}`
-      },
-      body: JSON.stringify({ input: text })
-    }
-  )
-  const data = await res.json()
-  return data.data[0].embedding
-}
-
 async function chatCompletion(messages) {
   const token = await getToken()
   const res = await fetch(
@@ -72,4 +54,4 @@ async function chatCompletion(messages) {
   return data.orchestration_result.choices[0].message.content
 }
 
-module.exports = { getEmbedding, chatCompletion }
+module.exports = { chatCompletion }

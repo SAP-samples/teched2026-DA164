@@ -60,7 +60,7 @@ You should see the 50 product rows you synced in Exercise 2, with `AISUMMARY` an
 
 1. Click on `PRODUCTS_PRODUCTEXTENSION` in the left panel. The column definitions open on the right.
 
-![HANA Database Explorer showing PRODUCTS_PRODUCTEXTENSION table definition with all columns including EMBEDDING REAL_VECTOR(1536)](images/openprodtable.png)
+![HANA Database Explorer showing PRODUCTS_PRODUCTEXTENSION table definition with all columns including EMBEDDING REAL_VECTOR(768)](images/openprodtable.png)
 
 Confirm you can see these columns:
 
@@ -69,9 +69,9 @@ Confirm you can see these columns:
 | `PRODUCT` | NVARCHAR(40) |
 | `DESCRIPTION` | NVARCHAR(500) |
 | `AISUMMARY` | NVARCHAR(1000) |
-| `EMBEDDING` | REAL_VECTOR(1536) |
+| `EMBEDDING` | REAL_VECTOR(768) |
 
-> The `REAL_VECTOR(1536)` type is HANA Cloud's built-in vector column. It stores 1536 numbers per row — one for each dimension of the AI embedding.
+> The `REAL_VECTOR(768)` type is HANA Cloud's built-in vector column. It stores 768 numbers per row — one for each dimension of the AI embedding.
 
 ---
 
@@ -139,24 +139,6 @@ async function getToken() {
   return _token
 }
 
-async function getEmbedding(text) {
-  const token = await getToken()
-  const res = await fetch(
-    `${cfg().serviceurls.AI_API_URL}/v2/inference/deployments/${cfg().embedDeploymentId}/v1/embeddings`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type':      'application/json',
-        'AI-Resource-Group': cfg().resourceGroup ?? 'default',
-        Authorization:       `Bearer ${token}`
-      },
-      body: JSON.stringify({ input: text })
-    }
-  )
-  const data = await res.json()
-  return data.data[0].embedding
-}
-
 async function chatCompletion(messages) {
   const token = await getToken()
   const res = await fetch(
@@ -185,7 +167,7 @@ async function chatCompletion(messages) {
   return data.orchestration_result.choices[0].message.content
 }
 
-module.exports = { getEmbedding, chatCompletion }
+module.exports = { chatCompletion }
 ```
 
 ![srv/ai-core-client.js open in BAS showing the full file](images/aicorejs.png)
@@ -213,51 +195,25 @@ mv .aicore/aicore-config.json .aicore/config.json
 
 ## Step 6 – Generate Embeddings
 
-1. Create the file `scripts/embed-products.js` with the following content:
+HANA Cloud has a built-in embedding model (`SAP_GXY.20250407`) that generates embeddings directly in SQL — no external service needed.
 
-```js
-const cds = require('@sap/cds')
-const { getEmbedding } = require('../srv/ai-core-client')
+1. Switch back to the **HANA Database Explorer** SQL Console and run:
 
-async function main() {
-  const db = await cds.connect.to('db')
-
-  const products = await db.run(
-    SELECT.from('products.ProductExtension')
-      .columns('Product', 'Description')
-      .where('Embedding is null')
-  )
-
-  console.log(`Generating embeddings for ${products.length} products...`)
-
-  for (const p of products) {
-    const id   = p.PRODUCT
-    const desc = p.DESCRIPTION ?? ''
-    const vector = await getEmbedding(`Product: ${id}. ${desc}`)
-    const vectorStr = '[' + vector.map(n => n.toFixed(8)).join(',') + ']'
-    await db.run(
-      `UPDATE PRODUCTS_PRODUCTEXTENSION SET EMBEDDING = TO_REAL_VECTOR('${vectorStr}') WHERE PRODUCT = '${id}'`
-    )
-    process.stdout.write('.')
-  }
-
-  console.log('\nDone.')
-}
-
-main().catch(console.error)
+```sql
+UPDATE PRODUCTS_PRODUCTEXTENSION
+SET EMBEDDING = VECTOR_EMBEDDING(
+  'Product: ' || PRODUCT || '. ' || DESCRIPTION,
+  'DOCUMENT',
+  'SAP_GXY.20250407'
+)
+WHERE EMBEDDING IS NULL;
 ```
 
-![scripts/embed-products.js open in BAS showing the completed script](images/embed.png)
+Click **Run**. HANA generates a 768-dimensional embedding for each product description using its built-in AI model. All 50 rows should complete in a few seconds.
 
-2. In the terminal, run the script:
+> **`DOCUMENT` vs `QUERY`**: Use `DOCUMENT` when storing embeddings (optimised for retrieval). Use `QUERY` when embedding a search string at query time — you will see this in Exercise 4.
 
-```bash
-cds bind --exec -- node scripts/embed-products.js
-```
-
-> `cds bind --exec` injects your HANA Cloud credentials into the process so the script can connect — the same connection `cds watch --profile hybrid` uses. One dot is printed per product. It takes about 20–30 seconds for all 50.
-
-![Terminal showing dots being printed as embeddings are generated, ending with "Done."](images/embedgen.png)
+![SQL Console showing the UPDATE statement completing with 50 rows affected](images/embedgen.png)
 
 ---
 
@@ -297,7 +253,7 @@ The `EMBEDDING_PREVIEW` column shows the start of the stored vector as a comma-s
 
 You now have:
 - Experience with the HANA Database Explorer for browsing and querying data
-- All 50 service charges enriched with AI embeddings stored in the `REAL_VECTOR(1536)` column
+- All 50 service charges enriched with AI embeddings stored in the `REAL_VECTOR(768)` column
 - Data ready for hybrid search in Exercise 4
 
 **Next**: Combine keyword search and semantic search into one powerful hybrid query.

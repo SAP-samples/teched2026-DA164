@@ -35,7 +35,7 @@ entity ProductExtension {
       Description : String(500);
       BaseUnit    : String(3);
       AISummary   : String(1000);
-      Embedding   : Vector(1536);
+      Embedding   : Vector(768);
 }
 ```
 

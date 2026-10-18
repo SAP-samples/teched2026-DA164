@@ -9,8 +9,7 @@ This is the complete working solution for the DA164 workshop. Import it into you
 | `db/schema.cds` | Ex2 — HANA extension table |
 | `srv/product-service.cds` | Ex6 — Service definition with `@mcp` |
 | `srv/product-service.js` | Ex4 — All handlers: getProducts, syncProducts, hybridSearch, askAdvisor |
-| `srv/ai-core-client.js` | Ex3 — AI Core client (embeddings + chat) |
-| `scripts/embed-products.js` | Ex3 — Embedding generation script |
+| `srv/ai-core-client.js` | Ex3 — AI Core client (chat completion only) |
 | `srv/external/` | Ex1 — Generated S/4HANA API model |
 | `opencode.json` | Ex6 — MCP config for OpenCode (update URL after deploy) |
 
@@ -34,7 +33,7 @@ Log in to CF and bind your HDI container (replace `001` with your seat number):
 cds bind --to da164-hdi-001
 ```
 
-Deploy the schema and sync products:
+Deploy the schema, sync products, then generate embeddings in HANA:
 
 ```bash
 cds deploy --to hana
@@ -46,9 +45,17 @@ In a second terminal:
 ```bash
 curl -X POST http://localhost:4004/odata/v4/product/syncProducts \
   -H "Content-Type: application/json" -d '{}'
+```
 
-node scripts/embed-products.js  # needs cds bind --exec prefix
-cds bind --exec -- node scripts/embed-products.js
+Then in **HANA Database Explorer**, run:
+
+```sql
+UPDATE PRODUCTS_PRODUCTEXTENSION
+SET EMBEDDING = VECTOR_EMBEDDING(
+  'Product: ' || PRODUCT || '. ' || DESCRIPTION,
+  'DOCUMENT', 'SAP_GXY.20250407'
+)
+WHERE EMBEDDING IS NULL;
 ```
 
 ## Deploy to CF
