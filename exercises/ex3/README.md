@@ -196,15 +196,14 @@ module.exports = { getEmbedding, chatCompletion }
 mkdir -p .aicore
 ```
 
-3. Copy the AI Core credentials file into your project. The file is in this repository at [`resources/aicore-config.json`](../../resources/aicore-config.json).
+3. Extract the AI Core credentials file into your project. The file is in this repository at [`resources/aicore-config.zip`](../../resources/aicore-config.zip) — the facilitator will give you the password.
 
    In the terminal:
 
 ```bash
-cp ../../resources/aicore-config.json .aicore/config.json
+unzip -P <password-from-facilitator> -j ../../resources/aicore-config.zip -d .aicore/
+mv .aicore/aicore-config.json .aicore/config.json
 ```
-
-   Or open [`resources/aicore-config.json`](../../resources/aicore-config.json), copy the contents, and paste them into `.aicore/config.json`.
 
 ![.aicore/config.json open in BAS with the credentials structure](images/aicorecreds.png)
 
