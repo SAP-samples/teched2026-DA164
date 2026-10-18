@@ -58,23 +58,21 @@ Try a few different keywords — `'%freight%'`, `'%fee%'`, `'%handling%'` — an
 
 ## Step 2 – Try Semantic Search
 
-Semantic search finds products by *meaning*, not just matching words. For this test you will use the stored embedding of one product to find its most similar neighbors.
+Semantic search finds products by *meaning*, not just matching words. `VECTOR_EMBEDDING` converts your query string into a vector at query time — HANA then measures how close that vector is to each stored product embedding.
 
 Run:
 
 ```sql
 SELECT TOP 5
-  b.PRODUCT,
-  LEFT(b.DESCRIPTION, 100) AS DESCRIPTION,
-  ROUND(COSINE_SIMILARITY(b.EMBEDDING, a.EMBEDDING), 4) AS SIMILARITY
-FROM PRODUCTS_PRODUCTEXTENSION a
-CROSS JOIN PRODUCTS_PRODUCTEXTENSION b
-WHERE a.PRODUCT = (SELECT TOP 1 PRODUCT FROM PRODUCTS_PRODUCTEXTENSION WHERE EMBEDDING IS NOT NULL ORDER BY PRODUCT)
-  AND b.EMBEDDING IS NOT NULL
+  PRODUCT,
+  LEFT(DESCRIPTION, 100) AS DESCRIPTION,
+  ROUND(COSINE_SIMILARITY(EMBEDDING, VECTOR_EMBEDDING('container held at port too long', 'QUERY', 'SAP_GXY.20250407')), 4) AS SIMILARITY
+FROM PRODUCTS_PRODUCTEXTENSION
+WHERE EMBEDDING IS NOT NULL
 ORDER BY SIMILARITY DESC;
 ```
 
-The first row will always be the base product itself (similarity = 1.0). The rows below it are the most similar products in the catalog.
+None of the product descriptions contain the phrase "held at port too long" — yet the results show charges that are semantically relevant to that scenario.
 
 ![SQL Console showing semantic search results with SIMILARITY scores](images/sqlnew3.png)
 
@@ -84,22 +82,20 @@ The first row will always be the base product itself (similarity = 1.0). The row
 
 The hybrid query runs both searches and combines the scores. 60% weight goes to semantic, 40% to keyword.
 
-Run this in the SQL Console — replace `%charge%` with a keyword you found relevant in Step 1:
+Run this in the SQL Console:
 
 ```sql
 SELECT TOP 5
-  b.PRODUCT,
-  LEFT(b.DESCRIPTION, 100) AS DESCRIPTION,
-  ROUND(COSINE_SIMILARITY(b.EMBEDDING, a.EMBEDDING), 4) AS SEMANTIC_SCORE,
-  CASE WHEN LOWER(b.DESCRIPTION) LIKE LOWER('%charge%') THEN 1.0 ELSE 0.0 END AS KEYWORD_SCORE,
+  PRODUCT,
+  LEFT(DESCRIPTION, 100) AS DESCRIPTION,
+  ROUND(COSINE_SIMILARITY(EMBEDDING, VECTOR_EMBEDDING('container held at port too long', 'QUERY', 'SAP_GXY.20250407')), 4) AS SEMANTIC_SCORE,
+  CASE WHEN LOWER(DESCRIPTION) LIKE LOWER('%charge%') THEN 1.0 ELSE 0.0 END AS KEYWORD_SCORE,
   ROUND(
-    0.6 * COSINE_SIMILARITY(b.EMBEDDING, a.EMBEDDING)
-    + 0.4 * CASE WHEN LOWER(b.DESCRIPTION) LIKE LOWER('%charge%') THEN 1.0 ELSE 0.0 END
+    0.6 * COSINE_SIMILARITY(EMBEDDING, VECTOR_EMBEDDING('container held at port too long', 'QUERY', 'SAP_GXY.20250407'))
+    + 0.4 * CASE WHEN LOWER(DESCRIPTION) LIKE LOWER('%charge%') THEN 1.0 ELSE 0.0 END
   , 4) AS HYBRID_SCORE
-FROM PRODUCTS_PRODUCTEXTENSION a
-CROSS JOIN PRODUCTS_PRODUCTEXTENSION b
-WHERE a.PRODUCT = (SELECT TOP 1 PRODUCT FROM PRODUCTS_PRODUCTEXTENSION WHERE EMBEDDING IS NOT NULL ORDER BY PRODUCT)
-  AND b.EMBEDDING IS NOT NULL
+FROM PRODUCTS_PRODUCTEXTENSION
+WHERE EMBEDDING IS NOT NULL
 ORDER BY HYBRID_SCORE DESC;
 ```
 

@@ -19,17 +19,10 @@ This is the complete working solution for the DA164 workshop. Import it into you
 npm install
 ```
 
-Extract the AI Core credentials (password from FACILITATOR_SETUP.md):
+Bind the AI Core and HDI services (replace `001` with your seat number):
 
 ```bash
-mkdir -p .aicore
-unzip -P <zip-password> ../resources/aicore-config.zip -j -d .aicore/
-mv .aicore/aicore-config.json .aicore/config.json
-```
-
-Log in to CF and bind your HDI container (replace `001` with your seat number):
-
-```bash
+cds bind aicore --to ai-extended
 cds bind --to da164-hdi-001
 ```
 

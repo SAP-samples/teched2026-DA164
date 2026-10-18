@@ -22,7 +22,12 @@ In this exercise you will open the **SAP HANA Database Explorer** — a browser-
 
 ## Step 1 – Open HANA Database Explorer
 
-1. In BAS, look at the bottom of the left sidebar. Find the **SAP HANA PROJECTS** panel. Expand your project's `db` entry — you will see **Database Connections** with your HDI container listed. Click the **cube icon** (Database Explorer) on the right side of the row.
+> **Important**: Always open the Database Explorer from the **SAP HANA PROJECTS** panel in BAS — do not try to create the database connection from inside the Database Explorer itself.
+
+1. In BAS, look at the bottom of the left sidebar. Find the **SAP HANA PROJECTS** panel. Expand your project's `db` entry and look under **Database Connections**.
+
+   - **If your HDI container is listed**: click the **cube icon** on the right side of the row to open the Database Explorer.
+   - **If nothing is listed**: hover over **Database Connections**, click **+**, choose **Bind to an HDI Container Service**, and select `da164-hdi-<your-number>`. The container will appear — then click the **cube icon**.
 
 ![SAP HANA PROJECTS panel showing the db entry with the Database Connections and cube icon](images/hdibound.png)
 
@@ -106,90 +111,66 @@ LIMIT 10;
 
 ## Step 5 – Set Up the AI Core Client
 
-Before generating embeddings you need two things: the AI Core client code and your credentials.
+1. Install the SAP AI SDK. In the terminal:
 
-1. Create the file `srv/ai-core-client.js` with the following content:
+```bash
+npm add @sap-ai-sdk/orchestration
+```
+
+![Terminal showing npm add @sap-ai-sdk/orchestration completing successfully](images/npmaddorchestration.png)
+
+2. Add an `aicore` entry to the `"requires"` section in `package.json`:
+
+```json
+"requires": {
+  "aicore": {
+    "vcap": { "label": "aicore" }
+  },
+  ...
+}
+```
+
+3. Create the file `srv/ai-core-client.js` with the following content:
 
 ```js
-const { readFileSync } = require('fs')
+const { OrchestrationClient } = require('@sap-ai-sdk/orchestration')
+const cds = require('@sap/cds')
 
-let _cfg = null
-function cfg() {
-  if (!_cfg) _cfg = JSON.parse(readFileSync('.aicore/config.json'))
-  return _cfg
-}
+const MODEL = 'gpt-4o-mini'
 
-let _token = null
-let _tokenExpiry = 0
-
-async function getToken() {
-  if (_token && Date.now() < _tokenExpiry) return _token
-  const res = await fetch(`${cfg().url}/oauth/token`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      grant_type:    'client_credentials',
-      client_id:     cfg().clientid,
-      client_secret: cfg().clientsecret
-    })
-  })
-  const data = await res.json()
-  _token = data.access_token
-  _tokenExpiry = Date.now() + (data.expires_in - 60) * 1000
-  return _token
+function ensureCredentials() {
+  if (process.env.VCAP_SERVICES || process.env.AICORE_SERVICE_KEY) return
+  const creds = cds.env.requires?.aicore?.credentials
+  if (creds) process.env.AICORE_SERVICE_KEY = JSON.stringify(creds)
 }
 
 async function chatCompletion(messages) {
-  const token = await getToken()
-  const res = await fetch(
-    `${cfg().serviceurls.AI_API_URL}/v2/inference/deployments/${cfg().deploymentId}/completion`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type':      'application/json',
-        'AI-Resource-Group': cfg().resourceGroup ?? 'default',
-        Authorization:       `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        orchestration_config: {
-          module_configurations: {
-            llm_module_config: {
-              model_name:   cfg().model_chat,
-              model_params: { max_tokens: 500 }
-            },
-            templating_module_config: { template: messages }
-          }
-        }
-      })
+  ensureCredentials()
+  const response = await new OrchestrationClient({
+    promptTemplating: {
+      model: { name: MODEL, params: { max_tokens: 500 } },
+      prompt: { template: messages }
     }
-  )
-  const data = await res.json()
-  return data.orchestration_result.choices[0].message.content
+  }).chatCompletion()
+  return response.getContent()
 }
 
 module.exports = { chatCompletion }
 ```
 
-![srv/ai-core-client.js open in BAS showing the full file](images/aicorejs.png)
+![srv/ai-core-client.js open in BAS showing the SDK-based file](images/aicorejs.png)
 
-2. Create the credentials file. In the terminal:
-
-```bash
-mkdir -p .aicore
-```
-
-3. Extract the AI Core credentials file into your project. The file is in this repository at [`resources/aicore-config.zip`](../../resources/aicore-config.zip) — the facilitator will give you the password.
-
-   In the terminal:
+4. Bind the shared AI Core service to your project. In the terminal:
 
 ```bash
-unzip -P <password-from-facilitator> -j ../../resources/aicore-config.zip -d .aicore/
-mv .aicore/aicore-config.json .aicore/config.json
+cds bind aicore --to ai-extended
 ```
 
-![.aicore/config.json open in BAS with the credentials structure](images/aicorecreds.png)
+![Terminal showing cds bind aicore --to ai-extended creating the service key and saving bindings](images/cdsbindai.png)
 
-> **Important**: Add `.aicore/` to your `.gitignore` so these credentials are never committed. Do not share them outside the session.
+CAP creates a service key and stores the credentials locally — no credential files to manage and nothing to add to `.gitignore`.
+
+> **How it works**: In hybrid mode `cds bind` stores credentials in `~/.cds-services.json`. The `ensureCredentials()` function in `ai-core-client.js` reads these and makes them available to the SDK. When deployed to Cloud Foundry, the `ai-extended` service is bound to the app directly and the SDK reads from `VCAP_SERVICES` automatically.
 
 ---
 

@@ -8,6 +8,7 @@
   "dependencies": {
     "@cap-js/hana": "^2",
     "@cap-js/mcp": "^1",
+    "@sap-ai-sdk/orchestration": "^1",
     "@sap/cds": "^9",
     "@sap-cloud-sdk/connectivity": "^4",
     "@sap-cloud-sdk/http-client": "^4",
@@ -25,6 +26,9 @@
       "format": "cql"
     },
     "requires": {
+      "aicore": {
+        "vcap": { "label": "aicore" }
+      },
       "API_PRODUCT_SRV": {
         "kind": "odata-v2",
         "model": "srv/external/API_PRODUCT_SRV",
