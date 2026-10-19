@@ -53,7 +53,7 @@ export default class ProductService extends cds.ApplicationService {
 
       const results = await db.run(
         `SELECT TOP ${top}
-           PRODUCT, PRODUCTTYPE, DESCRIPTION, BASEUNIT, AISUMMARY,
+           PRODUCT, PRODUCTTYPE, DESCRIPTION, BASEUNIT,
            ROUND(
              0.6 * COSINE_SIMILARITY(EMBEDDING, VECTOR_EMBEDDING(?, 'QUERY', '${EMBED_MODEL}'))
              + 0.4 * CASE WHEN LOWER(DESCRIPTION) LIKE LOWER(?) THEN 1.0 ELSE 0.0 END
@@ -68,8 +68,7 @@ export default class ProductService extends cds.ApplicationService {
         Product:     r.PRODUCT,
         ProductType: r.PRODUCTTYPE,
         Description: r.DESCRIPTION,
-        BaseUnit:    r.BASEUNIT,
-        AISummary:   r.AISUMMARY ?? null
+        BaseUnit:    r.BASEUNIT
       }))
     })
 
@@ -79,7 +78,7 @@ export default class ProductService extends cds.ApplicationService {
 
       const context = await db.run(
         `SELECT TOP 3
-           PRODUCT, DESCRIPTION, AISUMMARY
+           PRODUCT, DESCRIPTION
          FROM PRODUCTS_PRODUCTEXTENSION
          WHERE EMBEDDING IS NOT NULL
          ORDER BY ROUND(
@@ -90,7 +89,7 @@ export default class ProductService extends cds.ApplicationService {
       )
 
       const contextText = context.map(r =>
-        `Charge ${r.PRODUCT}: ${r.DESCRIPTION || ''}${r.AISUMMARY ? ' — ' + r.AISUMMARY : ''}`
+        `Charge ${r.PRODUCT}: ${r.DESCRIPTION || ''}`
       ).join('\n')
 
       const answer = await chatCompletion([

@@ -34,7 +34,6 @@ entity ProductExtension {
       ProductType : String(4);
       Description : String(500);
       BaseUnit    : String(3);
-      AISummary   : String(1000);
       Embedding   : Vector(768);
 }
 ```
@@ -42,7 +41,7 @@ entity ProductExtension {
 ![The db/schema.cds file open in BAS with the ProductExtension entity definition](images/schema.png)
 
 > **What are these fields?**
-> `Product`, `ProductType`, `Description`, and `BaseUnit` come from S/4HANA. `AISummary` and `Embedding` are new fields that only exist in your extension — they will be filled in by AI in Exercise 3.
+> `Product`, `ProductType`, `Description`, and `BaseUnit` come from S/4HANA. `Embedding` is a new field that only exists in your extension — it will be filled in by the AI embedding step in Exercise 3.
 
 ---
 
@@ -289,7 +288,7 @@ You should see:
 curl "http://localhost:4004/odata/v4/product/Products?\$top=5"
 ```
 
-You should see product rows with `Product`, `ProductType`, `Description`, and `BaseUnit` filled in. The `AISummary` column is empty for now — you will fill it in Exercise 3.
+You should see product rows with `Product`, `ProductType`, `Description`, and `BaseUnit` filled in. The `Embedding` column is empty for now — you will fill it in Exercise 3.
 
 ![Terminal showing the JSON response with service charge rows from HANA](images/curlop.png)
 

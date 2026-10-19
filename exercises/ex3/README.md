@@ -55,7 +55,7 @@ In this exercise you will open the **SAP HANA Database Explorer** — a browser-
 
 2. Click `PRODUCTS_PRODUCTEXTENSION` to open it. Then click **Open Data** to see the rows.
 
-You should see the 50 product rows you synced in Exercise 2, with `AISUMMARY` and `EMBEDDING` empty for now.
+You should see the 50 product rows you synced in Exercise 2, with `EMBEDDING` empty for now.
 
 ![HANA Database Explorer showing PRODUCTS_PRODUCTEXTENSION Raw Data with 50 product rows](images/proddata.png)
 
@@ -73,7 +73,6 @@ Confirm you can see these columns:
 |---|---|
 | `PRODUCT` | NVARCHAR(40) |
 | `DESCRIPTION` | NVARCHAR(500) |
-| `AISUMMARY` | NVARCHAR(1000) |
 | `EMBEDDING` | REAL_VECTOR(768) |
 
 > The `REAL_VECTOR(768)` type is HANA Cloud's built-in vector column. It stores 768 numbers per row — one for each dimension of the AI embedding.

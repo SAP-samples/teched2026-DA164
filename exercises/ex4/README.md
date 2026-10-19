@@ -126,7 +126,7 @@ this.on('hybridSearch', async (req) => {
 
   const results = await db.run(
     `SELECT TOP ${top}
-       PRODUCT, PRODUCTTYPE, DESCRIPTION, BASEUNIT, AISUMMARY,
+       PRODUCT, PRODUCTTYPE, DESCRIPTION, BASEUNIT,
        ROUND(
          0.6 * COSINE_SIMILARITY(EMBEDDING, VECTOR_EMBEDDING(?, 'QUERY', 'SAP_GXY.20250407'))
          + 0.4 * CASE WHEN LOWER(DESCRIPTION) LIKE LOWER(?) THEN 1.0 ELSE 0.0 END
@@ -141,8 +141,7 @@ this.on('hybridSearch', async (req) => {
     Product:     r.PRODUCT,
     ProductType: r.PRODUCTTYPE,
     Description: r.DESCRIPTION,
-    BaseUnit:    r.BASEUNIT,
-    AISummary:   r.AISUMMARY ?? null
+    BaseUnit:    r.BASEUNIT
   }))
 })
 ```
