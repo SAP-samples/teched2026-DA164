@@ -74,7 +74,7 @@ const { chatCompletion } = aiCoreClient
 
 If they are already there from a previous step, skip ahead. If not, add them now.
 
-3. Also make sure `db` is declared inside `init()`. You should already have this from Exercise 4:
+4. Also make sure `db` is declared inside `init()`. You should already have this from Exercise 4:
 
 ```js
 async init() {
@@ -84,7 +84,7 @@ async init() {
 }
 ```
 
-![product-service.js showing require imports and db connection line inside init()](images/prodservdb.png)
+![product-service.js showing ESM imports and db connection line inside init()](images/prodservdb.png)
 
 ---
 
