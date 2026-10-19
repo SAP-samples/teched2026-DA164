@@ -98,9 +98,13 @@ cd ~/projects/da164-product-advisor-<your-number>
 npx mbt build
 ```
 
+![Terminal showing npx mbt build completing successfully with mtar archive created](../ex5/images/mbtbuild.png)
+
 ```bash
 cf deploy mta_archives/da164-product-advisor-<your-number>_1.0.0.mtar
 ```
+
+![Terminal showing cf deploy output with db-deployer and srv modules starting successfully](../ex5/images/cfdeploy.png)
 
 2. When the deploy finishes, find your app route:
 
