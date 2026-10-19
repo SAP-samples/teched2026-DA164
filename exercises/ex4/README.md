@@ -35,8 +35,6 @@ Using both together gives better results than either one alone.
 
 1. Open the **HANA Database Explorer** (same as Exercise 3) and open the **SQL Console**.
 
-![HANA Database Explorer open with SQL Console tab active](images/sql1.png)
-
 2. Run this keyword search:
 
 ```sql
