@@ -54,7 +54,7 @@ The AI never invents service charges. It can only use what HANA returns. If HANA
 2. Check that the following `require` line is at the very top of the file, below any other imports:
 
 ```js
-const { getEmbedding, chatCompletion } = require('./ai-core-client')
+const { chatCompletion } = require('./ai-core-client')
 ```
 
 If it is already there from a previous step, skip ahead. If not, add it now.
@@ -80,27 +80,23 @@ async init() {
 ```js
 this.on('askAdvisor', async (req) => {
   const { question } = req.data
-
-  // Step 1 – Perceive: turn the question into a search vector
-  const queryVector = await getEmbedding(question)
-  const vectorJson  = JSON.stringify(queryVector)
   const likePattern = `%${question}%`
 
-  // Step 2 – Retrieve: search HANA for the most relevant service charges
+  // Step 1 – Retrieve: search HANA for the most relevant service charges
   const products = await db.run(
     `SELECT TOP 3
        PRODUCT, PRODUCTTYPE, DESCRIPTION, BASEUNIT,
        ROUND(
-         0.6 * COSINE_SIMILARITY(EMBEDDING, TO_REAL_VECTOR(?))
+         0.6 * COSINE_SIMILARITY(EMBEDDING, VECTOR_EMBEDDING(?, 'QUERY', 'SAP_GXY.20250407'))
          + 0.4 * CASE WHEN LOWER(DESCRIPTION) LIKE LOWER(?) THEN 1.0 ELSE 0.0 END
        , 4) AS HYBRID_SCORE
      FROM PRODUCTS_PRODUCTEXTENSION
      WHERE EMBEDDING IS NOT NULL
      ORDER BY HYBRID_SCORE DESC`,
-    [vectorJson, likePattern]
+    [question, likePattern]
   )
 
-  // Step 3 – Reason: put the service charges into a context block for the AI
+  // Step 2 – Reason: put the service charges into a context block for the AI
   const context = products.length > 0
     ? products.map((p, i) =>
         `Product ${i + 1}: ${p.PRODUCT} (Type: ${p.PRODUCTTYPE}, Unit: ${p.BASEUNIT})\n` +
@@ -126,7 +122,7 @@ ${context}`
     }
   ]
 
-  // Step 4 – Respond: return the AI's answer
+  // Step 3 – Respond: return the AI's answer
   const answer = await chatCompletion(messages)
   return { answer }
 })
@@ -136,8 +132,8 @@ ${context}`
 
 ![product-service.js showing the complete askAdvisor handler](images/askadvisor.png)
 
-> **What do the three `?` placeholders do?**
-> The first `?` is the vector (for semantic similarity). The second `?` is the raw text (for fuzzy keyword search). The third `?` is the vector again (for the `OR` condition). HANA fills these in at runtime — this is how you pass parameters safely without building query strings by hand.
+> **What do the two `?` placeholders do?**
+> The first `?` is the search text for `VECTOR_EMBEDDING` — HANA converts it to a vector inline, same as in Exercise 4. The second `?` is the raw text for the `LIKE` keyword match. Both are passed safely as query parameters.
 
 ---
 
@@ -303,8 +299,6 @@ Before building, make sure your `package.json` is set up correctly for productio
   "watch": "cds watch"
 },
 ```
-
-> **Why `cds-serve` and not `cds serve`?** The MTA build stages your app from `gen/srv` with production dependencies only. `cds serve` needs the `cds` CLI from `@sap/cds-dk` (a devDependency — not installed in production). `cds-serve` is a binary shipped directly with `@sap/cds` and is always available. Using `cds serve` causes the app to crash on CF with `sh: 1: cds: not found`.
 
 3. Check that `"cds"` → `"requires"` does **not** contain an `"xsuaa"` entry. The Full Stack Cloud Application template sometimes adds this. If you see a block like the one below, **remove the entire `"xsuaa"` block**:
 
