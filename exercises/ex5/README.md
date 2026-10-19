@@ -537,7 +537,7 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 4. The **Choose an API Source** dialog opens. Select **SAP Cloud Application Programming Model**.
 
-5. Select the **CAP_PRODUCT_ADVISOR** destination. In the **Resource Path** field enter `/odata/v4/product` and click the refresh icon.
+5. Select the **CAP_PRODUCT_ADVISOR** destination. In the **Resource Path** field enter `/odata/v4/product/$metadata` and click the refresh icon.
 
 ![CAP_PRODUCT_ADVISOR destination selected with API methods loaded](images/CAPaction.png)
 
