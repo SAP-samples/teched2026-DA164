@@ -1,7 +1,7 @@
 _schema-version: 3.3.0
 ID: da164-product-advisor-000
 version: 1.0.0
-description: "A simple CAP project."
+description: "DA164 Product Advisor — Solution"
 parameters:
   enable-parallel-deployments: true
 build-parameters:
@@ -20,12 +20,14 @@ modules:
     build-parameters:
       builder: npm-ci
     provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+      - name: srv-api
         properties:
           srv-url: ${default-url}
     requires:
       - name: da164-product-advisor-000-db
       - name: ai-extended
+
+  - name: da164-product-advisor-000-db-deployer
     type: hdb
     path: gen/db
     parameters:
