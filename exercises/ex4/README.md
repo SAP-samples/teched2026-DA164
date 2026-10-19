@@ -210,4 +210,4 @@ You now have:
 
 **Next**: Use this search as the foundation for an AI advisor that answers product questions in full sentences.
 
-Continue to [Exercise 6 – Expose Your CAP App as an MCP Server](../ex6/README.md)
+Continue to [Exercise 5 – Build, Deploy, and Connect Your AI Product Advisor Agent](../ex5/README.md)
