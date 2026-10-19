@@ -131,6 +131,11 @@ Work through the exercises in order. Each builds directly on the previous one �
   - Expose hybrid search as a CAP action
   - Compare keyword search vs semantic search vs hybrid
 
+- [Exercise 5 – Build, Deploy, and Connect Your AI Product Advisor Agent](exercises/ex5/README.md) *(~30 min)*
+  - Write the `askAdvisor` handler that turns hybrid search results into AI-generated answers
+  - Deploy your CAP app to Cloud Foundry with a live HTTPS URL
+  - Create a Joule Skill so Maya can ask service charge questions directly in Joule Studio
+
 - [Exercise 6 – Expose Your CAP App as an MCP Server](exercises/ex6/README.md) *(~20 min)*
   - Install `@cap-js/mcp` and annotate `ProductService` with `@mcp`
   - Connect OpenCode to your deployed CAP app via MCP

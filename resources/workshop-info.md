@@ -28,7 +28,7 @@ UnBbpWyxaAAfmu4QAku2qSicZce4IWA6
 
 ## SAP AI Core
 
-Copy the file [`resources/aicore-config.json`](aicore-config.json) into your project at `.aicore/config.json`. The exercises will tell you when to do this.
+AI Core credentials are managed automatically via Cloud Foundry service binding — no credential files to copy. The exercises will guide you through running `cds bind aicore --to ai-extended` at the right step.
 
 ---
 
