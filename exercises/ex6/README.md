@@ -118,6 +118,8 @@ Look for the **routes:** line in the output, e.g.:
 routes:   da164-dev-da164-product-advisor-<your-number>-srv.cfapps.eu10-005.hana.ondemand.com
 ```
 
+![cf app command output showing the routes line with the app URL highlighted](../ex5/images/cfapproute.png)
+
 3. Verify the MCP endpoint is live:
 
 ```bash
