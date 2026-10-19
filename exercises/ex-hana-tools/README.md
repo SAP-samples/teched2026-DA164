@@ -173,10 +173,10 @@ This is the column you will create in Exercise 2. Ask Copilot to validate the DD
 
 ```
 Is the following SQL valid for adding a vector column in SAP HANA Cloud?
-ALTER TABLE PRODUCTS_PRODUCTEXTENSION ADD (EMBEDDING REAL_VECTOR(1536))
+ALTER TABLE PRODUCTS_PRODUCTEXTENSION ADD (EMBEDDING REAL_VECTOR(768))
 ```
 
-> Copilot validates the syntax and confirms whether `REAL_VECTOR(1536)` is the correct type.
+> Copilot validates the syntax and confirms whether `REAL_VECTOR(768)` is the correct type.
 
 ### Ask HANA documentation a question
 
@@ -253,6 +253,4 @@ Your AI assistant now has the same live HANA knowledge that a DBA would have. Ev
 | Validated SQL and DDL | No surprises when you run it for the first time |
 | Learned HDI artifact types | Ready to write the vector table definition in Exercise 2 |
 
-**Next**: Add the AI-enriched vector column to your HANA Cloud table.
-
-Continue to [Exercise 2 – Extend & Persist in SAP HANA Cloud](../ex2/README.md)
+**This is an optional exercise.** Return to the [Session overview](../../README.md) to continue with other exercises.

@@ -5,7 +5,7 @@ Welcome to **DA164 – Build AI Agents and Applications Natively on SAP HANA Clo
 In this exercise you will create a fresh CAP project and verify it starts. You will add credentials and external service models in the exercises where they are first needed — nothing else is required right now.
 
 > **The story so far:**
-> Maya is a Sales Engineer at Precision Parts AG. Every day she gets dozens of customer questions like *"do you have a corrosion-resistant fastener for marine use?"* — and it takes her 2–3 days to answer each one because S/4HANA's search only works with exact product codes. By the end of this session you will have built the app that gives her an AI-powered answer in seconds. This exercise creates the project foundation.
+> Maya is a Freight Pricing Specialist at **GlobalFreight AG**, a logistics company running SAP S/4HANA Cloud. Every day she gets dozens of customer inquiries like *"What charges apply for a container held at port past the free period?"* — and each complex inquiry takes 30–45 minutes because S/4HANA's search only works with exact charge codes. By the end of this session you will have built the app that gives her an AI-powered answer in seconds. This exercise creates the project foundation.
 
 ---
 

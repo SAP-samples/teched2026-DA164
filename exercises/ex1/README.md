@@ -149,8 +149,6 @@ UnBbpWyxaAAfmu4QAku2qSicZce4IWA6
 
 ![package.json open in BAS showing the API_PRODUCT_SRV configuration block with the API key filled in](images/packagejson.png)
 
-<!-- TODO: retake packagejson.png to show the full cds section with API_PRODUCT_SRV added alongside existing entries (outbox: false, etc.) -->
-
 ---
 
 ## Step 4 – Create the Service Definition

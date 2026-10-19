@@ -51,13 +51,14 @@ The AI never invents service charges. It can only use what HANA returns. If HANA
 
 1. Open [srv/product-service.js](../../srv/product-service.js).
 
-2. Check that the following `require` line is at the very top of the file, below any other imports:
+2. Check that the following lines are at the very top of the file, below the `import cds` line:
 
 ```js
-const { chatCompletion } = require('./ai-core-client')
+import aiCoreClient from './ai-core-client.js'
+const { chatCompletion } = aiCoreClient
 ```
 
-If it is already there from a previous step, skip ahead. If not, add it now.
+If they are already there from a previous step, skip ahead. If not, add them now.
 
 3. Also make sure `db` is declared inside `init()`. You should already have this from Exercise 4:
 
@@ -182,7 +183,7 @@ Ask something completely outside the service charge catalog:
 ```bash
 curl -X POST http://localhost:4004/odata/v4/product/askAdvisor \
   -H "Content-Type: application/json" \
-  -d '{"question": "Which port handling charges apply to air freight shipments?"}'
+  -d '{"question": "What is the current EUR/USD exchange rate?"}'
 ```
 
 The advisor should politely decline — something like:
@@ -501,7 +502,7 @@ After the project is created, you need to create the skill itself inside the pro
 
 ![Create dropdown inside the project showing Joule Skill option](images/createjouleskillinside.png)
 
-3. Give your skill a name and a description that tells Joule when to use it:
+2. Give your skill a name and a description that tells Joule when to use it:
 
 | Field | Value |
 |---|---|
@@ -512,7 +513,7 @@ After the project is created, you need to create the skill itself inside the pro
 
 ![Skill creation form showing Name, Identifier, and Description fields](images/jouleskillinfo.png)
 
-4. Click **Create**.
+3. Click **Create**.
 
 ![Empty skill flow canvas](images/emptycanva.png)
 
@@ -728,7 +729,7 @@ What charges apply for a dangerous goods shipment in a 40ft container?
 
 ![Joule chat showing dangerous goods question with grounded service charge answer](images/joule1.png)
 
-3. Try a second question:
+2. Try a second question:
 
 ```
 Which charges apply to air freight shipments?
@@ -736,7 +737,7 @@ Which charges apply to air freight shipments?
 
 ![Joule chat showing air freight question with structured charge list](images/joule2.png)
 
-4. Try an out-of-scope question to confirm the advisor stays grounded:
+3. Try an out-of-scope question to confirm the advisor stays grounded:
 
 ```
 What is the current fuel surcharge rate for transpacific routes?
@@ -762,7 +763,7 @@ Joule Skill (SAP Build)
 CAP ProductService on Cloud Foundry
         │  hybrid search (keyword + semantic)
         ▼
-SAP HANA Cloud — REAL_VECTOR(1536) column
+SAP HANA Cloud — REAL_VECTOR(768) column
         │  top 3 products returned
         ▼
 SAP AI Core (LLM)

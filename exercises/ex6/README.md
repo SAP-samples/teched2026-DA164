@@ -91,19 +91,28 @@ annotate ProductService with @mcp.instructions: 'You are a service charge adviso
 
 ## Step 4 – Deploy the Updated App
 
-1. Redeploy to Cloud Foundry so the changes take effect:
+1. Rebuild the MTA archive and redeploy to Cloud Foundry:
 
 ```bash
-cf push
+cd ~/projects/da164-product-advisor-<your-number>
+npx mbt build
 ```
 
-2. When the deploy finishes, note your app route:
-
-```
-routes: da164-product-<your-user>.cfapps.<landscape>.hana.ondemand.com
+```bash
+cf deploy mta_archives/da164-product-advisor-<your-number>_1.0.0.mtar
 ```
 
-![cf push terminal output showing app route highlighted in a blue box](images/cfpushroute.png)
+2. When the deploy finishes, find your app route:
+
+```bash
+cf app da164-product-advisor-<your-number>-srv
+```
+
+Look for the **routes:** line in the output, e.g.:
+
+```
+routes:   da164-dev-da164-product-advisor-<your-number>-srv.cfapps.eu10-005.hana.ondemand.com
+```
 
 3. Verify the MCP endpoint is live:
 
@@ -233,4 +242,4 @@ You added **one package** and **one annotation** — and your CAP app became a f
 
 ---
 
-*Back to [Exercise 4 – Hybrid Search: Full-Text + Semantic](../ex4/README.md) | [Session overview](../../README.md)*
+*Back to [Exercise 5 – Build, Deploy, and Connect Your AI Product Advisor Agent](../ex5/README.md) | [Session overview](../../README.md)*
