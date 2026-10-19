@@ -50,7 +50,7 @@ ORDER BY PRODUCT;
 
 Click the **Run** button (green triangle).
 
-![SQL Console showing keyword search results for charge with product rows](images/sql2.png)
+![SQL Console showing keyword search results for charge with product rows](images/sqlnew8.png)
 
 Try a few different keywords — `'%freight%'`, `'%fee%'`, `'%handling%'` — and see which products appear. Write down 2–3 results.
 
