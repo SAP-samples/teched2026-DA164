@@ -24,33 +24,27 @@ In this exercise you will open the **SAP HANA Database Explorer** — a browser-
 
 > **Important**: Always open the Database Explorer from the **SAP HANA PROJECTS** panel in BAS — do not try to create the database connection from inside the Database Explorer itself.
 
-1. In BAS, look at the bottom of the left sidebar. Find the **SAP HANA PROJECTS** panel. Expand your project's `db` entry. You will see **Database Connections** with nothing bound yet.
-
-![SAP HANA PROJECTS panel showing the db entry with Database Connections empty](images/beforebind.png)
-
-2. Hover over **Database Connections** and click the **+** icon. A prompt appears asking what to bind. Select **HDI Container**.
-
-![Bind prompt showing HDI Container as the selected option](images/selectbindhdi.png)
-
-3. Choose your HDI container `da164-hdi-<your-number>` from the list. The container appears under **Database Connections**. Click the **cube icon** on the right side of the row to open the Database Explorer.
+1. In BAS, scroll down in the left sidebar to the **SAP HANA PROJECTS** panel. Expand your project's `db` entry. Your HDI container from Exercise 2 is listed under **Database Connections**. Click the **cube icon** on the right side of the row to open the Database Explorer.
 
 ![SAP HANA PROJECTS panel showing the HDI container bound with cube icon](images/hdibound.png)
 
-4. BAS asks whether to open an external website. Click **Open**.
+2. BAS asks whether to open an external website. Click **Open**.
 
 ![BAS dialog asking to open the HANA Database Explorer external URL](images/openhdidia.png)
 
-5. A browser tab opens with the BTP login page. Click **Sign in with default identity provider**.
+3. A browser tab opens with the BTP login page. Click **Sign in with default identity provider**.
 
 ![BTP login page with Sign in with default identity provider button](images/login.png)
 
-6. An application authorization page appears. Click **Authorize**.
+4. An application authorization page appears. Click **Authorize**.
 
 ![Application Authorization page requesting permissions — click Authorize](images/authorise.png)
 
-7. The HANA Database Explorer loads.
+5. The HANA Database Explorer loads. Right-click your database connection in the left panel and choose **Open SQL Console**.
 
 ![SAP HANA Database Explorer loading screen](images/loadingdbx.png)
+
+![Right-click context menu on the database connection with Open SQL Console highlighted](images/opensqlconsole.png)
 
 ---
 
@@ -86,11 +80,7 @@ Confirm you can see these columns:
 
 ## Step 4 – Run Some SQL Queries
 
-1. Right-click on your database connection in the left panel and choose **Open SQL Console**.
-
-![Right-click context menu on the database connection with Open SQL Console highlighted](images/opensqlconsole.png)
-
-2. Count how many products you have:
+1. Count how many products you have:
 
 ```sql
 SELECT COUNT(*) AS TOTAL FROM PRODUCTS_PRODUCTEXTENSION;
@@ -133,6 +123,8 @@ npm add @sap-ai-sdk/orchestration
   ...
 }
 ```
+
+![package.json open in BAS showing the aicore entry added to the requires section](images/aicorepackajejson.png)
 
 3. Create the file `srv/ai-core-client.js` with the following content:
 

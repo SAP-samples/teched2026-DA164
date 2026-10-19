@@ -51,7 +51,21 @@ The AI never invents service charges. It can only use what HANA returns. If HANA
 
 1. Open [srv/product-service.js](../../srv/product-service.js).
 
-2. Check that the following lines are at the very top of the file, below the `import cds` line:
+2. Check that the **very first line** of the file is the ESM import of CDS — not `require`:
+
+```js
+import cds from '@sap/cds'
+```
+
+If it says `const cds = require('@sap/cds')`, change it to the `import` form above, and make sure the class declaration uses `export default`:
+
+```js
+export default class ProductService extends cds.ApplicationService {
+```
+
+> **Why this matters**: `ai-core-client.js` uses `require`/`module.exports` (CommonJS), but `product-service.js` must be ESM (`import`/`export default`). You cannot mix `import` statements with `require` in the same file — the whole file must use one style consistently.
+
+3. Check that the following lines are at the very top of the file, below the `import cds` line:
 
 ```js
 import aiCoreClient from './ai-core-client.js'
@@ -353,21 +367,13 @@ The build takes about a minute. When it finishes you will see something like:
 
 ## Step B4 – Deploy to Cloud Foundry
 
-1. Make sure you are logged in to Cloud Foundry. If your session has expired since Exercise 2, log in again using SSO:
+1. Make sure you are logged in to Cloud Foundry. In the BAS menu bar, go to **View → Cloud Foundry**. If it shows **Login required**, click the login button and follow the SSO wizard — same as you did in Exercise 2.
 
-```bash
-cf login -a https://api.cf.eu10-005.hana.ondemand.com --sso
-```
-
-The terminal displays a URL to get a one-time passcode. Open it in your browser, copy the passcode, and paste it back into the terminal. Then select org `da164` and space `dev`.
-
-![Terminal showing the cf login --sso command with the passcode URL](../ex2/images/cflogin.png)
+![Cloud Foundry panel showing Login required with the login button highlighted](../ex2/images/cfwizard.png)
 
 ![Browser showing the temporary passcode](../ex2/images/temppasscode.png)
 
 ![Terminal after pasting the passcode and selecting org/space — login succeeded](../ex2/images/pastepasscode.png)
-
-![Terminal showing org and space selection](../ex2/images/chooseorg.png)
 
 > If you are still logged in from Exercise 2, skip this step and go straight to step 2.
 
@@ -539,6 +545,8 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 5. Select the **CAP_PRODUCT_ADVISOR** destination. In the **Resource Path** field enter `/odata/v4/product/$metadata` and click the refresh icon.
 
+![Resource Path field filled with /odata/v4/product/$metadata and refresh icon](images/addresourcepathaction.png)
+
 ![CAP_PRODUCT_ADVISOR destination selected with API methods loaded](images/CAPaction.png)
 
 > The service operations appear because the shared CAP app behind this destination is already deployed and active. You do not need to activate anything — just select and proceed.
@@ -609,9 +617,9 @@ After the action is added to the canvas, you need to:
 
 | Field | Value |
 |---|---|
-| **Name** | `destCAP` |
-| **Type** | Destination |
-| **Identifier** | `CAP_PRODUCT_ADVISOR` |
+| **Identifier** | `destCAP` |
+| **Description** | `CAP Product Advisor destination` |
+| **Destination** | `CAP_PRODUCT_ADVISOR` |
 
 ![Variables panel showing destCAP destination variable](images/createdestvariable.png)
 

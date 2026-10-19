@@ -117,6 +117,8 @@ Now you will add this search as a proper API action so any client can use it wit
 const db = await cds.connect.to('db')
 ```
 
+![product-service.js showing the const db line added inside init()](images/step4constdb.png)
+
 3. After the closing `})` of the `syncProducts` handler, add the `hybridSearch` handler:
 
 ```js
@@ -145,6 +147,8 @@ this.on('hybridSearch', async (req) => {
   }))
 })
 ```
+
+![product-service.js open in BAS showing the complete hybridSearch handler](images/hybridsearchcodeshowbas.png)
 
 > **How the scoring works**: Each result gets a `HYBRID_SCORE` between 0 and 1. `VECTOR_EMBEDDING(?, 'QUERY', 'SAP_GXY.20250407')` converts your search string into a 768-dimensional vector using HANA's built-in AI model — no external service call needed. `COSINE_SIMILARITY` then measures meaning overlap against the stored product embeddings. The keyword part is 1.0 if the query words appear in the description, 0.0 if not. Combining them 60/40 means semantically close products rank even higher when they also match your words.
 

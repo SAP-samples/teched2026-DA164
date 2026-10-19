@@ -2,7 +2,7 @@
 
 Welcome to **DA164 – Build AI Agents and Applications Natively on SAP HANA Cloud**.
 
-In this exercise you will create a fresh CAP project and verify it starts. You will add credentials and external service models in the exercises where they are first needed — nothing else is required right now.
+In this exercise you will create a fresh CAP project. You will add credentials and external service models in the exercises where they are first needed — nothing else is required right now.
 
 > **The story so far:**
 > Maya is a Freight Pricing Specialist at **GlobalFreight AG**, a logistics company running SAP S/4HANA Cloud. Every day she gets dozens of customer inquiries like *"What charges apply for a container held at port past the free period?"* — and each complex inquiry takes 30–45 minutes because S/4HANA's search only works with exact charge codes. By the end of this session you will have built the app that gives her an AI-powered answer in seconds. This exercise creates the project foundation.
@@ -21,7 +21,7 @@ Open **SAP Build Code** and log in before starting. Your login details are on yo
 
 > Your seat number is the 3-digit number at the end of your username (e.g. `da164-007` → seat **007**).
 
-> Everything else (API key, AI Core credentials, S/4HANA model file) will be introduced at the exercise where it is first used.
+> Everything else (API key, S/4HANA model file) will be introduced at the exercise where it is first used.
 
 ---
 
@@ -39,7 +39,7 @@ Before creating a project you need a BAS dev space with the SAP HANA extension e
 
 ![Create Dev Space button in the Dev Space Manager](images/createnewbasspace.png)
 
-3. Give it a name (e.g. `DA164`), select **Full Stack Cloud Application** as the kind, check **SAP HANA Tools** under Additional SAP Extensions, then click **Create Dev Space**.
+3. Give it a name (e.g. `Full_Stack`), select **Full Stack Cloud Application** as the kind, check **SAP HANA Tools** under Additional SAP Extensions, then click **Create Dev Space**.
 
 ![Create Dev Space form with name, kind Full Stack Cloud Application, and SAP HANA Tools checked](images/createnewfullstackspace.png)
 
@@ -109,6 +109,8 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 >
 > If you saw a **"Project creation failed"** error, create the project directly from inside your BAS dev space instead:
 >
+> First, make sure your dev space is **RUNNING** — go back to the **Dev Space Manager** and start it if needed. Once it shows RUNNING, click its name to open BAS.
+>
 > 1. In the BAS menu bar, click **Help → Get Started**.
 >
 > ![Help menu open with Get Started highlighted](images/gettingstartedhelp.png)
@@ -168,8 +170,6 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 npm install
 ```
 
-> **Why `npm install`?** CAP builds on top of Express — the Node.js HTTP framework. CAP manages the Express version itself as a peer dependency, so you never need to list Express in your own `package.json`. Running `npm install` installs CAP and Express together in one step.
-
 > **Note:** You may see `npm audit` warnings about vulnerabilities — these are from indirect dev dependencies and do not affect the workshop. Ignore them.
 
 ![Terminal showing npm install output with package count and timing](images/npminstall.png)
@@ -189,40 +189,9 @@ touch .env
 
 ---
 
-## Step 5 – Verify the Project Starts
-
-1. Run:
-
-```bash
-cds watch
-```
-
-2. You should see output similar to one of these (the exact message depends on your CAP version):
-
-```
-cds - server listening on { url: 'http://localhost:4004' }
-```
-
-or:
-
-```
-[cds] - no models found in db/,srv/,app/
-[cds] - waiting for some models ...
-```
-
-No red errors is what matters. The URL may not appear if there are no models yet — that is normal at this stage.
-
-3. Press **Ctrl+C** to stop the server.
-
-![cds watch running with localhost URL and no errors](images/cdswatch.png)
-
-> **If you see an XSUAA or passport error:** stop the server, remove the `"xsuaa"` block from `cds.requires` in `package.json`, then run `cds watch` again.
-
----
-
 ## Summary
 
-Your CAP project is created, dependencies are installed, and the app starts cleanly. You are ready to build.
+Your CAP project is created and dependencies are installed. You are ready to build.
 
 **Next**: Connect to live S/4HANA product data via a BTP Destination.
 

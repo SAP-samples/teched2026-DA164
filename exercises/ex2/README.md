@@ -1,12 +1,12 @@
 # Exercise 2 – Extend & Persist in SAP HANA Cloud
 
-In this exercise you will create a table in SAP HANA Cloud to store service charge data from S/4HANA — plus extra fields that don't exist in S/4HANA, like an AI summary and a vector column for search. Then you will copy the service charges into that table.
+In this exercise you will create a table in SAP HANA Cloud to store service charge data from S/4HANA — plus a vector column for AI-powered search. Then you will copy the service charges into that table.
 
 > **Why store a copy?**
 > Calling S/4HANA on every request is fine for basic reads, but you can't do AI-powered search directly on S/4HANA data. By keeping a copy in HANA Cloud, you can add custom fields and run vector searches on your own terms — without touching S/4HANA.
 
 > **Story context:**
-> You have access to S/4HANA service charge data — but S/4HANA has no room for AI fields like embeddings or summaries. In this exercise you will create your own service charge table in HANA Cloud that holds everything S/4HANA has *plus* the AI fields you'll need later. Think of it as giving Maya's team their own working copy of the catalog, ready to be enriched.
+> You have access to S/4HANA service charge data — but S/4HANA has no room for AI fields like embeddings. In this exercise you will create your own service charge table in HANA Cloud that holds everything S/4HANA has *plus* the vector column you'll need later. Think of it as giving Maya's team their own working copy of the catalog, ready to be enriched.
 
 ---
 
@@ -83,53 +83,7 @@ npm install
 
 ![Org and space selection in the BAS wizard](images/chooseorg.png)
 
-5. Create your personal HDI container — **replace `001` with your 3-digit seat number** (from your login username, e.g. `da164-0042` → `042`):
-
-```bash
-cf create-service hana hdi-shared da164-hdi-001
-```
-
-![Terminal showing cf create-service hana hdi-shared da164-hdi-001 command](images/cfcreateserv.png)
-
-The service takes about 30 seconds to provision. Check that it is ready before continuing:
-
-```bash
-cf service da164-hdi-001
-```
-
-Wait until `status` shows **create succeeded** (not "create in progress").
-
-![Terminal showing cf service da164-hdi-001 output with status create succeeded](images/cfshowservice.png)
-
-6. Bind the service to your local CDS session so CDS knows which HANA container to use:
-
-```bash
-cds bind --to da164-hdi-001
-```
-
-> This writes connection details to `.cdsrc-private.json` in your project root (gitignored by default). CDS picks this up automatically for local runs.
-
-![Terminal showing cds bind output confirming the binding was saved to .cdsrc-private.json](images/cdsbind.png)
-
-   After the command completes, scroll down in the Explorer sidebar to the **SAP HANA PROJECTS** panel. Expand your project — you should see `da164-hdi-001` listed under **Database Connections**.
-
-   > **If the container is not listed**, bind it manually:
-   > 1. Hover over the **Database Connections** row — a binding icon appears on the right. Click it.
-   > 2. A dialog appears. Select **Bind to an HDI container**.
-   >
-   > ![Select a binding option dialog with Bind to an HDI container highlighted](images/bindtohdi.png)
-   >
-   > 3. A service list appears. Select `da164-hdi-001` (your seat number).
-   >
-   > ![Select a service instance dialog showing the HDI container options](images/selectyourhdi.png)
-   >
-   > The container now appears under **Database Connections** with a cube icon.
-   >
-   > ![SAP HANA PROJECTS panel showing the HDI container listed under Database Connections](images/bindmanually.png)
-   >
-   > You will use this cube icon in Exercise 3 to open the Database Explorer directly from BAS.
-
-7. Deploy the table schema to your HANA container:
+5. Deploy your schema to HANA Cloud. This command creates your personal HDI container automatically and deploys the table definition in one step:
 
 ```bash
 cds deploy --to hana
@@ -144,7 +98,23 @@ Deploy done.
 
 ![Terminal showing the cds deploy output with Deploy done at the end](images/deploysuccessful.png)
 
-8. Verify the app is now using HANA as the database:
+6. After the deploy, scroll down in the Explorer sidebar to the **SAP HANA PROJECTS** panel. Expand your project's `db` entry — you will see your HDI container listed under **Database Connections** with a cube icon. You will use this in Exercise 3 to open the Database Explorer.
+
+   > **If the container is not listed**, bind it manually:
+   > 1. Hover over the **Database Connections** row — a binding icon appears on the right. Click it.
+   > 2. A dialog appears. Select **Bind to an HDI container**.
+   >
+   > ![Select a binding option dialog with Bind to an HDI container highlighted](images/bindtohdi.png)
+   >
+   > 3. A service list appears. Select your HDI container.
+   >
+   > ![Select a service instance dialog showing the HDI container options](images/selectyourhdi.png)
+   >
+   > The container now appears under **Database Connections** with a cube icon.
+   >
+   > ![SAP HANA PROJECTS panel showing the HDI container listed under Database Connections](images/bindmanually.png)
+
+7. Verify the app is now using HANA as the database:
 
 ```bash
 cds watch --profile hybrid

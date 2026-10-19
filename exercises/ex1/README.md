@@ -24,6 +24,8 @@ In this exercise you will connect your app to the SAP S/4HANA Cloud Product API 
 
 CAP needs a local copy of the S/4HANA Product API definition to know the shape of the data. The `API_PRODUCT_SRV.edmx` file is included in this repository — you will download it, upload it to your BAS workspace, and import it into your project.
 
+> **Open a terminal first**: In BAS, go to **Menu → Terminal → New Terminal** so you have a terminal ready for the commands in this exercise.
+
 1. Download [`API_PRODUCT_SRV.edmx`](API_PRODUCT_SRV.edmx) from the `exercises/ex1/` folder in this repository.
 
    > On GitHub: click the link above → click **Download raw file** (the download icon in the top-right of the file view).
@@ -62,7 +64,7 @@ It also adds a base entry for `API_PRODUCT_SRV` to your `package.json`.
 
 ## Step 2 – The S/4HANA Destination (Pre-configured)
 
-The `S4HANA_SANDBOX` destination has been created for you by the session owner — **you do not have access to the BTP Cockpit and do not need to do anything here**. This step just explains what was set up so you understand what your CAP app will be connecting to.
+> **Read-only — no action required.** The `S4HANA_SANDBOX` destination has been created for you by the session owner. This step explains what was set up so you understand what your CAP app will be connecting to.
 
 In a real project, a BTP admin would go to **BTP Cockpit → Connectivity → Destinations** and create an entry like this:
 
