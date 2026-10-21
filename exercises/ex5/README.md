@@ -506,7 +506,7 @@ After the project is created, you need to create the skill itself inside the pro
 
 ![Skill creation form showing Name, Identifier, and Description fields](images/jouleskillinfo.png)
 
-3. Click **Create**.
+3. Click **Create**. The skill flow canvas opens — you will see an empty canvas with a **Trigger** node ("When a scenario is called") as the starting point.
 
 ![Empty skill flow canvas](images/emptycanva.png)
 
