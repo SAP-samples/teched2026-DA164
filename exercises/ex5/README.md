@@ -691,7 +691,9 @@ The Text field fills with the expression `${context.joule_action_...result.answe
 
 ![Green release confirmation banner showing version 1.0.0 released](images/released.png)
 
-3. The version page opens. Click **Deploy**.
+3. Click **Show Project Version** to open the released skill version.
+
+4. The version page opens. Click **Deploy**.
 
 4. The **Choose an Environment** panel opens. Select **shared** and click **Deploy**.
 
