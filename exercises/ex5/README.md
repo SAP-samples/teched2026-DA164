@@ -679,8 +679,6 @@ After the action runs successfully, you need to send the AI answer back to the u
 
 The Text field fills with the expression `${context.joule_action_...result.answer}`. The Preview on the right shows `${answer}`.
 
-![Message Configuration with Text type and answer output bound](images/messageconfigresponse.png)
-
 8. Click **Save**.
 
 ---
