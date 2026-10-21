@@ -110,8 +110,14 @@ Making... ok
    ![Select a service instance dialog showing the HDI container listed](images/bindinghdi.png)
 
    > **Two dialogs may appear** after selecting:
+   >
    > - A warning about schema not matching — click **Continue & do not ask again**
+   >
+   > ![Schema mismatch dialog with Continue & do not ask again button highlighted](images/dialogschema.png)
+   >
    > - A question about disabling automatic undeployment — click **Enable & do not ask again**
+   >
+   > ![Undeployment dialog with Enable & do not ask again button highlighted](images/dialogundeploy.png)
 
    4. The container now appears under **Database Connections**. You will use this in Exercise 3 to open the Database Explorer.
 
