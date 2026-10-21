@@ -643,6 +643,8 @@ After saving, the variable appears in the variables list.
 
 1. Click on the **Invoke action askAdvisor** step on the canvas. Open the **Inputs** tab in the right panel.
 
+![Invoke action askAdvisor step with Inputs tab open](images/addinputtoaction.png)
+
 2. Click the **binding icon** (`>>`) next to the `question` field. The **Skill Content** picker opens.
 
 3. Under **Skill Inputs**, select **question**.
