@@ -481,9 +481,9 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 
 4. Click **Review**, then **Create**. SAP Build creates the project and opens it.
 
-![Newly created Joule Skill project open](images/newagenttab.png)
-
 ![Project summary page showing the newly created DA164 Service Charge Advisor project](images/summary.png)
+
+![Newly created Joule Skill project open](images/newagenttab.png)
 
 ---
 
