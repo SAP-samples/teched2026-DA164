@@ -456,7 +456,8 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 3. Configure the input and the destination
 4. Add a Send Message component to display the answer
 5. Save, release, and deploy the skill
-6. Test Maya asking a service charge question in Joule
+6. Create a Joule Agent and attach the skill as a tool
+7. Test Maya asking a service charge question in Joule
 
 ---
 
@@ -713,27 +714,88 @@ The Text field fills with the expression `${context.joule_action_...result.answe
 
 ---
 
-## Step C7 – Test Maya's New Tool in Joule
+## Step C7 – Create the Joule Agent
 
-The Joule chat is available directly inside SAP Build — click the **Joule icon** (sparkle icon) in the left sidebar to open the chat panel.
+The skill is now deployed, but Joule cannot invoke it on its own. You need to create a **Joule Agent** inside the same project and attach the skill as a tool. The agent is what Joule talks to — it decides when to call your skill based on the user's question.
 
-1. Type the first test question exactly as Maya would:
+1. Go back to the **project overview page** (click the project name in the breadcrumb, or close the skill tab). You are on the page that shows **Artifacts**, **Triggers**, and **Dependencies** tabs.
+
+2. Click the **Create** button and select **Joule Agent**.
+
+![Create dropdown showing Joule Agent option](images/createjouleagent.png)
+
+3. Fill in the agent details:
+
+| Field | Value |
+|---|---|
+| **Name** | `DA164-<USER-NUMBER> Service Charge Agent` |
+| **Description** | `Answers customer questions about freight and container service charges` |
+
+![Agent creation form with Name and Description filled in](images/filldetailsforagent.png)
+
+4. Click **Create**. The agent editor opens.
+
+5. In the **Expertise and Instructions** section, fill in:
+
+**Expertise:**
+```
+Helps users find answers about freight charges, container fees, and service charge recommendations by searching the service charge catalog
+```
+
+**Instructions:**
+```
+You are a service charge advisor for GlobalFreight AG. When a user asks about freight charges, container fees, or service charges, use the askServiceChargeAdvisor skill to search the catalog and return a grounded answer. Do not answer questions about current market rates or live pricing data that is not in the catalog.
+```
+
+![Agent editor showing Expertise and Instructions fields filled in](images/addexpertiseandinstructions.png)
+
+6. Scroll down to the **Tools** section. Click **Add Tool** and select **Joule Skill**. A list of available skills appears — select **askServiceChargeAdvisor** and confirm.
+
+![Agent Tools section showing askServiceChargeAdvisor Joule Skill added](images/addskilltoagent.png)
+
+7. Click **Save**.
+
+---
+
+## Step C8 – Test Maya's New Tool in Joule
+
+Test from inside the **agent editor** — the agent has its own test console that shows you exactly which skill was invoked and what it returned.
+
+1. In the agent editor, click the **Test** button (top right).
+
+![Agent editor showing the Test button](images/clicktest.png)
+
+2. A dialog opens asking for the environment. Select your **private environment** and confirm the `destCAP` variable is set to `CAP_PRODUCT_ADVISOR`. Click **Continue**.
+
+![Environment selection dialog with private environment and destCAP variable](images/chooseprivatenviroment.png)
+
+![Agent deploying to the test environment](images/deployingagent.png)
+
+The Joule chat panel opens and the agent is ready.
+
+![Joule chat panel open and ready for testing](images/opensjoulestarttesting.png)
+
+3. Type the first test question:
 
 ```
-What charges apply for a dangerous goods shipment in a 40ft container?
+What are the container handling charges?
 ```
 
-![Joule chat showing dangerous goods question with grounded service charge answer](images/joule1.png)
+![Agent test console showing container handling charges response with charge code](images/joule1.png)
 
-2. Try a second question:
+4. Type the second question:
 
 ```
-Which charges apply to air freight shipments?
+What charges apply for dangerous goods handling?
 ```
 
-![Joule chat showing air freight question with structured charge list](images/joule2.png)
+![Agent test console showing dangerous goods handling response with charge code](images/joule2.png)
 
-3. Try an out-of-scope question to confirm the advisor stays grounded:
+Both responses return specific charge codes from your HANA catalog — not generic advice.
+
+5. After each response, click the **Timeline** tab on the right to confirm the `askServiceChargeAdvisor` skill was invoked under **Ask Service Charge Advisor → API call**.
+
+6. Try an out-of-scope question to confirm the advisor stays grounded:
 
 ```
 What is the current fuel surcharge rate for transpacific routes?
@@ -753,8 +815,11 @@ You have just completed the full loop:
 Maya types a question in Joule
         │
         ▼
-Joule Skill (SAP Build)
-        │  POST /odata/v4/product/askAdvisor
+Joule Agent (SAP Build) — decides which skill to invoke
+        │
+        ▼
+Joule Skill: askServiceChargeAdvisor
+        │  POST /askAdvisor (via CAP_PRODUCT_ADVISOR destination)
         ▼
 CAP ProductService on Cloud Foundry
         │  hybrid search (keyword + semantic)
