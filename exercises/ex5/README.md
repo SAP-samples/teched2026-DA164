@@ -665,6 +665,8 @@ After the action runs successfully, you need to send the AI answer back to the u
 
 3. Select **Send Message**.
 
+![Choosing Send Message from the response options](images/choosesendresponse.png)
+
 ![Send Message step added to the skill canvas](images/sendmessage.png)
 
 4. Click **Open Message Editor**. The **Message Configuration** dialog opens.
