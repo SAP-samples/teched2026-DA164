@@ -483,6 +483,8 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 
 ![Newly created Joule Skill project open](images/newagenttab.png)
 
+![Project summary page showing the newly created DA164 Service Charge Advisor project](images/summary.png)
+
 ---
 
 ## Step C2 – Create the Skill Inside the Project
