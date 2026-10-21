@@ -530,23 +530,20 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 ![Call Action panel showing no available actions](images/browseallaction.png)
 
-4. The **Choose an API Source** dialog opens. Select **SAP Cloud Application Programming Model**.
+4. The **Choose an API Source** dialog opens.
 
-5. Select the **CAP_PRODUCT_ADVISOR** destination. In the **Resource Path** field enter `/odata/v4/product/$metadata` and click the refresh icon.
+> **Pre-configured by the session owner — read only, no action required.**
+> The `CAP_PRODUCT_ADVISOR` destination has been set up for you, pointing to the shared CAP service with the `/odata/v4/product` resource path already loaded. The service operations are already visible.
+>
+> ![Resource Path field filled with /odata/v4/product and refresh icon](images/addresourcepathaction.png)
+>
+> ![CAP_PRODUCT_ADVISOR destination selected with API methods loaded](images/CAPaction.png)
 
-![Resource Path field filled with /odata/v4/product/$metadata and refresh icon](images/addresourcepathaction.png)
-
-![CAP_PRODUCT_ADVISOR destination selected with API methods loaded](images/CAPaction.png)
-
-> **Note**: The screenshot may show `/odata/v4/product` without `/$metadata` — both work. Using `/$metadata` is more explicit but either path loads the service operations correctly.
-
-> The service operations appear because the shared CAP app behind this destination is already deployed and active. You do not need to activate anything — just select and proceed.
-
-6. Expand **Service Operations** and click **POST — Invoke action askAdvisor**.
+5. Under **Service Operations**, click **POST — Invoke action askAdvisor**.
 
 ![Service Operations showing askAdvisor highlighted](images/selectinvoke.png)
 
-7. Give the action project a name:
+6. Give the action project a name:
 
 | Field | Value |
 |---|---|
