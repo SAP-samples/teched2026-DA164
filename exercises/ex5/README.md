@@ -603,7 +603,7 @@ After the action is added to the canvas, you need to:
 
 After saving, the variable appears in the variables list.
 
-![Destination variable destCAP added to the variables list](images/addeddest.png)
+![Destination variable destCAP added to the variables list](images/destcap.png)
 
 3. Go back to the **Invoke action askAdvisor** step on the canvas. In the **Destination Variable** field, select **destCAP**.
 
