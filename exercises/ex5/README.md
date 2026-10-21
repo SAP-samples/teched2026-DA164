@@ -547,25 +547,24 @@ The **Invoke action askAdvisor** step is now added to your skill canvas.
 
 ---
 
-### Part 2 – Release the Action Project
+### Part 2 – Action Project Setup
 
-The action project must be released before it can be used in the skill.
-
-1. Go back to the **SAP Build Lobby**. Find the **DA164-<USER-NUMBER> CAP Product Advisor** project and open it.
-
-2. Click **Release**.
-
-![Action project open showing Release button](images/release.png)
-
-3. Confirm the release in the dialog that appears.
-
-![Release confirmation dialog](images/wantoublish.png)
-
-4. The project status changes to **Published**.
-
-   > **If you see separate Release and Publish buttons**: click **Release** first to create the version, then click **Publish** to make it available in the action library. Both steps are required before the action appears in the skill canvas.
-
-![Action project showing Published status](images/published.png)
+> **Pre-configured by the session owner — read only, no action required.**
+> The action project has been created, released, and published for you. The screenshots below show what was set up so you can see how the action reaches the skill canvas.
+>
+> The action project is created by selecting the `CAP_PRODUCT_ADVISOR` destination, loading the service operations, and selecting **POST — Invoke action askAdvisor**:
+>
+> ![Service Operations showing askAdvisor highlighted](images/selectinvoke.png)
+>
+> The action project is then released:
+>
+> ![Action project open showing Release button](images/release.png)
+>
+> ![Release confirmation dialog](images/wantoublish.png)
+>
+> And published so it appears in the action library:
+>
+> ![Action project showing Published status](images/published.png)
 
 ---
 
