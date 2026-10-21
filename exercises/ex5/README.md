@@ -533,17 +533,15 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 4. The **Choose an API Source** dialog opens.
 
 > **Pre-configured by the session owner — read only, no action required.**
-> The `CAP_PRODUCT_ADVISOR` destination has been set up for you, pointing to the shared CAP service with the `/odata/v4/product` resource path already loaded. The service operations are already visible.
+> The `CAP_PRODUCT_ADVISOR` destination has been set up for you, pointing to the shared CAP service with the `/odata/v4/product` resource path already loaded. The service operations are already visible and **POST — Invoke action askAdvisor** is already selected.
 >
 > ![Resource Path field filled with /odata/v4/product and refresh icon](images/addresourcepathaction.png)
 >
 > ![CAP_PRODUCT_ADVISOR destination selected with API methods loaded](images/CAPaction.png)
+>
+> ![Service Operations showing askAdvisor highlighted](images/selectinvoke.png)
 
-5. Under **Service Operations**, click **POST — Invoke action askAdvisor**.
-
-![Service Operations showing askAdvisor highlighted](images/selectinvoke.png)
-
-6. Give the action project a name:
+5. Give the action project a name:
 
 | Field | Value |
 |---|---|
