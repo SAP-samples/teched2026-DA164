@@ -479,7 +479,7 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 
 ![Project creation form showing Name and Description fields filled in](images/agentdesc.png)
 
-4. Click **Review**, then **Create**. SAP Build creates the project and opens it.
+4. Click **Review**, then **Create**. SAP Build creates the project and opens the summary page. Click on the project name to open it — it opens in a new browser tab.
 
 ![Project summary page showing the newly created DA164 Service Charge Advisor project](images/summary.png)
 
