@@ -617,6 +617,8 @@ After saving, the variable appears in the variables list.
 
 2. The **Configure Skill Inputs** dialog opens. Click **Add Input**.
 
+![Configure Skill Inputs dialog with Add Input button](images/addinput.png)
+
    > **If the dialog does not open**, add the input manually: in the skill editor, look for a **Parameters** tab or panel in the left sidebar → click **Add Input** there instead.
 
 3. Fill in the row:
