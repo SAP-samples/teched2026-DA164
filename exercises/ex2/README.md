@@ -99,7 +99,9 @@ Making... ok
 
 6. After the deploy, scroll down in the Explorer sidebar to the **SAP HANA PROJECTS** panel. Expand your project's `db` entry. The HDI container does not bind automatically — you need to connect it:
 
-   1. Hover over the **Database Connections** row — a binding icon appears on the right. Click it.
+   1. Hover over the **Database Connections** row — a green plug icon appears on the right. Click it.
+
+   ![SAP HANA PROJECTS panel showing the Database Connections row with the green plug binding icon](images/bindmanually.png)
 
    2. A dialog appears. Select **Bind to an HDI container**.
 
