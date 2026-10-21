@@ -192,8 +192,6 @@ Content-Type: application/json
 
 ![BAS test.http showing hybridSearch response with service charge rows](images/http1.png)
 
-> **Note**: Some screenshots may show an `askAdvisor` endpoint in the `test.http` file. That action is not implemented yet at this point — it will be built in Exercise 5. Focus only on the `hybridSearch` results.
-
 4. Click **Send Request** for each of the remaining three queries and see how the ranked results change:
 
 ![BAS test.http showing hybridSearch results for port documentation fees](images/http2.png)
