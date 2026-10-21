@@ -395,6 +395,8 @@ Copy this URL — you will need it in the next step.
 > cf app da164-product-advisor-<USER-NUMBER>-srv
 > ```
 > The `routes:` line in the output shows your app's public URL.
+>
+> ![Terminal showing cf app output with routes line highlighting the app's public URL](images/cfapproute.png)
 
 ![Terminal showing cf deploy completed with the app route URL](images/cfdeploy.png)
 
