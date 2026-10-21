@@ -701,7 +701,7 @@ The Text field fills with the expression `${context.joule_action_...result.answe
 
 5. A **Define Variables** dialog appears. The destination variable `CAP_PRODUCT_ADVISOR` is shown — confirm it is set to `CAP_PRODUCT_ADVISOR` and click **Deploy**.
 
-![Define Variables dialog showing CAP_PRODUCT_ADVISOR destination](images/choosevarfordeploy.png)
+![Define Variables dialog showing CAP_PRODUCT_ADVISOR destination](images/selectCAPdestination.png)
 
 6. A **Deploying...** spinner appears while the skill is being activated.
 
