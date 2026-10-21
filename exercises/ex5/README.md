@@ -474,7 +474,7 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 
 | Field | Value |
 |---|---|
-| **Name** | `DA164 Service Charge Advisor` |
+| **Name** | `DA164-<USER-NUMBER> Service Charge Advisor` |
 | **Description** | `Answers customer service charge questions using AI and SAP HANA Cloud data` |
 
 ![Project creation form showing Name and Description fields filled in](images/agentdesc.png)
