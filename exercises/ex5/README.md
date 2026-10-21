@@ -572,6 +572,10 @@ The **Invoke action askAdvisor** step is now added to your skill canvas.
 
 ![Action library showing the pre-configured DA164 CAP Product Advisor action](images/chooseactionfrombuildlobby.png)
 
+2. Open the action and confirm the status shows **Published**.
+
+![Action project showing Published status](images/published.png)
+
 ---
 
 ## Step C4 – Configure the Input Parameter
