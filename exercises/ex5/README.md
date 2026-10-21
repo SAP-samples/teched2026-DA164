@@ -145,9 +145,6 @@ ${context}`
 
 ![product-service.js showing the complete askAdvisor handler](images/askadvisor.png)
 
-> **What do the two `?` placeholders do?**
-> The first `?` is the search text for `VECTOR_EMBEDDING` — HANA converts it to a vector inline, same as in Exercise 4. The second `?` is the raw text for the `LIKE` keyword match. Both are passed safely as query parameters.
-
 ---
 
 ## Step A3 – Restart and Test the Agent
