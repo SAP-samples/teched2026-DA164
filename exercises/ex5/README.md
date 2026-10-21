@@ -418,12 +418,6 @@ You should get back an AI-generated answer from a live cloud URL.
 
 ![Terminal showing curl command with live HTTPS URL and the AI answer in the response](images/curlcommand6.png)
 
-> **Troubleshooting — 400 Bad Request:**
-> This almost always means XSUAA authentication is active. Check that `package.json` has no `"xsuaa"` block in `cds.requires`, and run `cf env da164-product-advisor-<USER-NUMBER>-srv` to confirm no XSUAA service appears in `VCAP_SERVICES`.
-
-> **Troubleshooting — 500 error or no response:**
-> Run `cf logs da164-product-advisor-<USER-NUMBER>-srv --recent` to see what went wrong. The most common cause is `ai-extended` missing from `mta.yaml` resources — without it, the app has no AI Core credentials.
-
 ---
 
 ## Part B Summary
