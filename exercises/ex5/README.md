@@ -568,11 +568,7 @@ The **Invoke action askAdvisor** step is now added to your skill canvas.
 
 ### Part 3 – Review the Action in the Library
 
-1. In the SAP Build Lobby, click **Actions** under **Connectors** in the left sidebar.
-
-![SAP Build Lobby showing Actions section under Connectors](images/buildlobby.png)
-
-2. Find the **DA164 CAP Product Advisor** action and open it to confirm it is published and available.
+1. In the SAP Build Lobby, click **Actions** under **Connectors** in the left sidebar. Find the **DA164 CAP Product Advisor** action and open it to confirm it is published and available.
 
 ![Action library showing the pre-configured DA164 CAP Product Advisor action](images/chooseactionfrombuildlobby.png)
 
