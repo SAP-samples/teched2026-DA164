@@ -667,6 +667,8 @@ After the action runs successfully, you need to send the AI answer back to the u
 
 4. Click **Open Message Editor**. The **Message Configuration** dialog opens.
 
+![Send Message step showing Open Message Editor button](images/openmessage.png)
+
 5. The **Message Type** is set to **Text** by default.
 
 ![Message Configuration dialog showing Text type selected](images/sendresponsetext.png)
