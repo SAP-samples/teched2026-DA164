@@ -631,7 +631,7 @@ After saving, the variable appears in the variables list.
 | **Type** | String |
 | **Required** | ✅ checked |
 
-![Configure Skill Inputs dialog with question input defined](images/configinput.png)
+![Configure Skill Inputs dialog with question input defined](images/questionasinput.png)
 
 4. Click **Apply**.
 
