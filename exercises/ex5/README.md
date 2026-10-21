@@ -520,6 +520,8 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 1. On the skill flow canvas, click **+** to add a new step.
 
+![Plus icon on the skill flow canvas to add a new step](images/plusicon.png)
+
 2. From the step type list, choose **Call Action**.
 
 ![Step type list with Call Action highlighted](images/choosecallaction.png)
