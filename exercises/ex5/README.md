@@ -451,29 +451,22 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 
 ## What you will do in Part C
 
-1. Open the SAP Build Lobby
-2. Create a new Joule Skill project
-3. Create the skill and add the advisor action
-4. Configure the input and the destination
-5. Add a Send Message component to display the answer
-6. Save, release, and deploy the skill
-7. Test Maya asking a service charge question in Joule
+1. Open the SAP Build Lobby and create a new Joule Skill project
+2. Create the skill and add the advisor action
+3. Configure the input and the destination
+4. Add a Send Message component to display the answer
+5. Save, release, and deploy the skill
+6. Test Maya asking a service charge question in Joule
 
 ---
 
-## Step C1 – Open the SAP Build Lobby
+## Step C1 – Open the SAP Build Lobby and Create a Project
 
 1. Go to [https://da164.eu10.build.cloud.sap/lobby](https://da164.eu10.build.cloud.sap/lobby) and log in with your BTP credentials.
 
-![SAP Build Lobby home page](images/buildlobby.png)
+2. Click the **Create** button in the top area of the lobby.
 
----
-
-## Step C2 – Create a New Joule Skill Project
-
-1. Click the **Create** button in the top area of the lobby.
-
-2. A dialog opens asking what you want to build. Click the **Joule Agent and Skill** tile.
+3. A dialog opens asking what you want to build. Click the **Joule Agent and Skill** tile.
 
 ![Create Project dialog with Joule Agent and Skill tile selected](images/createjouleskill1.png)
 
@@ -492,7 +485,7 @@ This is the final step that puts the entire system in Maya's hands. She opens Jo
 
 ---
 
-## Step C3 – Create the Skill Inside the Project
+## Step C2 – Create the Skill Inside the Project
 
 After the project is created, you need to create the skill itself inside the project.
 
@@ -517,7 +510,7 @@ After the project is created, you need to create the skill itself inside the pro
 
 ---
 
-## Step C4 – Add the askAdvisor Action
+## Step C3 – Add the askAdvisor Action
 
 Now you will add a step that calls your CAP `askAdvisor` action. This involves two parts: creating the action project, then adding it to the skill.
 
@@ -600,7 +593,7 @@ The action project must be released before it can be used in the skill.
 
 ---
 
-## Step C5 – Configure the Input Parameter
+## Step C4 – Configure the Input Parameter
 
 After the action is added to the canvas, you need to:
 1. Create a destination variable for the action
@@ -669,7 +662,7 @@ After saving, the variable appears in the variables list.
 
 ---
 
-## Step C6 – Add a Send Response Step
+## Step C5 – Add a Send Response Step
 
 After the action runs successfully, you need to send the AI answer back to the user in Joule.
 
@@ -699,7 +692,7 @@ The Text field fills with the expression `${context.joule_action_...result.answe
 
 ---
 
-## Step C7 – Save, Release, and Deploy
+## Step C6 – Save, Release, and Deploy
 
 1. Click **Save** (top right) to save the skill. The asterisk `*` next to the skill name disappears.
 
@@ -727,7 +720,7 @@ The Text field fills with the expression `${context.joule_action_...result.answe
 
 ---
 
-## Step C8 – Test Maya's New Tool in Joule
+## Step C7 – Test Maya's New Tool in Joule
 
 The Joule chat is available directly inside SAP Build — click the **Joule icon** (sparkle icon) in the left sidebar to open the chat panel.
 
