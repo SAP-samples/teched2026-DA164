@@ -541,6 +541,8 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 >
 > ![Service Operations showing askAdvisor highlighted](images/selectinvoke.png)
 
+The **Invoke action askAdvisor** step is now added to your skill canvas.
+
 ![Skill canvas showing Invoke action askAdvisor added as a step](images/afteraddinginvokeaction.png)
 
 ---
