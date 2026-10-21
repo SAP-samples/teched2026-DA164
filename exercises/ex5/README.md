@@ -528,7 +528,7 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 3. A panel opens showing available actions. The **POST — Invoke action askAdvisor** is already listed — select it.
 
-![Browse All Actions panel showing POST Invoke action askAdvisor available](images/browseallaction.png)
+![Browse All Actions panel showing POST Invoke action askAdvisor available](images/askadvisoraction.png)
 
 4. The **Choose an API Source** dialog opens.
 
