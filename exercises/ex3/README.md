@@ -71,7 +71,9 @@ Confirm you can see these columns:
 | Column | Type |
 |---|---|
 | `PRODUCT` | NVARCHAR(40) |
+| `PRODUCTTYPE` | NVARCHAR(4) |
 | `DESCRIPTION` | NVARCHAR(500) |
+| `BASEUNIT` | NVARCHAR(3) |
 | `EMBEDDING` | REAL_VECTOR(768) |
 
 > The `REAL_VECTOR(768)` type is HANA Cloud's built-in vector column. It stores 768 numbers per row — one for each dimension of the AI embedding.
