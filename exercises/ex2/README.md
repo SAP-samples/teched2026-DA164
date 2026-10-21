@@ -170,10 +170,6 @@ service ProductService {
 cds deploy --to hana
 ```
 
-![Terminal showing the cds deploy output after the service update](images/deploysuccessful.png)
-
-> **Note**: The screenshot may look slightly different from your output at this point — it may show previously deployed artifacts such as `products.ProductExtension.hdbtable` already present. This is expected on a second deploy.
-
 ---
 
 ## Step 4 – Write the Sync Handler
