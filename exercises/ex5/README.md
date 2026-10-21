@@ -659,13 +659,13 @@ After the action runs successfully, you need to send the AI answer back to the u
 
 1. On the flow canvas, click the **`+`** button on the **Success 2XX** branch below the **Invoke action askAdvisor** step.
 
+![Success 2XX branch with + button to add a Send Response step](images/choosesendresponse.png)
+
 2. A panel opens with response options. Choose **Send Response**.
 
 ![Send Response options panel](images/sendresponse2xx.png)
 
 3. Select **Send Message**.
-
-![Choosing Send Message from the response options](images/choosesendresponse.png)
 
 ![Send Message step added to the skill canvas](images/sendmessage.png)
 
