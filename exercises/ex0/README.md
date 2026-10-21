@@ -43,6 +43,8 @@ Before creating a project you need a BAS dev space with the SAP HANA extension e
 
 ![Create Dev Space form with name, kind Full Stack Cloud Application, and SAP HANA Tools checked](images/createnewfullstackspace.png)
 
+   > **Note**: The screenshot may also show **SAP HANA Calculation View Editor** and **SAP HANA Database Explorer** checked. These are fine to include but only **SAP HANA Tools** is required for this workshop.
+
 4. Wait for the status to change to **RUNNING**, then click on it to open BAS.
 
 ![Dev space running and ready to open](images/startdev.png)
@@ -63,6 +65,8 @@ Before creating a project you need a BAS dev space with the SAP HANA extension e
 
 ![SAP HANA Tools extension checked](images/addext.png)
 
+   > **Note**: The screenshot may also show **SAP HANA Calculation View Editor** and **SAP HANA Database Explorer** checked. These are fine to include but only **SAP HANA Tools** is required.
+
 5. Start the dev space. Wait for the status to change to **RUNNING**, then click on it to open BAS.
 
 ![Dev space starting up](images/startdev.png)
@@ -72,6 +76,8 @@ Before creating a project you need a BAS dev space with the SAP HANA extension e
 ## Step 2 – Create Your Project in SAP Build Code
 
 SAP Build Code is a cloud-based development environment built on SAP Business Application Studio. It has a project wizard that sets up the full CAP project structure for you automatically.
+
+> **If the wizard does not work**: Some participants encounter a "Project creation failed" error in the Build Code lobby. If that happens to you, skip steps 1–7 below and follow the **manual BAS template** instructions in the callout at the end of this step — the result is identical.
 
 1. SAP Build Code should still be open from when you first logged in — switch back to that tab. If your session has expired, log in again using the credentials in the table above.
 
@@ -155,6 +161,13 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 >   "requires": { ... }
 > }
 > ```
+> **If your `package.json` has no `"cds"` section at all** (this can happen with manual project creation when all capability checkboxes are left unchecked), create the entire block from scratch:
+> ```json
+> "cds": {
+>   "outbox": false,
+>   "requires": {}
+> }
+> ```
 
 ---
 
@@ -170,22 +183,21 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 npm install
 ```
 
-> **Note:** You may see `npm audit` warnings about vulnerabilities — these are from indirect dev dependencies and do not affect the workshop. Ignore them.
+> **Note:** You may see `npm audit` warnings about vulnerabilities — these are from indirect dev dependencies and do not affect the workshop. Ignore them. If a terminal screenshot shows additional commands such as `npm add express`, you can ignore that too — it is not needed for this workshop.
 
 ![Terminal showing npm install output with package count and timing](images/npminstall.png)
 
 ---
 
-## Step 4 – Create the Project Structure
+## Step 4 – Create the Environment File
 
-1. Create the folders and files you will need later:
+1. Create the `.env` file at the project root:
 
 ```bash
-mkdir -p scripts
 touch .env
 ```
 
-![scripts folder and .env created in the project](images/terminalscripts.png)
+![.env file created at the project root](images/terminalscripts.png)
 
 ---
 
