@@ -381,6 +381,8 @@ cf deploy mta_archives/da164-product-advisor-<USER-NUMBER>_1.0.0.mtar
 
 CF reads the archive, deploys your Node.js module, and binds both services. This takes **2–3 minutes**. You will see lines like `Uploading application...`, `Staging application...`, and finally `Application started and available at`.
 
+![Terminal showing cf deploy completed with the app route URL](images/cfdeploy.png)
+
 3. When it finishes, look for the **route** in the output:
 
 ```
@@ -397,8 +399,6 @@ Copy this URL — you will need it in the next step.
 > The `routes:` line in the output shows your app's public URL.
 >
 > ![Terminal showing cf app output with routes line highlighting the app's public URL](images/cfapproute.png)
-
-![Terminal showing cf deploy completed with the app route URL](images/cfdeploy.png)
 
 ---
 
