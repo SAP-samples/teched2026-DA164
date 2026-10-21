@@ -278,19 +278,23 @@ modules:
     requires:
       - name: da164-product-advisor-<USER-NUMBER>-db
       - name: ai-extended
+      - name: da164-product-advisor-<USER-NUMBER>-destination
 
 resources:
   - name: da164-product-advisor-<USER-NUMBER>-db
     type: org.cloudfoundry.existing-service
   - name: ai-extended
     type: org.cloudfoundry.existing-service
+  - name: da164-product-advisor-<USER-NUMBER>-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
 ```
 
 ![mta.yaml open in BAS showing the updated content with existing-service resources](images/mtayaml.png)
 
 > **Why `da164-product-advisor-<USER-NUMBER>-db`?** When you ran `cds deploy --to hana` in Exercise 2, CAP automatically created a CF service instance named after your project — `da164-product-advisor-<USER-NUMBER>-db`. Referencing it here binds your deployed app to the same HDI container that already holds your synced products and embeddings. You do **not** need to call `syncProducts` again after CF deployment — the data is already there.
->
-> **Note on `syncProducts` and `getProducts` in the deployed app**: These actions connect to S/4HANA via the BTP Destination service, which is not bound in this `mta.yaml`. They will return an error if called on the deployed URL. Only `hybridSearch` and `askAdvisor` are needed for the Joule Skill in Part C — both work correctly with the HDI container binding.
 
 ---
 
