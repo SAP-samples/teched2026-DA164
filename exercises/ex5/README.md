@@ -143,8 +143,6 @@ ${context}`
 })
 ```
 
-2. Save the file (**Ctrl+S** / **Cmd+S**).
-
 ![product-service.js showing the complete askAdvisor handler](images/askadvisor.png)
 
 > **What do the two `?` placeholders do?**
@@ -291,8 +289,6 @@ resources:
     type: org.cloudfoundry.existing-service
 ```
 
-3. Save the file.
-
 ![mta.yaml open in BAS showing the updated content with existing-service resources](images/mtayaml.png)
 
 > **Why `da164-product-advisor-<USER-NUMBER>-db`?** When you ran `cds deploy --to hana` in Exercise 2, CAP automatically created a CF service instance named after your project — `da164-product-advisor-<USER-NUMBER>-db`. Referencing it here binds your deployed app to the same HDI container that already holds your synced products and embeddings. You do **not** need to call `syncProducts` again after CF deployment — the data is already there.
@@ -337,8 +333,6 @@ Before building, make sure your `package.json` is set up correctly for productio
 ```
 
 > **Why is this needed?** When `NODE_ENV=production`, CAP automatically switches to `jwt` authentication, which requires an XSUAA service binding. Since this workshop does not use XSUAA, adding `"auth": { "kind": "dummy" }` explicitly overrides that default and lets all requests through.
-
-5. Save `package.json`.
 
 ![package.json showing cds.requires with auth dummy and no xsuaa](images/npmscripts.png)
 
