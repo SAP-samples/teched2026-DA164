@@ -226,7 +226,7 @@ cds watch
 
 2. Open a second terminal tab. Click the **`+`** icon in the terminal panel to add a new session:
 
-![The + icon in the terminal panel — click to open a new terminal tab](images/newterminalopen.png)
+![Terminal showing cds watch running with the + icon highlighted to open a new terminal tab](images/cdswatchnewterminal.png)
 
    Two terminal sessions now appear in the panel. Click the second tab to switch to it:
 
@@ -240,19 +240,22 @@ curl -X POST http://localhost:4004/odata/v4/product/getProducts \
   -d '{"top": 5}'
 ```
 
+![Terminal showing the curl command and the OData response with live product records from S/4HANA](images/curl.png)
+
 3. You should see real product records coming back from S/4HANA:
 
 ```json
-[
-  { "Product": "21",  "ProductType": "SERV", "CreationDate": "2016-10-17", "BaseUnit": "H"  },
-  { "Product": "68",  "ProductType": "MAT",  "CreationDate": "2017-03-27", "BaseUnit": "KG" },
-  { "Product": "71",  "ProductType": "ROH",  "CreationDate": "2017-04-11", "BaseUnit": "KG" },
-  { "Product": "221", "ProductType": "SERV", "CreationDate": "2022-01-27", "BaseUnit": "AU" },
-  { "Product": "231", "ProductType": "SERV", "CreationDate": "2022-01-30", "BaseUnit": "AU" }
-]
+{
+  "@odata.context": "$metadata#Collection(ProductService.return_ProductService_getProducts)",
+  "value": [
+    { "Product": "21",  "ProductType": "SERV", "CreationDate": "2016-10-17", "BaseUnit": "H"  },
+    { "Product": "68",  "ProductType": "MAT",  "CreationDate": "2017-03-27", "BaseUnit": "KG" },
+    { "Product": "71",  "ProductType": "ROH",  "CreationDate": "2017-04-11", "BaseUnit": "KG" },
+    { "Product": "221", "ProductType": "SERV", "CreationDate": "2022-01-27", "BaseUnit": "AU" },
+    { "Product": "231", "ProductType": "SERV", "CreationDate": "2022-01-30", "BaseUnit": "AU" }
+  ]
+}
 ```
-
-![Terminal showing the curl response with live product records from S/4HANA](images/curl.png)
 
 > **Notice**: This is live S/4HANA data. And you never touched the S/4HANA system — that is clean core.
 
