@@ -554,6 +554,8 @@ Click **Add**.
 
 ![Action project name form filled in](images/createdaction.png)
 
+![Skill canvas showing Invoke action askAdvisor added as a step](images/afteraddinginvokeaction.png)
+
 ---
 
 ### Part 2 – Release the Action Project
