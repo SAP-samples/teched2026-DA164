@@ -605,9 +605,7 @@ After saving, the variable appears in the variables list.
 
 ![Destination variable destCAP added to the variables list](images/destcap.png)
 
-3. Go back to the **Invoke action askAdvisor** step on the canvas. In the **Destination Variable** field, select **destCAP**.
-
-![Action step with destCAP selected as destination variable](images/chooseinvoke.png)
+![Action step with destCAP selected as destination variable](images/selecteddestcap.png)
 
 ---
 
