@@ -635,6 +635,8 @@ After saving, the variable appears in the variables list.
 
 4. Click **Apply**.
 
+![Skill input panel showing the question input added](images/finalinputview.png)
+
 ---
 
 ### Part 3 – Map the Input to the Action
