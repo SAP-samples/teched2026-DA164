@@ -526,9 +526,9 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 ![Step type list with Call Action highlighted](images/choosecallaction.png)
 
-3. A panel opens showing available actions. No actions exist yet — click **Start by creating a Blank Call Action**.
+3. A panel opens showing available actions. The **POST — Invoke action askAdvisor** is already listed — select it.
 
-![Call Action panel showing no available actions](images/browseallaction.png)
+![Browse All Actions panel showing POST Invoke action askAdvisor available](images/browseallaction.png)
 
 4. The **Choose an API Source** dialog opens.
 
