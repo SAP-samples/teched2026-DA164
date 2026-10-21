@@ -568,20 +568,6 @@ The **Invoke action askAdvisor** step is now added to your skill canvas.
 
 ---
 
-### Part 3 – Add the Action to the Skill
-
-1. Go back to your Joule Skill. Click **+** on the canvas again and choose **Call Action**.
-
-![Choosing Call Action from the Build Lobby step type list](images/chooseactionfrombuildlobby.png)
-
-2. The **Browse All Actions** panel now shows your action. Select **askAdvisor**.
-
-![Browse All Actions showing askAdvisor available](images/askadvisoraction.png)
-
-3. The action step is added to the canvas.
-
-![Skill canvas with askAdvisor action step added](images/actionadded.png)
-
 ---
 
 ## Step C4 – Configure the Input Parameter
