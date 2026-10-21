@@ -661,13 +661,9 @@ After the action runs successfully, you need to send the AI answer back to the u
 
 ![Success 2XX branch with + button to add a Send Response step](images/choosesendresponse.png)
 
-2. A panel opens with response options. Choose **Send Response**.
+2. A panel opens with response options. Choose **Send Message**.
 
-![Send Response options panel](images/sendresponse2xx.png)
-
-3. Select **Send Message**.
-
-![Send Message step added to the skill canvas](images/sendmessage.png)
+![Send Response options panel with Send Message highlighted](images/sendresponse2xx.png)
 
 4. Click **Open Message Editor**. The **Message Configuration** dialog opens.
 
