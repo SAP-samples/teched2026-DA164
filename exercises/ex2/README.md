@@ -92,29 +92,30 @@ cds deploy --to hana
 Look for this in the output:
 
 ```
-Tables deployed: products_ProductExtension
-Deploy done.
+Making... ok
 ```
 
 ![Terminal showing the cds deploy output with Deploy done at the end](images/deploysuccessful.png)
 
-6. After the deploy, scroll down in the Explorer sidebar to the **SAP HANA PROJECTS** panel. Expand your project's `db` entry — you will see your HDI container listed under **Database Connections** with a cube icon. You will use this in Exercise 3 to open the Database Explorer.
+6. After the deploy, scroll down in the Explorer sidebar to the **SAP HANA PROJECTS** panel. Expand your project's `db` entry. The HDI container does not bind automatically — you need to connect it:
 
-![SAP HANA PROJECTS panel showing the HDI container bound and listed under Database Connections with a cube icon](images/bindmanually.png)
+   1. Hover over the **Database Connections** row — a binding icon appears on the right. Click it.
 
-   > **If the container is not listed**, bind it manually:
-   > 1. Hover over the **Database Connections** row — a binding icon appears on the right. Click it.
-   > 2. A dialog appears. Select **Bind to an HDI container**.
-   >
-   > ![Select a binding option dialog with Bind to an HDI container highlighted](images/bindtohdi.png)
-   >
-   > 3. A service list appears. Select your HDI container.
-   >
-   > ![Select a service instance dialog showing the HDI container options](images/selectyourhdi.png)
-   >
-   > The container now appears under **Database Connections** with a cube icon.
-   >
-   > ![SAP HANA PROJECTS panel showing the HDI container listed under Database Connections](images/bindmanually.png)
+   2. A dialog appears. Select **Bind to an HDI container**.
+
+   ![Select a binding option dialog with Bind to an HDI container highlighted](images/bindtohdi.png)
+
+   3. A service list appears. Select your HDI container — it is named `da164-product-advisor-XXX-db` (replace `XXX` with your seat number).
+
+   ![Select a service instance dialog showing the HDI container listed](images/bindinghdi.png)
+
+   > **Two dialogs may appear** after selecting:
+   > - A warning about schema not matching — click **Continue & do not ask again**
+   > - A question about disabling automatic undeployment — click **Enable & do not ask again**
+
+   4. The container now appears under **Database Connections**. You will use this in Exercise 3 to open the Database Explorer.
+
+   ![SAP HANA PROJECTS panel showing the HDI container bound under Database Connections](images/connectedhdi.png)
 
 7. Verify the app is now using HANA as the database:
 
@@ -170,6 +171,8 @@ cds deploy --to hana
 ```
 
 ![Terminal showing the cds deploy output after the service update](images/deploysuccessful.png)
+
+> **Note**: The screenshot may look slightly different from your output at this point — it may show previously deployed artifacts such as `products.ProductExtension.hdbtable` already present. This is expected on a second deploy.
 
 ---
 

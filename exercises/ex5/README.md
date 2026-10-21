@@ -281,11 +281,11 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      - name: da164-hdi-<USER-NUMBER>
+      - name: da164-product-advisor-<USER-NUMBER>-db
       - name: ai-extended
 
 resources:
-  - name: da164-hdi-<USER-NUMBER>
+  - name: da164-product-advisor-<USER-NUMBER>-db
     type: org.cloudfoundry.existing-service
   - name: ai-extended
     type: org.cloudfoundry.existing-service
@@ -295,8 +295,9 @@ resources:
 
 ![mta.yaml open in BAS showing the updated content with existing-service resources](images/mtayaml.png)
 
-> **Why `org.cloudfoundry.existing-service`?**
-> Both `da164-hdi-<USER-NUMBER>` and `ai-extended` already exist in the CF space — created by the session team. Referencing them as `existing-service` tells MTA to bind your app to them without trying to create or manage them. There is no HDI schema deployer module here because the schema was already deployed in Exercise 2.
+> **Why `da164-product-advisor-<USER-NUMBER>-db`?** When you ran `cds deploy --to hana` in Exercise 2, CAP automatically created a CF service instance named after your project — `da164-product-advisor-<USER-NUMBER>-db`. Referencing it here binds your deployed app to the same HDI container that already holds your synced products and embeddings. You do **not** need to call `syncProducts` again after CF deployment — the data is already there.
+>
+> **Note on `syncProducts` and `getProducts` in the deployed app**: These actions connect to S/4HANA via the BTP Destination service, which is not bound in this `mta.yaml`. They will return an error if called on the deployed URL. Only `hybridSearch` and `askAdvisor` are needed for the Joule Skill in Part C — both work correctly with the HDI container binding.
 
 ---
 
@@ -549,6 +550,8 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 ![CAP_PRODUCT_ADVISOR destination selected with API methods loaded](images/CAPaction.png)
 
+> **Note**: The screenshot may show `/odata/v4/product` without `/$metadata` — both work. Using `/$metadata` is more explicit but either path loads the service operations correctly.
+
 > The service operations appear because the shared CAP app behind this destination is already deployed and active. You do not need to activate anything — just select and proceed.
 
 6. Expand **Service Operations** and click **POST — Invoke action askAdvisor**.
@@ -559,8 +562,10 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 | Field | Value |
 |---|---|
-| **Project Name** | `DA164 CAP Product Advisor` |
+| **Project Name** | `DA164-<USER-NUMBER> CAP Product Advisor` |
 | **Description** | `Calls the askAdvisor action on the CAP service charge advisor` |
+
+> Replace `<USER-NUMBER>` with your 3-digit seat number (e.g. `DA164-042 CAP Product Advisor`). Including your seat number avoids naming conflicts with other participants' action projects in the shared tenant.
 
 Click **Add**.
 
@@ -572,7 +577,7 @@ Click **Add**.
 
 The action project must be released before it can be used in the skill.
 
-1. Go back to the **SAP Build Lobby**. Find the **DA164 CAP Product Advisor** project and open it.
+1. Go back to the **SAP Build Lobby**. Find the **DA164-<USER-NUMBER> CAP Product Advisor** project and open it.
 
 2. Click **Release**.
 
@@ -583,6 +588,8 @@ The action project must be released before it can be used in the skill.
 ![Release confirmation dialog](images/wantoublish.png)
 
 4. The project status changes to **Published**.
+
+   > **If you see separate Release and Publish buttons**: click **Release** first to create the version, then click **Publish** to make it available in the action library. Both steps are required before the action appears in the skill canvas.
 
 ![Action project showing Published status](images/published.png)
 
@@ -621,6 +628,8 @@ After the action is added to the canvas, you need to:
 | **Description** | `CAP Product Advisor destination` |
 | **Destination** | `CAP_PRODUCT_ADVISOR` |
 
+> **Note**: The **Identifier** is `destCAP` — this is the variable name your skill uses internally. The **Destination** field is `CAP_PRODUCT_ADVISOR` — this is the BTP destination it points to. Screenshots may show `CAP_PRODUCT_ADVISOR` prominently; make sure the **Identifier** field itself says `destCAP`.
+
 ![Variables panel showing destCAP destination variable](images/createdestvariable.png)
 
 After saving, the variable appears in the variables list.
@@ -638,6 +647,8 @@ After saving, the variable appears in the variables list.
 1. Click the **Trigger** node ("When a scenario is called") on the canvas to open its configuration.
 
 2. The **Configure Skill Inputs** dialog opens. Click **Add Input**.
+
+   > **If the dialog does not open**, add the input manually: in the skill editor, look for a **Parameters** tab or panel in the left sidebar → click **Add Input** there instead.
 
 3. Fill in the row:
 
