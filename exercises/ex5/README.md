@@ -667,7 +667,9 @@ After the action runs successfully, you need to send the AI answer back to the u
 
 4. Click **Open Message Editor**. The **Message Configuration** dialog opens.
 
-5. Change **Message Type** from "Illustrated Message" to **Text**.
+5. The **Message Type** is set to **Text** by default.
+
+![Message Configuration dialog showing Text type selected](images/sendresponsetext.png)
 
 6. Click the **`<>`** binding icon on the **Text** field to open the Data Mapping panel.
 
