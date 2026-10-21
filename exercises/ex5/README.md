@@ -611,7 +611,9 @@ After saving, the variable appears in the variables list.
 
 ### Part 2 – Define the Skill Input on the Trigger
 
-1. Click the **Trigger** node ("When a scenario is called") on the canvas to open its configuration.
+1. Click the **Trigger** node ("When a scenario is called") on the canvas to open its configuration. In the **Parameters** panel, click the **+** icon to add an input.
+
+![Trigger node selected showing Parameters panel with + icon to add input](images/configureinputtrigger.png)
 
 2. The **Configure Skill Inputs** dialog opens. Click **Add Input**.
 
