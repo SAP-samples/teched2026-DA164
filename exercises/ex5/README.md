@@ -541,19 +541,6 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 >
 > ![Service Operations showing askAdvisor highlighted](images/selectinvoke.png)
 
-5. Give the action project a name:
-
-| Field | Value |
-|---|---|
-| **Project Name** | `DA164-<USER-NUMBER> CAP Product Advisor` |
-| **Description** | `Calls the askAdvisor action on the CAP service charge advisor` |
-
-> Replace `<USER-NUMBER>` with your 3-digit seat number (e.g. `DA164-042 CAP Product Advisor`). Including your seat number avoids naming conflicts with other participants' action projects in the shared tenant.
-
-Click **Add**.
-
-![Action project name form filled in](images/createdaction.png)
-
 ![Skill canvas showing Invoke action askAdvisor added as a step](images/afteraddinginvokeaction.png)
 
 ---
