@@ -671,11 +671,11 @@ After the action runs successfully, you need to send the AI answer back to the u
 
 5. The **Message Type** is set to **Text** by default.
 
-![Message Configuration dialog showing Text type selected](images/sendresponsetext.png)
-
 6. Click the **`<>`** binding icon on the **Text** field to open the Data Mapping panel.
 
 7. Navigate to **context → joule_action_... → result → answer** and select **answer**.
+
+![Message Configuration dialog showing Text type selected](images/sendresponsetext.png)
 
 The Text field fills with the expression `${context.joule_action_...result.answer}`. The Preview on the right shows `${answer}`.
 
