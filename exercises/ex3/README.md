@@ -32,7 +32,11 @@ In this exercise you will open the **SAP HANA Database Explorer** — a browser-
 
 ![BAS dialog asking to open the HANA Database Explorer external URL](images/openhdidia.png)
 
-3. A browser tab opens with the BTP login page. Click **Sign in with default identity provider**.
+3. A browser tab opens with the BTP login page. Type the identity provider name in the field and click **Sign in with alternative identity provider**:
+
+```
+tdct3ched1-platform
+```
 
 ![BTP login page with Sign in with default identity provider button](images/login.png)
 
