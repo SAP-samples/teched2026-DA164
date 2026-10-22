@@ -523,28 +523,27 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 ![Plus icon on the skill flow canvas to add a new step](images/plusicon.png)
 
-2. From the step type list, choose **Call Action**.
+2. From the step type list, click **Add** next to **Call Action**.
 
 ![Step type list with Call Action highlighted](images/choosecallaction.png)
 
-3. A panel opens showing available actions. The **POST — Invoke action askAdvisor** is already listed — select it.
+3. A panel opens showing available actions. The **POST — Invoke action askAdvisor** is already listed — click **Add**. The action is added to your skill canvas.
 
 ![Browse All Actions panel showing POST Invoke action askAdvisor available](images/askadvisoraction.png)
 
-4. The **Choose an API Source** dialog opens.
+![Skill canvas showing Invoke action askAdvisor added as a step](images/afteraddinginvokeaction.png)
 
-> **Pre-configured by the session owner — read only, no action required.**
-> The `CAP_PRODUCT_ADVISOR` destination has been set up for you, pointing to the shared CAP service with the `/odata/v4/product` resource path already loaded. The service operations are already visible and **POST — Invoke action askAdvisor** is already selected.
+---
+
+> **ℹ️ Pre-configured for you — no action required**
+>
+> You may have noticed a **Choose an API Source** dialog when the action was added. This was pre-configured by the session team — the `CAP_PRODUCT_ADVISOR` destination is already pointing to the shared CAP service with the `/odata/v4/product` resource path loaded and **POST — Invoke action askAdvisor** selected. Here is what that setup looks like:
 >
 > ![Resource Path field filled with /odata/v4/product and refresh icon](images/addresourcepathaction.png)
 >
 > ![CAP_PRODUCT_ADVISOR destination selected with API methods loaded](images/CAPaction.png)
 >
 > ![Service Operations showing askAdvisor highlighted](images/selectinvoke.png)
-
-The **Invoke action askAdvisor** step is now added to your skill canvas.
-
-![Skill canvas showing Invoke action askAdvisor added as a step](images/afteraddinginvokeaction.png)
 
 ---
 
@@ -588,9 +587,11 @@ After the action is added to the canvas, you need to:
 
 ### Part 1 – Create a Destination Variable
 
-1. Open the **Variables** panel in the skill editor (tab or icon on the left of the canvas).
+1. Click the **Invoke action askAdvisor** node on the canvas to select it. The configuration panel opens on the right.
 
-2. Create a new variable:
+2. Click **Select a Destination Variable** and choose **Create Destination Variable**.
+
+3. Fill in the details:
 
 | Field | Value |
 |---|---|
@@ -602,7 +603,7 @@ After the action is added to the canvas, you need to:
 
 ![Variables panel showing destCAP destination variable](images/createdestvariable.png)
 
-After saving, the variable appears in the variables list.
+After saving, the variable appears in the variables list and is selected on the action step.
 
 ![Destination variable destCAP added to the variables list](images/destcap.png)
 
@@ -670,7 +671,7 @@ After the action runs successfully, you need to send the AI answer back to the u
 
 ![Send Message step showing Open Message Editor button](images/openmessage.png)
 
-5. The **Message Type** is set to **Text** by default.
+5. In the **Message Type** dropdown, select **Text**.
 
 6. Click the **`<>`** binding icon on the **Text** field to open the Data Mapping panel.
 
@@ -781,6 +782,8 @@ The Joule chat panel opens and the agent is ready.
 What are the container handling charges?
 ```
 
+> If Joule asks you to choose between **Service Charge Agent** and **Service Charge Advisor**, select **Service Charge Advisor**.
+
 ![Agent test console showing container handling charges response with charge code](images/joule1.png)
 
 4. Type the second question:
@@ -788,6 +791,8 @@ What are the container handling charges?
 ```
 What charges apply for dangerous goods handling?
 ```
+
+> If Joule does not respond on the first attempt, close the test panel, click **Test** again to start a new test session, and retry the question.
 
 ![Agent test console showing dangerous goods handling response with charge code](images/joule2.png)
 
