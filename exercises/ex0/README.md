@@ -27,49 +27,25 @@ Open **SAP Build Code** and log in before starting. Your login details are on yo
 
 ## Step 1 – Set Up Your Dev Space
 
-Before creating a project you need a BAS dev space with the SAP HANA extension enabled. This gives you the HANA tools, `@sap/cds-hana`, and the Database Explorer integration pre-installed.
+Before creating a project you need a BAS dev space. You will create a **Full Stack Cloud Application using Productivity Tools** dev space and add the two HANA extensions needed for this workshop.
 
 1. From the SAP Build Code lobby, open the **Dev Space Manager**.
 
 ![Dev Space Manager showing existing dev spaces](images/devspacemanager.png)
 
-**If you have no dev space yet** (fresh account — this is the common case):
-
 2. Click **Create Dev Space**.
 
 ![Create Dev Space button in the Dev Space Manager](images/createnewbasspace.png)
 
-3. Give it a name (e.g. `Full_Stack`), select **Full Stack Cloud Application** as the kind, check **SAP HANA Tools** under Additional SAP Extensions, then click **Create Dev Space**.
+3. Give it a name (e.g. `Full_Stack`), select **Full Stack Cloud Application using Productivity Tools** as the kind, then check both **SAP HANA Tools** and **SAP HANA Database Explorer** under Additional SAP Extensions.
 
 ![Create Dev Space form with name, kind Full Stack Cloud Application, and SAP HANA Tools checked](images/createnewfullstackspace.png)
 
-   > **Note**: The screenshot may also show **SAP HANA Calculation View Editor** and **SAP HANA Database Explorer** checked. These are fine to include but only **SAP HANA Tools** is required for this workshop.
-
-4. Wait for the status to change to **RUNNING**, then click on it to open BAS.
+4. Click **Create Dev Space**. Wait for the status to change to **RUNNING**.
 
 ![Dev space running and ready to open](images/startdev.png)
 
----
-
-**If you already have a dev space** (it may be missing the HANA extension):
-
-2. If your dev space is running, stop it first — you can only edit a dev space when it is stopped.
-
-![Stop the running dev space](images/stopdevspace.png)
-
-3. Click **Edit** on your dev space.
-
-![Edit button on the dev space](images/edit.png)
-
-4. In the **Additional SAP Extensions** section, check **SAP HANA Tools**, then save.
-
-![SAP HANA Tools extension checked](images/addext.png)
-
-   > **Note**: The screenshot may also show **SAP HANA Calculation View Editor** and **SAP HANA Database Explorer** checked. These are fine to include but only **SAP HANA Tools** is required.
-
-5. Start the dev space. Wait for the status to change to **RUNNING**, then click on it to open BAS.
-
-![Dev space starting up](images/startdev.png)
+> Do not open BAS yet — come back here and complete Step 2 first so the project is created in the correct dev space.
 
 ---
 
@@ -103,19 +79,21 @@ SAP Build Code is a cloud-based development environment built on SAP Business Ap
 
    - **Project Name**: `da164-product-advisor-001` *(replace `001` with your seat number)*
 
-![Project name entry screen](images/createproj.png)
+   Under **Dev Space**, select **Existing** and choose **Full_Stack** from the dropdown — the dev space you created in Step 1. Then click **Review**.
 
-7. The wizard shows a **Review** screen summarising your choices. Confirm the details and click **Create**.
+![Project name and dev space selection screen with Full_Stack selected](images/review.png)
 
-![Review screen before creating the project](images/review.png)
+7. The wizard shows the **Summary** screen. Confirm the details and click **Create**.
 
-> If the wizard offered optional features such as **SAP HANA Cloud** or **MTA deployment**, leave them unselected. You will add these via `cds add hana` and `cds add mta` from the terminal at the point in the exercises where they are needed.
+![Summary screen showing all selections before creating the project](images/createproj.png)
 
 > ### ⚠️ If project creation failed in the Build Code lobby
 >
 > If you saw a **"Project creation failed"** error, create the project directly from inside your BAS dev space instead:
 >
-> First, make sure your dev space is **RUNNING** — go back to the **Dev Space Manager** and start it if needed. Once it shows RUNNING, click its name to open BAS.
+> First, go back to the **Dev Space Manager** (click the grid/home icon in the top left of the lobby). Find your **Full_Stack** dev space — it should show status **RUNNING**. Click its name to open BAS.
+>
+> ![Dev space showing RUNNING status — click the name to open BAS](images/devspacerunning.png)
 >
 > 1. In the BAS menu bar, click **Help → Get Started**.
 >
