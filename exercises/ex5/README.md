@@ -363,9 +363,19 @@ The build takes about a minute. When it finishes you will see something like:
 
 ## Step B4 – Deploy to Cloud Foundry
 
-1. Make sure you are logged in to Cloud Foundry. In the BAS menu bar, go to **View → Cloud Foundry**. If it shows **Login required**, click the login button and follow the SSO wizard — same as you did in Exercise 2.
+1. Make sure you are logged in to Cloud Foundry. In the BAS menu bar, go to **View → Cloud Foundry**. If it shows **Login required**, click the login button and follow the SSO wizard.
 
 ![Cloud Foundry panel showing Login required with the login button highlighted](../ex2/images/cfwizard.png)
+
+   When asked for the authentication method, select **SSO Passcode**. A URL is shown — open it in your browser. Type the identity provider name in the field and click **Sign in with alternative identity provider**:
+
+```
+tdct3ched1-platform
+```
+
+![BTP login page with identity provider field](../ex3/images/login.png)
+
+   Copy the temporary passcode shown on the page and paste it into the BAS prompt.
 
 ![Browser showing the temporary passcode](../ex2/images/temppasscode.png)
 

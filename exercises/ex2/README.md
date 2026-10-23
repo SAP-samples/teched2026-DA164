@@ -81,6 +81,8 @@ npm install
 tdct3ched1-platform
 ```
 
+![BTP login page with identity provider field](../ex3/images/login.png)
+
 Copy the temporary passcode shown on the page.
 
 ![Browser showing the temporary passcode](images/temppasscode.png)
