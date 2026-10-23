@@ -188,6 +188,10 @@ Content-Type: application/json
 {"query": "container unloading", "top": 5}
 ```
 
+The file should appear at the project root in the Explorer panel — at the same level as `package.json` and `mta.yaml`.
+
+![BAS Explorer showing test.http at the project root with the file content open](images/testhttpfile.png)
+
 3. Click **Send Request** above the first block (`freight and handling charges`). The response opens in a split pane on the right showing 5 ranked service charges.
 
 ![BAS test.http showing hybridSearch response with service charge rows](images/http1.png)
