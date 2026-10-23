@@ -75,7 +75,13 @@ npm install
 
    When asked for the authentication method, select **SSO Passcode**. A URL is shown — open it in your browser.
 
-3. In the browser, log in with your workshop credentials (`da164-XXX@education.cloud.sap`) if prompted. If the page shows multiple identity providers, select **tdct3ched1**. Copy the temporary passcode shown on the page.
+3. A browser tab opens with the BTP login page. Type the identity provider name in the field and click **Sign in with alternative identity provider**:
+
+```
+tdct3ched1-platform
+```
+
+Copy the temporary passcode shown on the page.
 
 ![Browser showing the temporary passcode](images/temppasscode.png)
 
