@@ -6,7 +6,7 @@ This exercise is split into three parts. Each part builds on the last, and toget
 |---|---|---|
 | **A** | Write the AI advisor logic | An agent that answers service charge questions in plain language |
 | **B** *(optional)* | Deploy your own app to Cloud Foundry | A live, personally deployed URL for your agent |
-| **C** | Create a Joule Skill | Maya uses your agent directly from the Joule chat interface |
+| **C** | Create a Joule Skill and Joule Agent | Maya uses your agent directly from the Joule chat interface |
 
 > **Note on Part B**: The session team has pre-deployed a shared CAP app that Part C uses. You can complete Part C and test Joule without doing Part B. Come back to Part B if you have time — it's a useful skill, but not a blocker.
 
@@ -444,16 +444,17 @@ Your agent is now:
 
 ---
 
-# Part C – Create a Joule Skill to Use Your Agent
+# Part C – Create a Joule Skill and Joule Agent
 
-## What is a Joule Skill?
+## What is a Joule Skill and Joule Agent?
 
 A **Joule Skill** is a custom capability you add to Joule Studio. When a user says something that matches the skill's purpose, Joule runs the skill — which can call a backend system, process the result, and reply to the user in a structured format.
 
-In this exercise you will create a Joule Skill that:
-1. Takes a service charge question from the user
-2. Calls your CAP `askAdvisor` action via the `CAP_PRODUCT_ADVISOR` destination
-3. Returns the AI-generated answer as a Joule chat message
+A **Joule Agent** is the conversational layer that sits on top of the skill. It decides when to invoke the skill based on the user's intent, and it is what Maya actually talks to in the Joule chat interface.
+
+In this exercise you will:
+1. Create a Joule Skill that calls your CAP `askAdvisor` action via the `CAP_PRODUCT_ADVISOR` destination
+2. Create a Joule Agent that attaches the skill as a tool
 
 This is the final step that puts the entire system in Maya's hands. She opens Joule, types a customer question about freight charges, and the answer comes back instantly — powered by HANA Cloud's vector engine, SAP AI Core, and your CAP service running on BTP.
 
@@ -545,7 +546,7 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 ---
 
-> **ℹ️ Pre-configured for you — no action required**
+> ### ⚙️ Pre-configured for you — no action required
 >
 > You may have noticed a **Choose an API Source** dialog when the action was added. This was pre-configured by the session team — the `CAP_PRODUCT_ADVISOR` destination is already pointing to the shared CAP service with the `/odata/v4/product` resource path loaded and **POST — Invoke action askAdvisor** selected. Here is what that setup looks like:
 >
@@ -559,7 +560,8 @@ Now you will add a step that calls your CAP `askAdvisor` action. This involves t
 
 ### Part 2 – Action Project Setup
 
-> **Pre-configured by the session owner — read only, no action required.**
+> ### ⚙️ Pre-configured for you — no action required
+>
 > The action project has been created, released, and published for you. The screenshots below show what was set up so you can see how the action reaches the skill canvas.
 >
 > The action project is created by selecting the `CAP_PRODUCT_ADVISOR` destination, loading the service operations, and selecting **POST — Invoke action askAdvisor**:
@@ -760,7 +762,11 @@ You are a service charge advisor for GlobalFreight AG. When a user asks about fr
 
 ![Agent editor showing Expertise and Instructions fields filled in](images/addexpertiseandinstructions.png)
 
-6. Scroll down to the **Tools** section. Click **Add Tool** and select **Joule Skill**. A list of available skills appears — select **askServiceChargeAdvisor** and confirm.
+6. Scroll down to the **Tools** section. Click **Add Tool** and select **Joule Skill** from the dropdown.
+
+![Add Tool dropdown showing Joule Skill option](images/addjouleskillagent.png)
+
+A list of available skills appears — select **askServiceChargeAdvisor** and confirm.
 
 ![Agent Tools section showing askServiceChargeAdvisor Joule Skill added](images/addskilltoagent.png)
 
@@ -770,13 +776,35 @@ You are a service charge advisor for GlobalFreight AG. When a user asks about fr
 
 ## Step C8 – Test Maya's New Tool in Joule
 
-Test from inside the **agent editor** — the agent has its own test console that shows you exactly which skill was invoked and what it returned.
+You will test using the **DA164 Service Charge Advisor** — a Joule Agent pre-created by the session team that has the `askServiceChargeAdvisor` skill already attached. Before you can test, you need to activate your own private test environment.
 
-1. In the agent editor, click the **Test** button (top right).
+### Part 1 – Activate Your Private Test Environment
+
+1. In the SAP Build Lobby, click **Control Tower** in the left sidebar, then click the **Environments** tile.
+
+![Control Tower open with Environments tile highlighted](images/controltowerenviroment.png)
+
+2. Click **Activate Private Environment**.
+
+![Environments list with Activate Private Environment button highlighted](images/activateprivenv.png)
+
+3. A **Private** environment row appears with your user as the Author and the status shows **Private Environment Active**.
+
+![Environments list showing the private environment active for your user](images/activeprivateenv.png)
+
+---
+
+### Part 2 – Open the Session Agent and Test
+
+4. Go back to the **Lobby**. Find the project **DA164 Service Charge Advisor** (Members: Everyone) and open it.
+
+![SAP Build Lobby showing DA164 Service Charge Advisor project highlighted](images/chooseservicechargec8.png)
+
+5. Inside the project, open the agent and click the **Test** button (top right).
 
 ![Agent editor showing the Test button](images/clicktest.png)
 
-2. A dialog opens asking for the environment. Select your **private environment** and confirm the `destCAP` variable is set to `CAP_PRODUCT_ADVISOR`. Click **Continue**.
+6. A dialog opens asking for the environment. Select your **private environment** and confirm the `destCAP` variable is set to `CAP_PRODUCT_ADVISOR`. Click **Continue**.
 
 ![Environment selection dialog with private environment and destCAP variable](images/chooseprivatenviroment.png)
 
@@ -786,17 +814,19 @@ The Joule chat panel opens and the agent is ready.
 
 ![Joule chat panel open and ready for testing](images/opensjoulestarttesting.png)
 
-3. Type the first test question:
+7. Type the first test question:
 
 ```
 What are the container handling charges?
 ```
 
-> If Joule asks you to choose between **Service Charge Agent** and **Service Charge Advisor**, select **Service Charge Advisor**.
+> If Joule asks you to choose between **Ask Service Charge Advisor** and **DA164-XXX Service Charge Agent**, click **Ask Service Charge Advisor**.
+
+![Joule disambiguation panel — click Ask Service Charge Advisor](images/chooseservicechargeadvisor.png)
 
 ![Agent test console showing container handling charges response with charge code](images/joule1.png)
 
-4. Type the second question:
+8. Type the second question:
 
 ```
 What charges apply for dangerous goods handling?
@@ -808,15 +838,15 @@ What charges apply for dangerous goods handling?
 
 Both responses return specific charge codes from your HANA catalog — not generic advice.
 
-5. After each response, click the **Timeline** tab on the right to confirm the `askServiceChargeAdvisor` skill was invoked under **Ask Service Charge Advisor → API call**.
+9. After each response, click the **Timeline** tab on the right to confirm the `askServiceChargeAdvisor` skill was invoked under **Ask Service Charge Advisor → API call**.
 
-6. Try an out-of-scope question to confirm the advisor stays grounded:
+10. Try an out-of-scope question to confirm the advisor stays grounded:
 
 ```
 What is the current fuel surcharge rate for transpacific routes?
 ```
 
-The advisor correctly responds that live rate data is not available — it does not invent a number. Joule may handle this at the base model level before the skill is invoked, but in both cases no fabricated rate appears.
+The advisor correctly responds that live rate data is not available — it does not invent a number.
 
 ![Joule responding to out-of-scope transpacific rate question without fabricating data](images/joule3.png)
 
