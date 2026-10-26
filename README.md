@@ -1,5 +1,7 @@
 # DA164 - Build AI Agents and Applications Natively on SAP HANA Cloud
 
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/teched2026-DA164)](https://api.reuse.software/info/github.com/SAP-samples/teched2026-DA164)
+
 ## Description
 
 This repository contains the material for the SAP TechEd 2026 hands-on session **DA164 – Build AI Agents and Applications Natively on SAP HANA Cloud**.
