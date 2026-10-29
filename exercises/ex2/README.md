@@ -276,7 +276,7 @@ You should see:
 > Seed your table directly from the HANA Database Explorer instead:
 >
 > 1. Open your **HANA Database Explorer** SQL Console (follow Exercise 3, Step 1 to get there, then come back here).
-> 2. Paste the **seed script** shared by the facilitator in the session chat.
+> 2. Open `resources/seed-products.sql` from the workshop repository. Copy the entire contents and paste into the SQL Console.
 > 3. Click **Run** — all 50 products are inserted directly into your table.
 > 4. Verify the data is there:
 >
