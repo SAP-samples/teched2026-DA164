@@ -269,6 +269,23 @@ You should see:
 
 ![Terminal showing the curl response with synced: 50](images/outputsync.png)
 
+> ### ⚠️ If syncProducts returned a 500 error
+>
+> The SAP Business Accelerator Hub sandbox has a rate limit — if many participants call it at the same time, some requests fail with a 500 error.
+>
+> Seed your table directly from the HANA Database Explorer instead:
+>
+> 1. Open your **HANA Database Explorer** SQL Console (follow Exercise 3, Step 1 to get there, then come back here).
+> 2. Paste the **seed script** shared by the facilitator in the session chat.
+> 3. Click **Run** — all 50 products are inserted directly into your table.
+> 4. Verify the data is there:
+>
+> ```sql
+> SELECT COUNT(*) FROM PRODUCTS_PRODUCTEXTENSION;
+> ```
+>
+> The result should show `50`. Continue with item 3 below.
+
 3. Check that the products are stored in HANA by querying the `Products` entity:
 
 ```bash
