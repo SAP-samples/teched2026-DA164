@@ -17,7 +17,7 @@ Open **SAP Build Code** and log in before starting. Your login details are on yo
 |---|---|
 | **SAP Build Code URL** | [https://da164.eu10.build.cloud.sap/lobby](https://da164.eu10.build.cloud.sap/lobby) |
 | **Username** | `da164-XXX@education.cloud.sap` |
-| **Password** | `Acce$$teched26` |
+| **Password** | *on your seat card* |
 
 > Your seat number is the 3-digit number at the end of your username (e.g. `da164-007` → seat **007**).
 

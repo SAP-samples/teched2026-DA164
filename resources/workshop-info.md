@@ -10,7 +10,7 @@ All values participants need during the workshop are listed here. Reference this
 |---|---|
 | **URL** | [https://da164.eu10.build.cloud.sap/lobby](https://da164.eu10.build.cloud.sap/lobby) |
 | **Username** | `da164-XXX@education.cloud.sap` — replace `XXX` with your 3-digit seat number |
-| **Password** | `Acce$$teched26` |
+| **Password** | *shared by facilitator at session start* |
 
 Your seat number is the 3-digit number at the end of your username (e.g. seat **042** → username `da164-042@education.cloud.sap`).
 
@@ -21,8 +21,10 @@ Your seat number is the 3-digit number at the end of your username (e.g. seat **
 Use this key wherever `<YOUR_API_HUB_KEY>` appears in the exercises:
 
 ```
-UnBbpWyxaAAfmu4QAku2qSicZce4IWA6
+<YOUR_API_HUB_KEY>
 ```
+
+> The actual key will be shared by the facilitator at session start.
 
 ---
 

@@ -41,7 +41,7 @@
         "[development]": {
           "credentials": {
             "url": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCT_SRV",
-            "headers": { "APIKey": "UnBbpWyxaAAfmu4QAku2qSicZce4IWA6" }
+            "headers": { "APIKey": "<YOUR_API_HUB_KEY>" }
           }
         }
       }

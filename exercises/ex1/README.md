@@ -115,11 +115,7 @@ The screenshots below show what this looks like in the BTP Cockpit — for refer
 }
 ```
 
-   Replace `<YOUR_API_HUB_KEY>` with:
-
-```
-UnBbpWyxaAAfmu4QAku2qSicZce4IWA6
-```
+   Replace `<YOUR_API_HUB_KEY>` with the API key from `resources/workshop-info.md` (shared at session start).
 
    After the edit, your `"cds"` section should look like this:
 
@@ -139,7 +135,7 @@ UnBbpWyxaAAfmu4QAku2qSicZce4IWA6
       "[development]": {
         "credentials": {
           "url": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_PRODUCT_SRV",
-          "headers": { "APIKey": "UnBbpWyxaAAfmu4QAku2qSicZce4IWA6" }
+          "headers": { "APIKey": "<YOUR_API_HUB_KEY>" }
         }
       }
     }
