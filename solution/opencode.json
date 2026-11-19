@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "product-advisor": {
+      "type": "remote",
+      "url": "https://<YOUR-APP-ROUTE>/mcp/product",
+      "enabled": true
+    }
+  }
+}

@@ -1,0 +1,15 @@
+# Node.js
+node_modules/
+.env
+
+# CAP build output
+gen/
+
+# CAP local binding (created by cds bind)
+.cdsrc-private.json
+
+# AI Core credentials (copy from resources/aicore-config.json)
+.aicore/
+
+# macOS
+.DS_Store
